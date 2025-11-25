@@ -1,54 +1,70 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
 ---
-<BaseLayout title="min-flutter-template">
+<BaseLayout title="Stash It">
   <section>
-    <h2>Welcome 👋</h2>
-    <p class="lead">A minimal <strong>Flutter</strong> app template for cross-platform development. Build for Android, iOS, Web, and Desktop from a single codebase.</p>
+    <h2>Welcome to Stash It 📚</h2>
+    <p class="lead">A <strong>local-first, offline-capable</strong> save-it-later app. Like Pocket, but privacy-focused and yours forever.</p>
 
     <div class="card">
-      <h3>What's here</h3>
+      <h3>Why Stash It?</h3>
       <ul>
-        <li>Short project overview and docs link</li>
-        <li>Quick links to repository and CI</li>
-        <li>Light Startlight-inspired theme</li>
+        <li>📴 <strong>Works Offline</strong> - Read your articles anywhere, anytime</li>
+        <li>🔒 <strong>Privacy First</strong> - No accounts, no tracking, no cloud</li>
+        <li>📱 <strong>Cross-Platform</strong> - Android, iOS, Web, macOS, Linux, Windows</li>
+        <li>💾 <strong>Local-First</strong> - Your data stays on your device</li>
+        <li>🔓 <strong>Open Source</strong> - Free forever, contribute anytime</li>
       </ul>
     </div>
 
     <div class="card">
       <h3>Features</h3>
       <ul>
-        <li>Flutter 3.10.1+ with Material Design 3</li>
-        <li>Cross-platform: Android, iOS, Web, macOS, Linux, Windows</li>
-        <li>Simple dependency management with pubspec.yaml</li>
-        <li>CI/CD workflows with signed release support</li>
-        <li>AI-friendly customization points</li>
+        <li>📥 Save articles from any app or by URL</li>
+        <li>📖 Clean, distraction-free reader view</li>
+        <li>🎨 Material 3 design with light/dark themes</li>
+        <li>⚡ Fast content extraction and rendering</li>
+        <li>🗑️ Swipe to delete with undo support</li>
+        <li>⚙️ Customizable settings and preferences</li>
       </ul>
     </div>
 
     <div class="card">
       <h3>Download / Release</h3>
       <p class="lead">Get a packaged release from GitHub Releases (APK, App Bundle, Web).</p>
-      <p><a href="https://github.com/cmwen/min-android-app-template/releases/latest" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none">Download latest release →</a></p>
+      <p><a href="https://github.com/cmwen/stash-it-app/releases/latest" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none">Download latest release →</a></p>
     </div>
 
     <div class="card">
-      <h3>Quick start</h3>
-      <p class="lead">Get started in minutes with Flutter.</p>
-      <pre style="background:rgba(255,255,255,0.02);padding:10px;border-radius:8px;margin-top:8px;overflow:auto">git clone https://github.com/cmwen/min-android-app-template.git
-cd min-android-app-template
+      <h3>Quick Start</h3>
+      <p class="lead">Build from source with Flutter.</p>
+      <pre style="background:rgba(255,255,255,0.02);padding:10px;border-radius:8px;margin-top:8px;overflow:auto">git clone https://github.com/cmwen/stash-it-app.git
+cd stash-it-app
 flutter pub get
+dart run build_runner build --delete-conflicting-outputs
 flutter run</pre>
       <p style="margin-top:8px"><a href="/install" style="color:var(--accent);text-decoration:none">Open full install guide →</a></p>
     </div>
 
     <div class="card">
-      <h3>Next steps</h3>
-      <ol>
-        <li>Customize <code>lib/main.dart</code> with your app</li>
-        <li>Update <code>pubspec.yaml</code> with your app name</li>
-        <li>Configure <code>astro/astro.config.mjs</code> for your GitHub Pages URL</li>
-      </ol>
+      <h3>Tech Stack</h3>
+      <ul>
+        <li><strong>Flutter 3.10+</strong> - Cross-platform UI framework</li>
+        <li><strong>Riverpod</strong> - State management with code generation</li>
+        <li><strong>Drift (SQLite)</strong> - Local-first database</li>
+        <li><strong>go_router</strong> - Declarative navigation</li>
+        <li><strong>Material 3</strong> - Modern design system</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Coming Soon</h3>
+      <ul>
+        <li>🏷️ Tags and organization</li>
+        <li>🔍 Full-text search</li>
+        <li>📤 Data export</li>
+        <li>🔄 P2P device sync (no cloud needed!)</li>
+      </ul>
     </div>
   </section>
 </BaseLayout>

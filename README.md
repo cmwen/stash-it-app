@@ -4,13 +4,19 @@
 
 **Stash It** is a local-first, offline-capable "save it later" app inspired by Pocket. Save articles, read them offline, and never worry about losing access to your content.
 
+![Flutter](https://img.shields.io/badge/Flutter-3.10+-02569B?logo=flutter)
+![Dart](https://img.shields.io/badge/Dart-3.10+-0175C2?logo=dart)
+![License](https://img.shields.io/badge/License-MIT-green)
+
 ## ✨ Features
 
-### Core (MVP)
-- 📥 **Save from Anywhere** - Share URLs from any app
-- 📖 **Clean Reader** - Distraction-free reading experience
-- 📴 **Fully Offline** - Works without internet
+### Core (MVP) ✅
+- 📥 **Save from Anywhere** - Add URLs manually or via share intent
+- 📖 **Clean Reader** - Distraction-free reading with extracted content
+- 📴 **Fully Offline** - All content stored locally with SQLite/Drift
 - 🔒 **Privacy-First** - No accounts, no tracking, no cloud
+- 🎨 **Beautiful UI** - Material 3 design with light/dark themes
+- ⚡ **Fast & Responsive** - Optimized for smooth scrolling and quick loading
 
 ### Coming Soon
 - 🏷️ Tags and organization
@@ -28,6 +34,12 @@
 | P2P Sync | ❌ | ❌ | 🔮 Coming |
 | Free & Open | ❌ | ❌ | ✅ |
 
+## 📸 Screenshots
+
+| Home | Reader | Settings |
+|------|--------|----------|
+| Article list with thumbnails | Clean reading experience | Theme & preferences |
+
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -44,17 +56,8 @@ cd stash-it-app
 # Get dependencies
 flutter pub get
 
-# Generate code (Drift / codegen)
-# Drift and Riverpod rely on code generation - run this before the first `flutter run`.
-# Use the included helper script or run build_runner manually.
-
-```bash
-# helper (from repo root)
-scripts/dev/generate_code.sh
-
-# or run manually
-flutter pub run build_runner build --delete-conflicting-outputs
-```
+# Generate code (Drift database & Riverpod providers)
+dart run build_runner build --delete-conflicting-outputs
 
 # Run the app
 flutter run
@@ -84,21 +87,29 @@ Stash It uses **Clean Architecture** with a local-first approach:
 
 ```
 lib/
-├── app/              # App configuration, routing
-├── core/             # Shared utilities, theme
+├── main.dart             # App entry point
+├── core/
+│   ├── router/           # GoRouter navigation
+│   └── theme/            # Material 3 theming (colors, spacing, durations)
 ├── features/
-│   ├── articles/     # Save, read, manage articles
-│   ├── settings/     # App preferences
-│   └── sync/         # Future P2P sync
-└── shared/           # Reusable widgets
+│   ├── articles/
+│   │   ├── domain/       # Article entity, repository interface
+│   │   ├── data/         # Drift database, services, repository impl
+│   │   └── presentation/ # Pages (Home, Reader), widgets, providers
+│   └── settings/
+│       └── presentation/ # Settings page
+└── shared/
+    └── widgets/          # EmptyState, LoadingSkeleton, OfflineBanner
 ```
 
 ### Tech Stack
-- **Framework:** Flutter
-- **State:** Riverpod
-- **Database:** Isar (local-first)
-- **HTTP:** Dio
-- **Navigation:** go_router
+- **Framework:** Flutter 3.10+
+- **State Management:** Riverpod with code generation
+- **Database:** Drift (SQLite) - local-first persistence
+- **HTTP:** Dio for fetching articles
+- **Navigation:** go_router for declarative routing
+- **Content Extraction:** Custom HTML parser with `html` package
+- **UI Components:** flutter_html, shimmer, cached_network_image
 
 ## 📖 Documentation
 
@@ -108,16 +119,23 @@ lib/
 | [User Stories](docs/USER_STORIES.md) | Feature requirements |
 | [Technical Requirements](docs/REQUIREMENTS_TECHNICAL.md) | Implementation details |
 | [MVP Roadmap](docs/ROADMAP_MVP.md) | Development plan |
+| [UX Design](docs/UX_DESIGN.md) | User experience & wireframes |
+| [Design System](docs/DESIGN_SYSTEM.md) | Colors, typography, spacing |
+| [Personas](docs/PERSONAS.md) | Target user profiles |
 
 ## 🛣️ Roadmap
 
-### v1.0 - MVP (In Progress)
-- [x] Project setup
-- [ ] Save articles via share
-- [ ] Content extraction
-- [ ] Offline storage
-- [ ] Reader view
-- [ ] Basic theming
+### v1.0 - MVP ✅
+- [x] Project setup & architecture
+- [x] Article entity & repository
+- [x] Drift database with offline storage
+- [x] Content extraction service
+- [x] Home page with article list
+- [x] Reader view with clean typography
+- [x] Add URL functionality
+- [x] Swipe to delete with undo
+- [x] Material 3 theming (light/dark)
+- [x] Settings page
 
 ### v1.5 - Organization
 - [ ] Tags
@@ -128,12 +146,25 @@ lib/
 ### v2.0 - Enhanced
 - [ ] Import from Pocket
 - [ ] Favorites
-- [ ] Reader customization
+- [ ] Reader customization (font size, themes)
 
 ### v3.0 - Sync
 - [ ] P2P device discovery
-- [ ] Conflict-free sync
+- [ ] Conflict-free sync (CRDTs)
 - [ ] Multi-device support
+
+## 🧪 Testing
+
+```bash
+# Run all tests
+flutter test
+
+# Run with coverage
+flutter test --coverage
+
+# Analyze code
+flutter analyze
+```
 
 ## 🤝 Contributing
 

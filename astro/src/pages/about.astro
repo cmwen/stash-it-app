@@ -3,15 +3,46 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 ---
 <BaseLayout title="About">
   <section>
-    <h2>About this site</h2>
-    <p>This small site is a lightweight static landing for the <code>min-android-app-template</code> Flutter repository. It's built with Astro and a Startlight-inspired theme so it's fast and easy to maintain.</p>
+    <h2>About Stash It</h2>
+    <p class="lead">Stash It is a local-first, offline-capable "save it later" app inspired by Pocket. Built with Flutter for true cross-platform support.</p>
 
     <div class="card">
-      <h3>How it works</h3>
+      <h3>Why We Built This</h3>
+      <p>We believe your reading list should be truly yours. No accounts required, no tracking, no cloud lock-in. Save articles to read offline, anytime, anywhere.</p>
+      <ul>
+        <li><strong>Privacy-First:</strong> Your data never leaves your device</li>
+        <li><strong>Offline by Default:</strong> Works without internet connection</li>
+        <li><strong>Open Source:</strong> Transparent, community-driven development</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Architecture</h3>
+      <p>Stash It uses Clean Architecture with a feature-first folder structure:</p>
+      <pre style="background:rgba(255,255,255,0.02);padding:10px;border-radius:8px;overflow:auto">lib/
+├── core/           # Router, Theme system
+├── features/
+│   ├── articles/   # Domain, Data, Presentation
+│   └── settings/   # App preferences
+└── shared/         # Reusable widgets</pre>
+    </div>
+
+    <div class="card">
+      <h3>Documentation</h3>
+      <ul>
+        <li><a href="https://github.com/cmwen/stash-it-app/blob/main/docs/PRODUCT_VISION.md" target="_blank" rel="noopener" style="color:var(--accent)">Product Vision</a> - Why we're building this</li>
+        <li><a href="https://github.com/cmwen/stash-it-app/blob/main/docs/USER_STORIES.md" target="_blank" rel="noopener" style="color:var(--accent)">User Stories</a> - Feature requirements</li>
+        <li><a href="https://github.com/cmwen/stash-it-app/blob/main/docs/UX_DESIGN.md" target="_blank" rel="noopener" style="color:var(--accent)">UX Design</a> - Wireframes and user flows</li>
+        <li><a href="https://github.com/cmwen/stash-it-app/blob/main/docs/DESIGN_SYSTEM.md" target="_blank" rel="noopener" style="color:var(--accent)">Design System</a> - Colors, typography, spacing</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>About This Site</h3>
       <ul>
         <li>Source in <code>/astro</code></li>
         <li>Build uses <code>npm run build</code> to generate a static <code>dist/</code> folder</li>
-        <li>CI workflow deploys <code>dist/</code> to GitHub Pages when a GitHub Release is published (or on manual dispatch)</li>
+        <li>CI workflow deploys <code>dist/</code> to GitHub Pages when a GitHub Release is published</li>
       </ul>
     </div>
   </section>

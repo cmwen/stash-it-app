@@ -8,12 +8,13 @@ const { title } = Astro.props
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{title ? `${title} — Startlight` : 'Startlight'}</title>
+    <title>{title ? `${title} — Stash It` : 'Stash It'}</title>
+    <meta name="description" content="A local-first, offline-capable save it later app. Like Pocket, but privacy-focused and yours forever." />
     <link rel="stylesheet" href="/src/styles.css" />
   </head>
   <body>
     <main class="container">
-      <Header title={title ?? 'Startlight'} />
+      <Header title={title ?? 'Stash It'} />
       <slot />
       <Footer />
     </main>

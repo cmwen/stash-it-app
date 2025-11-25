@@ -7,18 +7,44 @@ import BaseLayout from '../layouts/BaseLayout.astro'
     <h2>Releases & Downloads</h2>
 
     <div class="card">
-      <p class="lead">Download the project artifacts (APK / AAB / Web) from GitHub Releases.</p>
-      <p><a href="https://github.com/cmwen/min-android-app-template/releases/latest" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none">Open latest release on GitHub →</a></p>
+      <p class="lead">Download Stash It for your platform from GitHub Releases.</p>
+      <p><a href="https://github.com/cmwen/stash-it-app/releases/latest" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none">Download latest release →</a></p>
     </div>
 
     <div class="card">
-      <h3>If you built from source</h3>
+      <h3>Available Platforms</h3>
       <ul>
-        <li>Android APK: <code>flutter build apk</code></li>
-        <li>Android App Bundle: <code>flutter build appbundle</code></li>
-        <li>iOS: <code>flutter build ios</code></li>
-        <li>Web: <code>flutter build web</code></li>
+        <li>✅ Android (APK / App Bundle)</li>
+        <li>✅ iOS</li>
+        <li>✅ Web</li>
+        <li>✅ macOS</li>
+        <li>✅ Windows</li>
+        <li>✅ Linux</li>
       </ul>
+    </div>
+
+    <div class="card">
+      <h3>Build from Source</h3>
+      <p>If you prefer to build from source:</p>
+      <pre style="background:rgba(255,255,255,0.02);padding:10px;border-radius:8px;overflow:auto"># Clone and setup
+git clone https://github.com/cmwen/stash-it-app.git
+cd stash-it-app
+flutter pub get
+dart run build_runner build --delete-conflicting-outputs
+
+# Build for your platform
+flutter build apk         # Android APK
+flutter build appbundle   # Android App Bundle
+flutter build ios         # iOS
+flutter build web         # Web
+flutter build macos       # macOS
+flutter build windows     # Windows
+flutter build linux       # Linux</pre>
+    </div>
+
+    <div class="card">
+      <h3>Changelog</h3>
+      <p>See the <a href="https://github.com/cmwen/stash-it-app/releases" target="_blank" rel="noopener" style="color:var(--accent)">full release history</a> for detailed changelogs.</p>
     </div>
   </section>
 </BaseLayout>
