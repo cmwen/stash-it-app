@@ -44,6 +44,18 @@ cd stash-it-app
 # Get dependencies
 flutter pub get
 
+# Generate code (Drift / codegen)
+# Drift and Riverpod rely on code generation - run this before the first `flutter run`.
+# Use the included helper script or run build_runner manually.
+
+```bash
+# helper (from repo root)
+scripts/dev/generate_code.sh
+
+# or run manually
+flutter pub run build_runner build --delete-conflicting-outputs
+```
+
 # Run the app
 flutter run
 ```
