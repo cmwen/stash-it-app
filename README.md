@@ -1,35 +1,50 @@
-# Minimal Flutter App Template
+# Stash It 📚
 
-A minimal, clean Flutter application template designed for cross-platform development. This template provides a simple starting point with support for Android, iOS, Web, Linux, macOS, and Windows.
+> Your personal content library that works everywhere, respects your privacy, and puts you in control of your data.
 
-## Features
+**Stash It** is a local-first, offline-capable "save it later" app inspired by Pocket. Save articles, read them offline, and never worry about losing access to your content.
 
-- 🚀 **Cross-platform**: Build for Android, iOS, Web, Linux, macOS, and Windows
-- 📦 **Simple Dependencies**: Manage packages with `pubspec.yaml`
-- 🎨 **Material Design 3**: Beautiful UI components out of the box
-- 🔥 **Hot Reload**: See your changes instantly
-- ⚡ **Fast Development**: No more waiting for builds
-- 🧪 **Testing Built-in**: Widget, integration, and unit testing support
-- 🤖 **AI-Ready**: Optimized for AI-assisted development
+## ✨ Features
 
-## Quick Start
+### Core (MVP)
+- 📥 **Save from Anywhere** - Share URLs from any app
+- 📖 **Clean Reader** - Distraction-free reading experience
+- 📴 **Fully Offline** - Works without internet
+- 🔒 **Privacy-First** - No accounts, no tracking, no cloud
+
+### Coming Soon
+- 🏷️ Tags and organization
+- 🔍 Full-text search
+- 📤 Export your data
+- 🔄 P2P device sync (no cloud needed!)
+
+## 🎯 Why Stash It?
+
+| Feature | Pocket | Instapaper | **Stash It** |
+|---------|--------|------------|--------------|
+| Offline Reading | ✅ | ✅ | ✅ |
+| No Account Required | ❌ | ❌ | ✅ |
+| Local-First | ❌ | ❌ | ✅ |
+| P2P Sync | ❌ | ❌ | 🔮 Coming |
+| Free & Open | ❌ | ❌ | ✅ |
+
+## 🚀 Quick Start
 
 ### Prerequisites
-
-- Flutter SDK 3.10.1 or higher
-- Dart 3.10.1 or higher
+- Flutter SDK 3.10.1+
+- Dart 3.10.1+
 
 ### Installation
 
 ```bash
-# Clone this repository
-git clone https://github.com/yourusername/your-repo-name.git
-cd your-repo-name
+# Clone the repository
+git clone https://github.com/cmwen/stash-it-app.git
+cd stash-it-app
 
 # Get dependencies
 flutter pub get
 
-# Run on your preferred platform
+# Run the app
 flutter run
 ```
 
@@ -37,93 +52,85 @@ flutter run
 
 ```bash
 flutter build apk         # Android APK
-flutter build appbundle   # Android App Bundle (Play Store)
+flutter build appbundle   # Android App Bundle
 flutter build ios         # iOS
 flutter build web         # Web
 ```
 
-## 🎯 AI Customization Points
+## 📱 Platforms
 
-This template is designed to be easily customizable with AI assistants. Key areas to modify:
+- ✅ Android
+- ✅ iOS
+- ✅ Web
+- ✅ macOS
+- ✅ Windows
+- ✅ Linux
 
-### 1. App Identity
-Edit `pubspec.yaml`:
-```yaml
-name: your_app_name
-description: "Your app description"
-version: 1.0.0+1
-```
+## 🏗️ Architecture
 
-### 2. App Entry Point
-Edit `lib/main.dart`:
-- Change `title` to your app name
-- Modify `colorScheme` seedColor for theming
-- Replace `MyHomePage` with your own screens
-
-### 3. Android Configuration
-Edit `android/app/build.gradle.kts`:
-- Change `applicationId` to your package name (e.g., `com.yourcompany.yourapp`)
-
-### 4. iOS Configuration
-Update `ios/Runner.xcodeproj` bundle identifier
-
-### 5. Website (GitHub Pages)
-Edit `astro/astro.config.mjs`:
-```js
-const GITHUB_USERNAME = 'your-username';
-const REPO_NAME = 'your-repo-name';
-```
-This will deploy to: `https://your-username.github.io/your-repo-name/`
-
-## CI/CD
-
-### GitHub Actions Workflows
-
-- **build.yml**: Builds and tests on every push/PR
-- **release.yml**: Creates signed releases on version tags
-- **deploy-website.yml**: Deploys documentation to GitHub Pages
-
-### Signed Releases
-
-To enable signed Android releases, add these secrets to your GitHub repository:
-
-| Secret | Description |
-|--------|-------------|
-| `ANDROID_KEYSTORE_BASE64` | Base64-encoded keystore file |
-| `ANDROID_KEYSTORE_PASSWORD` | Keystore password |
-| `ANDROID_KEY_ALIAS` | Key alias |
-| `ANDROID_KEY_PASSWORD` | Key password |
-
-Generate base64 keystore:
-```bash
-base64 -i your-keystore.jks | pbcopy  # macOS
-```
-
-## Project Structure
+Stash It uses **Clean Architecture** with a local-first approach:
 
 ```
-├── lib/main.dart         # App entry point
-├── test/                 # Tests
-├── android/              # Android configuration
-├── ios/                  # iOS configuration
-├── web/                  # Web configuration
-├── astro/                # Documentation website
-├── docs/                 # AI prompting guides
-└── pubspec.yaml          # Dependencies
+lib/
+├── app/              # App configuration, routing
+├── core/             # Shared utilities, theme
+├── features/
+│   ├── articles/     # Save, read, manage articles
+│   ├── settings/     # App preferences
+│   └── sync/         # Future P2P sync
+└── shared/           # Reusable widgets
 ```
 
-## Documentation
+### Tech Stack
+- **Framework:** Flutter
+- **State:** Riverpod
+- **Database:** Isar (local-first)
+- **HTTP:** Dio
+- **Navigation:** go_router
 
-- [AI Prompting Guide](AI_PROMPTING_GUIDE.md) - How to use AI to customize this template
-- [Contributing](CONTRIBUTING.md) - How to contribute
-- [Testing](TESTING.md) - Testing guide
+## 📖 Documentation
 
-## Resources
+| Document | Description |
+|----------|-------------|
+| [Product Vision](docs/PRODUCT_VISION.md) | Why we're building this |
+| [User Stories](docs/USER_STORIES.md) | Feature requirements |
+| [Technical Requirements](docs/REQUIREMENTS_TECHNICAL.md) | Implementation details |
+| [MVP Roadmap](docs/ROADMAP_MVP.md) | Development plan |
 
-- [Flutter Documentation](https://docs.flutter.dev/)
-- [Dart Language](https://dart.dev/)
-- [Flutter Packages](https://pub.dev/)
+## 🛣️ Roadmap
 
-## License
+### v1.0 - MVP (In Progress)
+- [x] Project setup
+- [ ] Save articles via share
+- [ ] Content extraction
+- [ ] Offline storage
+- [ ] Reader view
+- [ ] Basic theming
+
+### v1.5 - Organization
+- [ ] Tags
+- [ ] Full-text search
+- [ ] Archive
+- [ ] Export
+
+### v2.0 - Enhanced
+- [ ] Import from Pocket
+- [ ] Favorites
+- [ ] Reader customization
+
+### v3.0 - Sync
+- [ ] P2P device discovery
+- [ ] Conflict-free sync
+- [ ] Multi-device support
+
+## 🤝 Contributing
+
+Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) first.
+
+## 📄 License
 
 MIT License - see [LICENSE](LICENSE)
+
+---
+
+**Made with ❤️ for offline readers everywhere**
