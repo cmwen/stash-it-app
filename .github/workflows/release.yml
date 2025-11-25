@@ -5,14 +5,16 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  contents: write
+
 jobs:
   release:
+    name: Build & Release
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v4
     
     - name: Setup Flutter
       uses: subosito/flutter-action@v2
@@ -27,19 +29,6 @@ jobs:
     - name: Run tests
       run: flutter test
     
-    # ========================================================================
-    # ANDROID SIGNING SETUP
-    # ========================================================================
-    # Required GitHub Secrets:
-    #   ANDROID_KEYSTORE_BASE64   - Base64-encoded .jks/.keystore file
-    #   ANDROID_KEYSTORE_PASSWORD - Password for the keystore
-    #   ANDROID_KEY_ALIAS         - Alias of the signing key
-    #   ANDROID_KEY_PASSWORD      - Password for the signing key
-    #
-    # To generate the base64 keystore:
-    #   base64 -i your-keystore.jks | pbcopy   # macOS
-    #   base64 your-keystore.jks | xclip       # Linux
-    # ========================================================================
     - name: Decode Android keystore
       if: ${{ env.ANDROID_KEYSTORE_BASE64 != '' }}
       env:
@@ -77,26 +66,16 @@ jobs:
         zip -r ../../web-release.zip .
         cd ../..
     
-    - name: Get version
-      id: version
-      run: |
-        if [ "${{ github.ref_type }}" = "tag" ]; then
-          echo "version=${{ github.ref_name }}" >> $GITHUB_OUTPUT
-        else
-          echo "version=v$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_OUTPUT
-        fi
-    
     - name: Publish GitHub Release
+      if: startsWith(github.ref, 'refs/tags/')
       uses: ncipollo/release-action@v1
       with:
-        tag: ${{ steps.version.outputs.version }}
-        name: Release ${{ steps.version.outputs.version }}
+        tag: ${{ github.ref_name }}
         artifacts: |
           build/app/outputs/flutter-apk/app-release.apk
           build/app/outputs/bundle/release/app-release.aab
           web-release.zip
         generateReleaseNotes: true
-        token: ${{ secrets.GITHUB_TOKEN }}
     
     - name: Clean up signing files
       if: always()
