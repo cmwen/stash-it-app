@@ -15,8 +15,9 @@ void main() {
     // Build our app and trigger a frame.
     await tester.pumpWidget(const ProviderScope(child: StashItApp()));
 
-    // Allow time for async loading
-    await tester.pumpAndSettle();
+    // Allow the first frame + small delay so the app can build without waiting
+    // for asynchronous background work (avoids pumpAndSettle flakiness).
+    await tester.pump(const Duration(milliseconds: 500));
 
     // Verify that the app title is displayed
     expect(find.text('Stash It'), findsOneWidget);
