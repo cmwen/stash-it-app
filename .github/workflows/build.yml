@@ -32,36 +32,6 @@ jobs:
     - name: Run tests
       run: flutter test --coverage
     
-    - name: Build APK
-      run: flutter build apk --release
-    
-    - name: Build App Bundle
-      run: flutter build appbundle --release
-    
-    - name: Build Web
-      run: flutter build web --release
-    
-    - name: Upload APK
-      uses: actions/upload-artifact@v5
-      with:
-        name: android-apk
-        path: build/app/outputs/flutter-apk/app-release.apk
-        retention-days: 7
-    
-    - name: Upload App Bundle
-      uses: actions/upload-artifact@v5
-      with:
-        name: android-bundle
-        path: build/app/outputs/bundle/release/app-release.aab
-        retention-days: 7
-    
-    - name: Upload Web Build
-      uses: actions/upload-artifact@v5
-      with:
-        name: web-build
-        path: build/web
-        retention-days: 7
-    
     - name: Upload Coverage
       uses: codecov/codecov-action@v5
       if: always()
