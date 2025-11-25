@@ -90,7 +90,6 @@ class _ReaderPageState extends ConsumerState<ReaderPage> {
   }
 
   Widget _buildReaderView(BuildContext context, Article article) {
-    final theme = Theme.of(context);
 
     return Scaffold(
       body: CustomScrollView(
