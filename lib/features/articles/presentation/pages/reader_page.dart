@@ -90,7 +90,6 @@ class _ReaderPageState extends ConsumerState<ReaderPage> {
   }
 
   Widget _buildReaderView(BuildContext context, Article article) {
-
     return Scaffold(
       body: CustomScrollView(
         controller: _scrollController,
