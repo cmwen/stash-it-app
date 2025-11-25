@@ -10,7 +10,7 @@ class ArticleCardSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     return Shimmer.fromColors(
       baseColor: isDark ? Colors.grey[800]! : Colors.grey[300]!,
       highlightColor: isDark ? Colors.grey[700]! : Colors.grey[100]!,
@@ -28,7 +28,9 @@ class ArticleCardSkeleton extends StatelessWidget {
                 height: AppSpacing.thumbnailSize,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(AppSpacing.thumbnailRadius),
+                  borderRadius: BorderRadius.circular(
+                    AppSpacing.thumbnailRadius,
+                  ),
                 ),
               ),
               const SizedBox(width: AppSpacing.md),
@@ -42,17 +44,9 @@ class ArticleCardSkeleton extends StatelessWidget {
                       color: Colors.white,
                     ),
                     const SizedBox(height: 8),
-                    Container(
-                      height: 12,
-                      width: 150,
-                      color: Colors.white,
-                    ),
+                    Container(height: 12, width: 150, color: Colors.white),
                     const SizedBox(height: 8),
-                    Container(
-                      height: 12,
-                      width: 100,
-                      color: Colors.white,
-                    ),
+                    Container(height: 12, width: 100, color: Colors.white),
                   ],
                 ),
               ),
@@ -68,10 +62,7 @@ class ArticleCardSkeleton extends StatelessWidget {
 class ArticleListSkeleton extends StatelessWidget {
   final int count;
 
-  const ArticleListSkeleton({
-    super.key,
-    this.count = 5,
-  });
+  const ArticleListSkeleton({super.key, this.count = 5});
 
   @override
   Widget build(BuildContext context) {

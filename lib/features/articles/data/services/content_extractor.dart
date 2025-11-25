@@ -29,31 +29,31 @@ class ContentExtractor {
   /// Extracts the main content from HTML.
   ExtractedContent extract(String html, String url) {
     final document = html_parser.parse(html);
-    
+
     // Extract title
     final title = _extractTitle(document);
-    
+
     // Extract author
     final author = _extractAuthor(document);
-    
+
     // Extract main content
     final content = _extractContent(document);
-    
+
     // Extract excerpt
     final excerpt = _extractExcerpt(document, content);
-    
+
     // Extract featured image
     final imageUrl = _extractImage(document);
-    
+
     // Extract site name
     final siteName = _extractSiteName(document, url);
-    
+
     // Extract publish date
     final publishedAt = _extractPublishDate(document);
-    
+
     // Calculate word count
     final wordCount = _countWords(content);
-    
+
     return ExtractedContent(
       title: title,
       author: author,
@@ -73,26 +73,26 @@ class ContentExtractor {
       final content = ogTitle.attributes['content'];
       if (content != null && content.isNotEmpty) return content;
     }
-    
+
     // Try Twitter title
     final twitterTitle = document.querySelector('meta[name="twitter:title"]');
     if (twitterTitle != null) {
       final content = twitterTitle.attributes['content'];
       if (content != null && content.isNotEmpty) return content;
     }
-    
+
     // Try h1
     final h1 = document.querySelector('h1');
     if (h1 != null && h1.text.trim().isNotEmpty) {
       return h1.text.trim();
     }
-    
+
     // Fall back to title tag
     final titleTag = document.querySelector('title');
     if (titleTag != null) {
       return titleTag.text.trim();
     }
-    
+
     return 'Untitled';
   }
 
@@ -103,14 +103,14 @@ class ContentExtractor {
       final content = metaAuthor.attributes['content'];
       if (content != null && content.isNotEmpty) return content;
     }
-    
+
     // Try Open Graph article:author
     final ogAuthor = document.querySelector('meta[property="article:author"]');
     if (ogAuthor != null) {
       final content = ogAuthor.attributes['content'];
       if (content != null && content.isNotEmpty) return content;
     }
-    
+
     // Try common author class patterns
     final authorPatterns = [
       '.author',
@@ -119,14 +119,14 @@ class ContentExtractor {
       '.post-author',
       '.entry-author',
     ];
-    
+
     for (final pattern in authorPatterns) {
       final element = document.querySelector(pattern);
       if (element != null && element.text.trim().isNotEmpty) {
         return element.text.trim();
       }
     }
-    
+
     return null;
   }
 
@@ -146,11 +146,11 @@ class ContentExtractor {
       '.social-share',
       '.related-posts',
     ];
-    
+
     for (final selector in unwantedSelectors) {
       document.querySelectorAll(selector).forEach((e) => e.remove());
     }
-    
+
     // Try to find article content
     final contentSelectors = [
       'article',
@@ -161,7 +161,7 @@ class ContentExtractor {
       '.content',
       'main',
     ];
-    
+
     for (final selector in contentSelectors) {
       final element = document.querySelector(selector);
       if (element != null) {
@@ -171,39 +171,60 @@ class ContentExtractor {
         }
       }
     }
-    
+
     // Fall back to body
     final body = document.body;
     if (body != null) {
       return _cleanHtml(body);
     }
-    
+
     return '';
   }
 
   String _cleanHtml(Element element) {
     // Clone to avoid modifying original
     final clone = element.clone(true);
-    
+
     // Remove inline scripts and styles
     clone.querySelectorAll('script, style').forEach((e) => e.remove());
-    
+
     // Keep only safe tags
     final safeTagNames = {
-      'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-      'ul', 'ol', 'li',
-      'blockquote', 'pre', 'code',
-      'strong', 'b', 'em', 'i',
-      'a', 'img',
-      'figure', 'figcaption',
-      'br', 'hr',
-      'table', 'thead', 'tbody', 'tr', 'th', 'td',
+      'p',
+      'h1',
+      'h2',
+      'h3',
+      'h4',
+      'h5',
+      'h6',
+      'ul',
+      'ol',
+      'li',
+      'blockquote',
+      'pre',
+      'code',
+      'strong',
+      'b',
+      'em',
+      'i',
+      'a',
+      'img',
+      'figure',
+      'figcaption',
+      'br',
+      'hr',
+      'table',
+      'thead',
+      'tbody',
+      'tr',
+      'th',
+      'td',
     };
-    
+
     // Build cleaned HTML
     final buffer = StringBuffer();
     _processNode(clone, buffer, safeTagNames);
-    
+
     return buffer.toString().trim();
   }
 
@@ -212,10 +233,10 @@ class ContentExtractor {
       buffer.write(node.text);
     } else if (node is Element) {
       final tagName = node.localName?.toLowerCase() ?? '';
-      
+
       if (safeTagNames.contains(tagName)) {
         buffer.write('<$tagName');
-        
+
         // Keep certain attributes
         if (tagName == 'a' && node.attributes.containsKey('href')) {
           buffer.write(' href="${node.attributes['href']}"');
@@ -228,13 +249,13 @@ class ContentExtractor {
             buffer.write(' alt="${node.attributes['alt']}"');
           }
         }
-        
+
         buffer.write('>');
-        
+
         for (final child in node.nodes) {
           _processNode(child, buffer, safeTagNames);
         }
-        
+
         if (!{'br', 'hr', 'img'}.contains(tagName)) {
           buffer.write('</$tagName>');
         }
@@ -254,20 +275,20 @@ class ContentExtractor {
       final desc = metaDesc.attributes['content'];
       if (desc != null && desc.isNotEmpty) return desc;
     }
-    
+
     // Try Open Graph description
     final ogDesc = document.querySelector('meta[property="og:description"]');
     if (ogDesc != null) {
       final desc = ogDesc.attributes['content'];
       if (desc != null && desc.isNotEmpty) return desc;
     }
-    
+
     // Extract from content
     final plainText = _htmlToPlainText(content);
     if (plainText.length > 200) {
       return '${plainText.substring(0, 197)}...';
     }
-    
+
     return plainText.isNotEmpty ? plainText : null;
   }
 
@@ -277,22 +298,27 @@ class ContentExtractor {
     if (ogImage != null) {
       return ogImage.attributes['content'];
     }
-    
+
     // Try Twitter image
     final twitterImage = document.querySelector('meta[name="twitter:image"]');
     if (twitterImage != null) {
       return twitterImage.attributes['content'];
     }
-    
+
     // Try first significant image in article
-    final images = document.querySelectorAll('article img, .content img, main img');
+    final images = document.querySelectorAll(
+      'article img, .content img, main img',
+    );
     for (final img in images) {
       final src = img.attributes['src'];
-      if (src != null && src.isNotEmpty && !src.contains('avatar') && !src.contains('icon')) {
+      if (src != null &&
+          src.isNotEmpty &&
+          !src.contains('avatar') &&
+          !src.contains('icon')) {
         return src;
       }
     }
-    
+
     return null;
   }
 
@@ -303,7 +329,7 @@ class ContentExtractor {
       final name = ogSiteName.attributes['content'];
       if (name != null && name.isNotEmpty) return name;
     }
-    
+
     // Extract from URL
     try {
       final uri = Uri.parse(url);
@@ -315,14 +341,16 @@ class ContentExtractor {
 
   DateTime? _extractPublishDate(Document document) {
     // Try article:published_time
-    final published = document.querySelector('meta[property="article:published_time"]');
+    final published = document.querySelector(
+      'meta[property="article:published_time"]',
+    );
     if (published != null) {
       final content = published.attributes['content'];
       if (content != null) {
         return DateTime.tryParse(content);
       }
     }
-    
+
     // Try time element
     final time = document.querySelector('time[datetime]');
     if (time != null) {
@@ -331,7 +359,7 @@ class ContentExtractor {
         return DateTime.tryParse(datetime);
       }
     }
-    
+
     return null;
   }
 

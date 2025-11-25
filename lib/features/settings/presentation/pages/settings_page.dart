@@ -15,31 +15,29 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Settings'),
-      ),
+      appBar: AppBar(title: const Text('Settings')),
       body: ListView(
         children: [
           // Appearance Section
           _buildSectionHeader(context, 'Appearance'),
           _buildThemeTile(context),
-          
+
           const Divider(),
-          
+
           // Reader Section
           _buildSectionHeader(context, 'Reader'),
           _buildFontSizeTile(context),
-          
+
           const Divider(),
-          
+
           // Storage Section
           _buildSectionHeader(context, 'Storage'),
           _buildClearCacheTile(context),
-          
+
           const Divider(),
-          
+
           // About Section
           _buildSectionHeader(context, 'About'),
           _buildAboutTile(context),
@@ -51,7 +49,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
 
   Widget _buildSectionHeader(BuildContext context, String title) {
     final theme = Theme.of(context);
-    
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(
         AppSpacing.md,
@@ -200,9 +198,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
           FilledButton(
             onPressed: () {
               Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Cache cleared')),
-              );
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(const SnackBar(content: Text('Cache cleared')));
             },
             child: const Text('Clear'),
           ),
@@ -244,10 +242,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
           'Save articles from any app and read them offline.',
         ),
         const SizedBox(height: AppSpacing.md),
-        Text(
-          '© 2024 Stash It',
-          style: Theme.of(context).textTheme.bodySmall,
-        ),
+        Text('© 2024 Stash It', style: Theme.of(context).textTheme.bodySmall),
       ],
     );
   }

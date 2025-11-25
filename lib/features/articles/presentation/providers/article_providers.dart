@@ -25,7 +25,10 @@ final articlesProvider = StreamProvider.autoDispose<List<Article>>((ref) {
 });
 
 /// Provider for a single article by ID.
-final articleProvider = FutureProvider.autoDispose.family<Article?, String>((ref, id) async {
+final articleProvider = FutureProvider.autoDispose.family<Article?, String>((
+  ref,
+  id,
+) async {
   final repository = ref.watch(articleRepositoryProvider);
   return repository.getArticle(id);
 });
@@ -117,6 +120,5 @@ class ArticleNotifier extends Notifier<AsyncValue<void>> {
 }
 
 /// Provider for article operations.
-final articleNotifierProvider = NotifierProvider<ArticleNotifier, AsyncValue<void>>(
-  ArticleNotifier.new,
-);
+final articleNotifierProvider =
+    NotifierProvider<ArticleNotifier, AsyncValue<void>>(ArticleNotifier.new);

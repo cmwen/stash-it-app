@@ -21,10 +21,10 @@ class ArticleRepositoryImpl implements ArticleRepository {
     WebFetcher? webFetcher,
     ContentExtractor? contentExtractor,
     Uuid? uuid,
-  })  : _database = database,
-        _webFetcher = webFetcher ?? WebFetcher(),
-        _contentExtractor = contentExtractor ?? ContentExtractor(),
-        _uuid = uuid ?? const Uuid();
+  }) : _database = database,
+       _webFetcher = webFetcher ?? WebFetcher(),
+       _contentExtractor = contentExtractor ?? ContentExtractor(),
+       _uuid = uuid ?? const Uuid();
 
   @override
   Future<Article> saveArticle(String url) async {
@@ -37,7 +37,7 @@ class ArticleRepositoryImpl implements ArticleRepository {
     // Create new article with pending status
     final id = _uuid.v4();
     final now = DateTime.now();
-    
+
     // Extract domain for initial title
     String initialTitle;
     try {
@@ -48,44 +48,48 @@ class ArticleRepositoryImpl implements ArticleRepository {
     }
 
     // Insert pending article
-    await _database.insertArticle(ArticlesTableCompanion(
-      id: Value(id),
-      url: Value(url),
-      title: Value(initialTitle),
-      content: const Value(''),
-      savedAt: Value(now),
-      wordCount: const Value(0),
-      status: const Value('pending'),
-      tags: const Value('[]'),
-    ));
+    await _database.insertArticle(
+      ArticlesTableCompanion(
+        id: Value(id),
+        url: Value(url),
+        title: Value(initialTitle),
+        content: const Value(''),
+        savedAt: Value(now),
+        wordCount: const Value(0),
+        status: const Value('pending'),
+        tags: const Value('[]'),
+      ),
+    );
 
     // Try to fetch and extract content
     try {
       await _database.updateStatus(id, 'fetching');
-      
+
       final html = await _webFetcher.fetchHtml(url);
       final extracted = _contentExtractor.extract(html, url);
 
-      await _database.updateArticle(ArticlesTableCompanion(
-        id: Value(id),
-        url: Value(url),
-        title: Value(extracted.title),
-        author: Value(extracted.author),
-        excerpt: Value(extracted.excerpt),
-        content: Value(extracted.content),
-        imageUrl: Value(extracted.imageUrl),
-        siteName: Value(extracted.siteName),
-        savedAt: Value(now),
-        publishedAt: Value(extracted.publishedAt),
-        wordCount: Value(extracted.wordCount),
-        isRead: const Value(false),
-        isArchived: const Value(false),
-        isFavorite: const Value(false),
-        tags: const Value('[]'),
-        status: const Value('ready'),
-        scrollPosition: const Value(null),
-        lastSyncedAt: const Value(null),
-      ));
+      await _database.updateArticle(
+        ArticlesTableCompanion(
+          id: Value(id),
+          url: Value(url),
+          title: Value(extracted.title),
+          author: Value(extracted.author),
+          excerpt: Value(extracted.excerpt),
+          content: Value(extracted.content),
+          imageUrl: Value(extracted.imageUrl),
+          siteName: Value(extracted.siteName),
+          savedAt: Value(now),
+          publishedAt: Value(extracted.publishedAt),
+          wordCount: Value(extracted.wordCount),
+          isRead: const Value(false),
+          isArchived: const Value(false),
+          isFavorite: const Value(false),
+          tags: const Value('[]'),
+          status: const Value('ready'),
+          scrollPosition: const Value(null),
+          lastSyncedAt: const Value(null),
+        ),
+      );
     } catch (e) {
       await _database.updateStatus(id, 'failed');
     }
@@ -113,21 +117,21 @@ class ArticleRepositoryImpl implements ArticleRepository {
       descending: descending,
       isArchived: isArchived,
     );
-    
+
     var articles = data.map(_mapToEntity).toList();
-    
+
     // Filter by favorite if specified
     if (isFavorite != null) {
       articles = articles.where((a) => a.isFavorite == isFavorite).toList();
     }
-    
+
     // Filter by tags if specified
     if (tags != null && tags.isNotEmpty) {
-      articles = articles.where((a) => 
-        tags.any((tag) => a.tags.contains(tag))
-      ).toList();
+      articles = articles
+          .where((a) => tags.any((tag) => a.tags.contains(tag)))
+          .toList();
     }
-    
+
     return articles;
   }
 
@@ -202,26 +206,28 @@ class ArticleRepositoryImpl implements ArticleRepository {
       final html = await _webFetcher.fetchHtml(article.url);
       final extracted = _contentExtractor.extract(html, article.url);
 
-      await _database.updateArticle(ArticlesTableCompanion(
-        id: Value(article.id),
-        url: Value(article.url),
-        title: Value(extracted.title),
-        author: Value(extracted.author),
-        excerpt: Value(extracted.excerpt),
-        content: Value(extracted.content),
-        imageUrl: Value(extracted.imageUrl),
-        siteName: Value(extracted.siteName),
-        savedAt: Value(article.savedAt),
-        publishedAt: Value(extracted.publishedAt),
-        wordCount: Value(extracted.wordCount),
-        isRead: Value(article.isRead),
-        isArchived: Value(article.isArchived),
-        isFavorite: Value(article.isFavorite),
-        tags: Value(article.tags),
-        status: const Value('ready'),
-        scrollPosition: Value(article.scrollPosition),
-        lastSyncedAt: Value(article.lastSyncedAt),
-      ));
+      await _database.updateArticle(
+        ArticlesTableCompanion(
+          id: Value(article.id),
+          url: Value(article.url),
+          title: Value(extracted.title),
+          author: Value(extracted.author),
+          excerpt: Value(extracted.excerpt),
+          content: Value(extracted.content),
+          imageUrl: Value(extracted.imageUrl),
+          siteName: Value(extracted.siteName),
+          savedAt: Value(article.savedAt),
+          publishedAt: Value(extracted.publishedAt),
+          wordCount: Value(extracted.wordCount),
+          isRead: Value(article.isRead),
+          isArchived: Value(article.isArchived),
+          isFavorite: Value(article.isFavorite),
+          tags: Value(article.tags),
+          status: const Value('ready'),
+          scrollPosition: Value(article.scrollPosition),
+          lastSyncedAt: Value(article.lastSyncedAt),
+        ),
+      );
     } catch (e) {
       await _database.updateStatus(id, 'failed');
       rethrow;

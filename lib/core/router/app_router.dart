@@ -28,9 +28,7 @@ final router = GoRouter(
     ),
   ],
   errorBuilder: (context, state) => Scaffold(
-    appBar: AppBar(
-      title: const Text('Page Not Found'),
-    ),
+    appBar: AppBar(title: const Text('Page Not Found')),
     body: Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

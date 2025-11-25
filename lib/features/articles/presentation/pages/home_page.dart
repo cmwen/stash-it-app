@@ -14,7 +14,7 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final articlesAsync = ref.watch(articlesProvider);
-    
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Stash It'),
@@ -32,12 +32,13 @@ class HomePage extends ConsumerWidget {
             return EmptyState(
               icon: Icons.bookmark_border,
               title: 'No articles yet',
-              description: 'Save articles from any app using the share button, or tap the button below to add a URL.',
+              description:
+                  'Save articles from any app using the share button, or tap the button below to add a URL.',
               actionLabel: 'Save Your First Article',
               onAction: () => _showAddUrlSheet(context, ref),
             );
           }
-          
+
           return RefreshIndicator(
             onRefresh: () async {
               ref.invalidate(articlesProvider);
@@ -97,7 +98,7 @@ class HomePage extends ConsumerWidget {
       onSave: (url) async {
         final notifier = ref.read(articleNotifierProvider.notifier);
         final article = await notifier.saveArticle(url);
-        
+
         if (context.mounted) {
           if (article != null) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -141,7 +142,7 @@ class HomePage extends ConsumerWidget {
 
   void _deleteArticle(BuildContext context, WidgetRef ref, String id) {
     final notifier = ref.read(articleNotifierProvider.notifier);
-    
+
     // Show undo snackbar
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -162,7 +163,7 @@ class HomePage extends ConsumerWidget {
         duration: AppDurations.undoWindow,
       ),
     );
-    
+
     notifier.deleteArticle(id);
   }
 }

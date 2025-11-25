@@ -6,12 +6,8 @@ import 'core/theme/theme.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  runApp(
-    const ProviderScope(
-      child: StashItApp(),
-    ),
-  );
+
+  runApp(const ProviderScope(child: StashItApp()));
 }
 
 /// The root widget of the Stash It application.

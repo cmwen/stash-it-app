@@ -22,7 +22,7 @@ class ArticleCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isRead = article.isRead;
-    
+
     return Dismissible(
       key: Key(article.id),
       direction: DismissDirection.endToStart,
@@ -69,10 +69,7 @@ class ArticleCard extends StatelessWidget {
       ),
       alignment: Alignment.centerRight,
       padding: const EdgeInsets.only(right: AppSpacing.lg),
-      child: const Icon(
-        Icons.delete,
-        color: AppColors.deleteIcon,
-      ),
+      child: const Icon(Icons.delete, color: AppColors.deleteIcon),
     );
   }
 
@@ -82,7 +79,7 @@ class ArticleCard extends StatelessWidget {
 
   Widget _buildThumbnail(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     if (article.status == ArticleStatus.fetching) {
       return Container(
         width: AppSpacing.thumbnailSize,
@@ -103,7 +100,7 @@ class ArticleCard extends StatelessWidget {
         ),
       );
     }
-    
+
     if (article.status == ArticleStatus.failed) {
       return Container(
         width: AppSpacing.thumbnailSize,
@@ -112,13 +109,10 @@ class ArticleCard extends StatelessWidget {
           color: theme.colorScheme.errorContainer,
           borderRadius: BorderRadius.circular(AppSpacing.thumbnailRadius),
         ),
-        child: Icon(
-          Icons.error_outline,
-          color: theme.colorScheme.error,
-        ),
+        child: Icon(Icons.error_outline, color: theme.colorScheme.error),
       );
     }
-    
+
     if (article.imageUrl != null && article.imageUrl!.isNotEmpty) {
       return ClipRRect(
         borderRadius: BorderRadius.circular(AppSpacing.thumbnailRadius),
@@ -131,10 +125,7 @@ class ArticleCard extends StatelessWidget {
             width: AppSpacing.thumbnailSize,
             height: AppSpacing.thumbnailSize,
             color: theme.colorScheme.surfaceContainerHighest,
-            child: Icon(
-              Icons.image,
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
+            child: Icon(Icons.image, color: theme.colorScheme.onSurfaceVariant),
           ),
           errorWidget: (context, url, error) => Container(
             width: AppSpacing.thumbnailSize,
@@ -151,7 +142,7 @@ class ArticleCard extends StatelessWidget {
         ),
       );
     }
-    
+
     return Container(
       width: AppSpacing.thumbnailSize,
       height: AppSpacing.thumbnailSize,
@@ -159,16 +150,13 @@ class ArticleCard extends StatelessWidget {
         color: theme.colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(AppSpacing.thumbnailRadius),
       ),
-      child: Icon(
-        Icons.article,
-        color: theme.colorScheme.onSurfaceVariant,
-      ),
+      child: Icon(Icons.article, color: theme.colorScheme.onSurfaceVariant),
     );
   }
 
   Widget _buildContent(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -205,7 +193,7 @@ class ArticleCard extends StatelessWidget {
 
   String _buildMetaText() {
     final parts = <String>[];
-    
+
     if (article.siteName != null && article.siteName!.isNotEmpty) {
       parts.add(article.siteName!);
     } else {
@@ -214,7 +202,7 @@ class ArticleCard extends StatelessWidget {
         parts.add(uri.host.replaceFirst('www.', ''));
       } catch (_) {}
     }
-    
+
     if (article.status == ArticleStatus.ready && article.wordCount > 0) {
       parts.add('${article.readingTimeMinutes} min read');
     } else if (article.status == ArticleStatus.fetching) {
@@ -224,7 +212,7 @@ class ArticleCard extends StatelessWidget {
     } else if (article.status == ArticleStatus.pending) {
       parts.add('Pending');
     }
-    
+
     return parts.join(' • ');
   }
 

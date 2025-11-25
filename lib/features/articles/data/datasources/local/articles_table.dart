@@ -19,7 +19,8 @@ class ArticlesTable extends Table {
   BoolColumn get isRead => boolean().withDefault(const Constant(false))();
   BoolColumn get isArchived => boolean().withDefault(const Constant(false))();
   BoolColumn get isFavorite => boolean().withDefault(const Constant(false))();
-  TextColumn get tags => text().withDefault(const Constant('[]'))(); // JSON array
+  TextColumn get tags =>
+      text().withDefault(const Constant('[]'))(); // JSON array
   TextColumn get status => text().withDefault(const Constant('pending'))();
   RealColumn get scrollPosition => real().nullable()();
   DateTimeColumn get lastSyncedAt => dateTime().nullable()();

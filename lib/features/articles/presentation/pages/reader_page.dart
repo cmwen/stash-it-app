@@ -13,10 +13,7 @@ import '../providers/providers.dart';
 class ReaderPage extends ConsumerStatefulWidget {
   final String articleId;
 
-  const ReaderPage({
-    super.key,
-    required this.articleId,
-  });
+  const ReaderPage({super.key, required this.articleId});
 
   @override
   ConsumerState<ReaderPage> createState() => _ReaderPageState();
@@ -42,7 +39,7 @@ class _ReaderPageState extends ConsumerState<ReaderPage> {
     if (!_hasMarkedAsRead && _scrollController.hasClients) {
       final position = _scrollController.position;
       final progress = position.pixels / position.maxScrollExtent;
-      
+
       // Mark as read when scrolled 50% or reached the bottom
       if (progress > 0.5 || position.pixels >= position.maxScrollExtent - 100) {
         _hasMarkedAsRead = true;
@@ -54,25 +51,21 @@ class _ReaderPageState extends ConsumerState<ReaderPage> {
   @override
   Widget build(BuildContext context) {
     final articleAsync = ref.watch(articleProvider(widget.articleId));
-    
+
     return articleAsync.when(
       data: (article) {
         if (article == null) {
           return Scaffold(
             appBar: AppBar(),
-            body: const Center(
-              child: Text('Article not found'),
-            ),
+            body: const Center(child: Text('Article not found')),
           );
         }
-        
+
         return _buildReaderView(context, article);
       },
       loading: () => Scaffold(
         appBar: AppBar(),
-        body: const Center(
-          child: CircularProgressIndicator(),
-        ),
+        body: const Center(child: CircularProgressIndicator()),
       ),
       error: (error, stack) => Scaffold(
         appBar: AppBar(),
@@ -85,7 +78,8 @@ class _ReaderPageState extends ConsumerState<ReaderPage> {
               Text('Error loading article: $error'),
               const SizedBox(height: AppSpacing.md),
               FilledButton(
-                onPressed: () => ref.invalidate(articleProvider(widget.articleId)),
+                onPressed: () =>
+                    ref.invalidate(articleProvider(widget.articleId)),
                 child: const Text('Retry'),
               ),
             ],
@@ -97,7 +91,7 @@ class _ReaderPageState extends ConsumerState<ReaderPage> {
 
   Widget _buildReaderView(BuildContext context, Article article) {
     final theme = Theme.of(context);
-    
+
     return Scaffold(
       body: CustomScrollView(
         controller: _scrollController,
@@ -119,8 +113,14 @@ class _ReaderPageState extends ConsumerState<ReaderPage> {
                   PopupMenuItem(
                     value: 'read_status',
                     child: ListTile(
-                      leading: Icon(article.isRead ? Icons.mark_email_unread : Icons.mark_email_read),
-                      title: Text(article.isRead ? 'Mark as unread' : 'Mark as read'),
+                      leading: Icon(
+                        article.isRead
+                            ? Icons.mark_email_unread
+                            : Icons.mark_email_read,
+                      ),
+                      title: Text(
+                        article.isRead ? 'Mark as unread' : 'Mark as read',
+                      ),
                       contentPadding: EdgeInsets.zero,
                     ),
                   ),
@@ -129,7 +129,10 @@ class _ReaderPageState extends ConsumerState<ReaderPage> {
                     value: 'delete',
                     child: ListTile(
                       leading: Icon(Icons.delete, color: AppColors.error),
-                      title: Text('Delete', style: TextStyle(color: AppColors.error)),
+                      title: Text(
+                        'Delete',
+                        style: TextStyle(color: AppColors.error),
+                      ),
                       contentPadding: EdgeInsets.zero,
                     ),
                   ),
@@ -137,9 +140,7 @@ class _ReaderPageState extends ConsumerState<ReaderPage> {
               ),
             ],
           ),
-          SliverToBoxAdapter(
-            child: _buildArticleContent(context, article),
-          ),
+          SliverToBoxAdapter(child: _buildArticleContent(context, article)),
         ],
       ),
     );
@@ -151,7 +152,7 @@ class _ReaderPageState extends ConsumerState<ReaderPage> {
     final horizontalPadding = screenWidth > AppSpacing.readerMaxWidth
         ? (screenWidth - AppSpacing.readerMaxWidth) / 2
         : AppSpacing.readerHorizontalPadding;
-    
+
     // Handle failed or pending articles
     if (article.status == ArticleStatus.failed) {
       return Padding(
@@ -209,7 +210,8 @@ class _ReaderPageState extends ConsumerState<ReaderPage> {
                       const SizedBox(width: AppSpacing.md),
                       FilledButton.icon(
                         onPressed: () {
-                          ref.read(articleNotifierProvider.notifier)
+                          ref
+                              .read(articleNotifierProvider.notifier)
                               .retryFetch(article.id);
                         },
                         icon: const Icon(Icons.refresh),
@@ -224,8 +226,9 @@ class _ReaderPageState extends ConsumerState<ReaderPage> {
         ),
       );
     }
-    
-    if (article.status == ArticleStatus.fetching || article.status == ArticleStatus.pending) {
+
+    if (article.status == ArticleStatus.fetching ||
+        article.status == ArticleStatus.pending) {
       return Padding(
         padding: EdgeInsets.symmetric(
           horizontal: horizontalPadding,
@@ -254,7 +257,7 @@ class _ReaderPageState extends ConsumerState<ReaderPage> {
         ),
       );
     }
-    
+
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: horizontalPadding,
@@ -272,15 +275,15 @@ class _ReaderPageState extends ConsumerState<ReaderPage> {
             ),
           ),
           const SizedBox(height: AppSpacing.md),
-          
+
           // Meta info
           _buildMetaInfo(context, article),
           const SizedBox(height: AppSpacing.md),
-          
+
           // Divider
           Divider(color: theme.colorScheme.outlineVariant),
           const SizedBox(height: AppSpacing.md),
-          
+
           // Content
           Html(
             data: article.content,
@@ -292,9 +295,7 @@ class _ReaderPageState extends ConsumerState<ReaderPage> {
                 margin: Margins.zero,
                 padding: HtmlPaddings.zero,
               ),
-              'p': Style(
-                margin: Margins.only(bottom: 16),
-              ),
+              'p': Style(margin: Margins.only(bottom: 16)),
               'h1': Style(
                 fontSize: FontSize(28),
                 fontWeight: FontWeight.bold,
@@ -312,10 +313,7 @@ class _ReaderPageState extends ConsumerState<ReaderPage> {
               ),
               'blockquote': Style(
                 border: Border(
-                  left: BorderSide(
-                    color: theme.colorScheme.primary,
-                    width: 4,
-                  ),
+                  left: BorderSide(color: theme.colorScheme.primary, width: 4),
                 ),
                 padding: HtmlPaddings.only(left: 16),
                 margin: Margins.symmetric(vertical: 16),
@@ -330,12 +328,8 @@ class _ReaderPageState extends ConsumerState<ReaderPage> {
                 fontFamily: 'monospace',
                 fontSize: FontSize(14),
               ),
-              'a': Style(
-                color: theme.colorScheme.primary,
-              ),
-              'img': Style(
-                margin: Margins.symmetric(vertical: 16),
-              ),
+              'a': Style(color: theme.colorScheme.primary),
+              'img': Style(margin: Margins.symmetric(vertical: 16)),
             },
             onLinkTap: (url, attributes, element) {
               if (url != null) {
@@ -343,7 +337,7 @@ class _ReaderPageState extends ConsumerState<ReaderPage> {
               }
             },
           ),
-          
+
           // Bottom padding
           const SizedBox(height: AppSpacing.xxl),
         ],
@@ -354,15 +348,15 @@ class _ReaderPageState extends ConsumerState<ReaderPage> {
   Widget _buildMetaInfo(BuildContext context, Article article) {
     final theme = Theme.of(context);
     final parts = <String>[];
-    
+
     if (article.siteName != null && article.siteName!.isNotEmpty) {
       parts.add(article.siteName!);
     }
-    
+
     if (article.author != null && article.author!.isNotEmpty) {
       parts.add(article.author!);
     }
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -386,17 +380,17 @@ class _ReaderPageState extends ConsumerState<ReaderPage> {
 
   String _buildDateAndReadingTime(Article article) {
     final parts = <String>[];
-    
+
     if (article.publishedAt != null) {
       parts.add(DateFormat.yMMMd().format(article.publishedAt!));
     } else {
       parts.add(DateFormat.yMMMd().format(article.savedAt));
     }
-    
+
     if (article.wordCount > 0) {
       parts.add('${article.readingTimeMinutes} min read');
     }
-    
+
     return parts.join(' • ');
   }
 
@@ -416,9 +410,9 @@ class _ReaderPageState extends ConsumerState<ReaderPage> {
       case 'delete':
         ref.read(articleNotifierProvider.notifier).deleteArticle(article.id);
         context.pop();
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Article deleted')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Article deleted')));
         break;
     }
   }

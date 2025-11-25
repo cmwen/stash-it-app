@@ -14,11 +14,7 @@ import 'package:stash_it/main.dart';
 void main() {
   testWidgets('App renders smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(
-      const ProviderScope(
-        child: StashItApp(),
-      ),
-    );
+    await tester.pumpWidget(const ProviderScope(child: StashItApp()));
 
     // Allow time for async loading
     await tester.pumpAndSettle();

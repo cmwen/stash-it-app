@@ -5,8 +5,10 @@ class WebFetcher {
   final Dio _dio;
 
   WebFetcher({Dio? dio})
-      : _dio = dio ??
-            Dio(BaseOptions(
+    : _dio =
+          dio ??
+          Dio(
+            BaseOptions(
               connectTimeout: const Duration(seconds: 10),
               receiveTimeout: const Duration(seconds: 30),
               headers: {
@@ -15,7 +17,8 @@ class WebFetcher {
                 'Accept':
                     'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
               },
-            ));
+            ),
+          );
 
   /// Fetches HTML content from a URL.
   Future<String> fetchHtml(String url) async {
@@ -53,7 +56,9 @@ class WebFetcher {
         return response.data!;
       }
 
-      throw FetchException('Failed to fetch image: HTTP ${response.statusCode}');
+      throw FetchException(
+        'Failed to fetch image: HTTP ${response.statusCode}',
+      );
     } on DioException catch (e) {
       throw FetchException(e.message ?? 'Failed to fetch image');
     }

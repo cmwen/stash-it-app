@@ -7,10 +7,7 @@ import '../../../../core/theme/theme.dart';
 class AddUrlSheet extends StatefulWidget {
   final Function(String url) onSave;
 
-  const AddUrlSheet({
-    super.key,
-    required this.onSave,
-  });
+  const AddUrlSheet({super.key, required this.onSave});
 
   @override
   State<AddUrlSheet> createState() => _AddUrlSheetState();
@@ -62,7 +59,9 @@ class _AddUrlSheetState extends State<AddUrlSheet> {
     final valid = _isValidUrl(value);
     setState(() {
       _isValid = valid;
-      _errorText = value.isEmpty ? null : (valid ? null : 'Please enter a valid URL');
+      _errorText = value.isEmpty
+          ? null
+          : (valid ? null : 'Please enter a valid URL');
     });
   }
 
@@ -78,7 +77,7 @@ class _AddUrlSheetState extends State<AddUrlSheet> {
 
   void _handleSave() {
     if (!_isValid || _isSaving) return;
-    
+
     setState(() => _isSaving = true);
     widget.onSave(_controller.text.trim());
     Navigator.of(context).pop();
@@ -88,7 +87,7 @@ class _AddUrlSheetState extends State<AddUrlSheet> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final bottomPadding = MediaQuery.of(context).viewInsets.bottom;
-    
+
     return Padding(
       padding: EdgeInsets.only(
         left: AppSpacing.md,
@@ -106,13 +105,15 @@ class _AddUrlSheetState extends State<AddUrlSheet> {
               width: 32,
               height: 4,
               decoration: BoxDecoration(
-                color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
+                color: theme.colorScheme.onSurfaceVariant.withValues(
+                  alpha: 0.4,
+                ),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
           ),
           const SizedBox(height: AppSpacing.md),
-          
+
           // Title
           Text(
             'Add Article',
@@ -121,7 +122,7 @@ class _AddUrlSheetState extends State<AddUrlSheet> {
             ),
           ),
           const SizedBox(height: AppSpacing.md),
-          
+
           // URL input
           TextField(
             controller: _controller,
@@ -158,13 +159,15 @@ class _AddUrlSheetState extends State<AddUrlSheet> {
             onSubmitted: (_) => _handleSave(),
           ),
           const SizedBox(height: AppSpacing.lg),
-          
+
           // Action buttons
           Row(
             children: [
               Expanded(
                 child: OutlinedButton(
-                  onPressed: _isSaving ? null : () => Navigator.of(context).pop(),
+                  onPressed: _isSaving
+                      ? null
+                      : () => Navigator.of(context).pop(),
                   child: const Text('Cancel'),
                 ),
               ),

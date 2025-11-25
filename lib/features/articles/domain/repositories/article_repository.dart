@@ -1,12 +1,7 @@
 import '../entities/article.dart';
 
 /// Sort order for article lists.
-enum SortOrder {
-  savedAtDesc,
-  savedAtAsc,
-  titleAsc,
-  titleDesc,
-}
+enum SortOrder { savedAtDesc, savedAtAsc, titleAsc, titleDesc }
 
 /// Repository interface for article operations.
 abstract class ArticleRepository {
