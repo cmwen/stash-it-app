@@ -66,32 +66,25 @@ jobs:
         zip -r ../../web-release.zip .
         cd ../..
     
-    - name: Upload APK artifact
+    - name: Upload release artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: app-release-apk
-        path: build/app/outputs/flutter-apk/app-release.apk
-    
-    - name: Upload App Bundle artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: app-release-aab
-        path: build/app/outputs/bundle/release/app-release.aab
-    
-    - name: Upload Web artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: web-release
-        path: web-release.zip
+        name: release-artifacts
+        path: |
+          build/app/outputs/flutter-apk/*.apk
+          build/app/outputs/bundle/release/*.aab
+          web-release.zip
     
     - name: Publish GitHub Release
       if: startsWith(github.ref, 'refs/tags/')
-      uses: ncipollo/release-action@v1
+      uses: softprops/action-gh-release@v2
       with:
-        tag: ${{ github.ref_name }}
-        artifacts: "build/app/outputs/flutter-apk/app-release.apk,build/app/outputs/bundle/release/app-release.aab,web-release.zip"
-        generateReleaseNotes: true
-        allowUpdates: true
+        name: ${{ github.ref_name }}
+        tag_name: ${{ github.ref_name }}
+        files: |
+          build/app/outputs/flutter-apk/*.apk
+          build/app/outputs/bundle/release/*.aab
+          web-release.zip
     
     - name: Clean up signing files
       if: always()
