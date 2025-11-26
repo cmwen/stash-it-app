@@ -221,9 +221,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
 
   Future<void> _showAboutDialog(BuildContext context) async {
     final packageInfo = await PackageInfo.fromPlatform();
-    
+
     if (!context.mounted) return;
-    
+
     showAboutDialog(
       context: context,
       applicationName: 'Stash It',
