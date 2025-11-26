@@ -10,12 +10,18 @@ class ArticleCard extends StatelessWidget {
   final Article article;
   final VoidCallback onTap;
   final VoidCallback onDelete;
+  final VoidCallback? onArchive;
+  final VoidCallback? onFavorite;
+  final VoidCallback? onTagTap;
 
   const ArticleCard({
     super.key,
     required this.article,
     required this.onTap,
     required this.onDelete,
+    this.onArchive,
+    this.onFavorite,
+    this.onTagTap,
   });
 
   @override
@@ -24,9 +30,17 @@ class ArticleCard extends StatelessWidget {
 
     return Dismissible(
       key: Key(article.id),
-      direction: DismissDirection.endToStart,
-      background: _buildDeleteBackground(context),
-      confirmDismiss: (_) => _confirmDelete(context),
+      background: _buildArchiveBackground(context),
+      secondaryBackground: _buildDeleteBackground(context),
+      confirmDismiss: (direction) async {
+        if (direction == DismissDirection.startToEnd) {
+          // Archive action
+          onArchive?.call();
+          return false; // Don't dismiss, just perform action
+        }
+        // Delete action
+        return _confirmDelete(context);
+      },
       onDismissed: (_) => onDelete(),
       child: Card(
         margin: const EdgeInsets.symmetric(
@@ -35,6 +49,7 @@ class ArticleCard extends StatelessWidget {
         ),
         child: InkWell(
           onTap: onTap,
+          onLongPress: onTagTap,
           borderRadius: BorderRadius.circular(12),
           child: Opacity(
             opacity: isRead ? 0.7 : 1.0,
@@ -46,12 +61,45 @@ class ArticleCard extends StatelessWidget {
                   _buildThumbnail(context),
                   const SizedBox(width: AppSpacing.md),
                   Expanded(child: _buildContent(context)),
-                  if (!isRead) _buildUnreadDot(context),
+                  _buildStatusIndicators(context),
                 ],
               ),
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildArchiveBackground(BuildContext context) {
+    final isArchived = article.isArchived;
+    
+    return Container(
+      margin: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.md,
+        vertical: AppSpacing.xs,
+      ),
+      decoration: BoxDecoration(
+        color: isArchived ? Colors.green.shade100 : Colors.orange.shade100,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      alignment: Alignment.centerLeft,
+      padding: const EdgeInsets.only(left: AppSpacing.lg),
+      child: Row(
+        children: [
+          Icon(
+            isArchived ? Icons.unarchive : Icons.archive,
+            color: isArchived ? Colors.green.shade700 : Colors.orange.shade700,
+          ),
+          const SizedBox(width: 8),
+          Text(
+            isArchived ? 'Unarchive' : 'Archive',
+            style: TextStyle(
+              color: isArchived ? Colors.green.shade700 : Colors.orange.shade700,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -231,6 +279,33 @@ class ArticleCard extends StatelessWidget {
         color: AppColors.unreadDot,
         shape: BoxShape.circle,
       ),
+    );
+  }
+
+  Widget _buildStatusIndicators(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (article.isFavorite)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 4),
+            child: Icon(
+              Icons.star,
+              size: 16,
+              color: Colors.amber.shade600,
+            ),
+          ),
+        if (!article.isRead) _buildUnreadDot(context),
+        if (article.tags.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.only(top: 4),
+            child: Icon(
+              Icons.label,
+              size: 14,
+              color: Theme.of(context).colorScheme.primary.withAlpha(153),
+            ),
+          ),
+      ],
     );
   }
 }

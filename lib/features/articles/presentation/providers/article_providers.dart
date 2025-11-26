@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../data/datasources/local/database.dart';
@@ -18,10 +20,51 @@ final articleRepositoryProvider = Provider<ArticleRepository>((ref) {
   return ArticleRepositoryImpl(database: database);
 });
 
-/// Provider for the list of articles.
+/// Filter state for article list.
+enum ArticleFilter { all, favorites, archived }
+
+/// Provider for current filter selection.
+final articleFilterProvider = StateProvider<ArticleFilter>((ref) {
+  return ArticleFilter.all;
+});
+
+/// Provider for search query.
+final searchQueryProvider = StateProvider<String>((ref) => '');
+
+/// Provider for the list of articles (filtered by current filter).
 final articlesProvider = StreamProvider.autoDispose<List<Article>>((ref) {
   final repository = ref.watch(articleRepositoryProvider);
-  return repository.watchAllArticles(isArchived: false);
+  final filter = ref.watch(articleFilterProvider);
+  
+  switch (filter) {
+    case ArticleFilter.all:
+      return repository.watchAllArticles(isArchived: false);
+    case ArticleFilter.favorites:
+      return repository.watchAllArticles(isArchived: false)
+          .map((articles) => articles.where((a) => a.isFavorite).toList());
+    case ArticleFilter.archived:
+      return repository.watchAllArticles(isArchived: true);
+  }
+});
+
+/// Provider for search results.
+final searchResultsProvider = FutureProvider.autoDispose<List<Article>>((ref) async {
+  final query = ref.watch(searchQueryProvider);
+  if (query.isEmpty) return [];
+  
+  final repository = ref.watch(articleRepositoryProvider);
+  return repository.searchArticles(query);
+});
+
+/// Provider for all unique tags across articles.
+final allTagsProvider = FutureProvider.autoDispose<List<String>>((ref) async {
+  final repository = ref.watch(articleRepositoryProvider);
+  final articles = await repository.getAllArticles();
+  final tags = <String>{};
+  for (final article in articles) {
+    tags.addAll(article.tags);
+  }
+  return tags.toList()..sort();
 });
 
 /// Provider for a single article by ID.
@@ -116,6 +159,60 @@ class ArticleNotifier extends Notifier<AsyncValue<void>> {
     try {
       await _repository.updateScrollPosition(id, position);
     } catch (_) {}
+  }
+
+  /// Add a tag to an article.
+  Future<void> addTag(String id, String tag) async {
+    try {
+      final article = await _repository.getArticle(id);
+      if (article != null && !article.tags.contains(tag)) {
+        final updatedTags = [...article.tags, tag];
+        await _repository.updateArticle(article.copyWith(tags: updatedTags));
+        ref.invalidate(articlesProvider);
+        ref.invalidate(articleProvider(id));
+        ref.invalidate(allTagsProvider);
+      }
+    } catch (_) {}
+  }
+
+  /// Remove a tag from an article.
+  Future<void> removeTag(String id, String tag) async {
+    try {
+      final article = await _repository.getArticle(id);
+      if (article != null && article.tags.contains(tag)) {
+        final updatedTags = article.tags.where((t) => t != tag).toList();
+        await _repository.updateArticle(article.copyWith(tags: updatedTags));
+        ref.invalidate(articlesProvider);
+        ref.invalidate(articleProvider(id));
+        ref.invalidate(allTagsProvider);
+      }
+    } catch (_) {}
+  }
+
+  /// Export all articles to JSON format.
+  Future<String> exportToJson() async {
+    final articles = await _repository.getAllArticles();
+    final data = {
+      'version': '1.5.0',
+      'exportedAt': DateTime.now().toIso8601String(),
+      'articleCount': articles.length,
+      'articles': articles.map((a) => {
+        'id': a.id,
+        'url': a.url,
+        'title': a.title,
+        'author': a.author,
+        'excerpt': a.excerpt,
+        'siteName': a.siteName,
+        'savedAt': a.savedAt.toIso8601String(),
+        'publishedAt': a.publishedAt?.toIso8601String(),
+        'wordCount': a.wordCount,
+        'isRead': a.isRead,
+        'isArchived': a.isArchived,
+        'isFavorite': a.isFavorite,
+        'tags': a.tags,
+      }).toList(),
+    };
+    return const JsonEncoder.withIndent('  ').convert(data);
   }
 }
 

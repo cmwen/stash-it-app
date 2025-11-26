@@ -18,7 +18,7 @@ import BaseLayout from '../layouts/BaseLayout.astro'
     </div>
 
     <div class="card">
-      <h3>Features</h3>
+      <h3>Core Features</h3>
       <ul>
         <li>📥 Save articles from any app or by URL</li>
         <li>📖 Clean, distraction-free reader view</li>
@@ -26,6 +26,18 @@ import BaseLayout from '../layouts/BaseLayout.astro'
         <li>⚡ Fast content extraction and rendering</li>
         <li>🗑️ Swipe to delete with undo support</li>
         <li>⚙️ Customizable settings and preferences</li>
+      </ul>
+    </div>
+
+    <div class="card highlight">
+      <h3>✨ New in v1.5 - Organization!</h3>
+      <ul>
+        <li>🏷️ <strong>Tags</strong> - Organize articles with custom tags</li>
+        <li>🔍 <strong>Full-text Search</strong> - Find articles instantly</li>
+        <li>📦 <strong>Archive</strong> - Swipe to archive, keep your list focused</li>
+        <li>⭐ <strong>Favorites</strong> - Quick access to important articles</li>
+        <li>📤 <strong>Export Data</strong> - Export all your data to JSON</li>
+        <li>🎨 <strong>New App Icon</strong> - Fresh new look!</li>
       </ul>
     </div>
 
@@ -60,11 +72,20 @@ flutter run</pre>
     <div class="card">
       <h3>Coming Soon</h3>
       <ul>
-        <li>🏷️ Tags and organization</li>
-        <li>🔍 Full-text search</li>
-        <li>📤 Data export</li>
+        <li>📥 Import from Pocket</li>
+        <li>⚙️ Reader customization</li>
         <li>🔄 P2P device sync (no cloud needed!)</li>
       </ul>
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .card.highlight {
+    border: 2px solid var(--accent);
+    background: rgba(103, 80, 164, 0.1);
+  }
+  .card.highlight h3 {
+    color: var(--accent);
+  }
+</style>

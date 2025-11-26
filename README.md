@@ -18,10 +18,14 @@
 - 🎨 **Beautiful UI** - Material 3 design with light/dark themes
 - ⚡ **Fast & Responsive** - Optimized for smooth scrolling and quick loading
 
+### v1.5 - Organization ✅
+- 🏷️ **Tags** - Organize articles with custom tags
+- 🔍 **Full-text Search** - Find articles instantly by title, content, or source
+- 📦 **Archive** - Swipe to archive, keep your list focused
+- ⭐ **Favorites** - Quick access to your most important articles
+- 📤 **Export Data** - Export all your data to JSON format
+
 ### Coming Soon
-- 🏷️ Tags and organization
-- 🔍 Full-text search
-- 📤 Export your data
 - 🔄 P2P device sync (no cloud needed!)
 
 ## 🎯 Why Stash It?
@@ -137,16 +141,18 @@ lib/
 - [x] Material 3 theming (light/dark)
 - [x] Settings page
 
-### v1.5 - Organization
-- [ ] Tags
-- [ ] Full-text search
-- [ ] Archive
-- [ ] Export
+### v1.5 - Organization ✅
+- [x] Tags - Organize with custom tags
+- [x] Full-text search
+- [x] Archive functionality
+- [x] Favorites support
+- [x] Export to JSON
+- [x] New app icon
 
 ### v2.0 - Enhanced
 - [ ] Import from Pocket
-- [ ] Favorites
 - [ ] Reader customization (font size, themes)
+- [ ] Storage management
 
 ### v3.0 - Sync
 - [ ] P2P device discovery
