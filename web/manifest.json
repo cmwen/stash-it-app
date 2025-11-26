@@ -1,6 +1,6 @@
 {
-    "name": "min_flutter_template",
-    "short_name": "min_flutter_template",
+    "name": "Stash It",
+    "short_name": "Stash It",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

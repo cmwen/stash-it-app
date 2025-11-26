@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../../../core/theme/theme.dart';
 
@@ -218,11 +219,15 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     );
   }
 
-  void _showAboutDialog(BuildContext context) {
+  Future<void> _showAboutDialog(BuildContext context) async {
+    final packageInfo = await PackageInfo.fromPlatform();
+    
+    if (!context.mounted) return;
+    
     showAboutDialog(
       context: context,
       applicationName: 'Stash It',
-      applicationVersion: '1.0.0',
+      applicationVersion: packageInfo.version,
       applicationIcon: Container(
         width: 64,
         height: 64,
@@ -243,16 +248,22 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
           'Save articles from any app and read them offline.',
         ),
         const SizedBox(height: AppSpacing.md),
-        Text('© 2024 Stash It', style: Theme.of(context).textTheme.bodySmall),
+        Text('© 2025 Stash It', style: Theme.of(context).textTheme.bodySmall),
       ],
     );
   }
 
   Widget _buildVersionTile(BuildContext context) {
-    return ListTile(
-      leading: const Icon(Icons.verified_outlined),
-      title: const Text('Version'),
-      subtitle: const Text('1.0.0'),
+    return FutureBuilder<PackageInfo>(
+      future: PackageInfo.fromPlatform(),
+      builder: (context, snapshot) {
+        final version = snapshot.data?.version ?? '1.0.0';
+        return ListTile(
+          leading: const Icon(Icons.verified_outlined),
+          title: const Text('Version'),
+          subtitle: Text(version),
+        );
+      },
     );
   }
 }

@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.cmwen" "\0"
-            VALUE "FileDescription", "min_flutter_template" "\0"
+            VALUE "FileDescription", "Stash It" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "min_flutter_template" "\0"
+            VALUE "InternalName", "stash_it" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2025 com.cmwen. All rights reserved." "\0"
-            VALUE "OriginalFilename", "min_flutter_template.exe" "\0"
-            VALUE "ProductName", "min_flutter_template" "\0"
+            VALUE "OriginalFilename", "stash_it.exe" "\0"
+            VALUE "ProductName", "Stash It" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
