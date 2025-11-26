@@ -4,7 +4,7 @@ This document provides guidance for AI agents and automated tools working with t
 
 ## Repository Overview
 
-Stash It is a local-first, offline-capable "save it later" app inspired by Pocket. Built with Flutter for cross-platform support, it uses Clean Architecture with Riverpod for state management and Drift (SQLite) for local persistence.
+Stash It is a local-first, offline-capable "save it later" app inspired by Pocket. Built with Flutter for Android, it uses Clean Architecture with Riverpod for state management and Drift (SQLite) for local persistence.
 
 ## Key Technologies
 
@@ -14,7 +14,7 @@ Stash It is a local-first, offline-capable "save it later" app inspired by Pocke
 - **Database**: Drift (SQLite) - local-first persistence
 - **Navigation**: go_router
 - **HTTP**: Dio
-- **Platforms**: Android, iOS, Web, Linux, macOS, Windows
+- **Platform**: Android only
 - **Testing**: flutter_test, mocktail
 - **Linting**: flutter_lints 6.0.0
 
@@ -25,6 +25,7 @@ Stash It is a local-first, offline-capable "save it later" app inspired by Pocke
 │   ├── main.dart               # App entry point with Riverpod & Router
 │   ├── core/
 │   │   ├── router/             # GoRouter configuration
+│   │   ├── sharing/            # Android share intent handling
 │   │   └── theme/              # Material 3 theming (colors, spacing, durations)
 │   ├── features/
 │   │   ├── articles/
@@ -32,16 +33,11 @@ Stash It is a local-first, offline-capable "save it later" app inspired by Pocke
 │   │   │   ├── data/           # Database, services, repository impl
 │   │   │   └── presentation/   # Pages, widgets, providers
 │   │   └── settings/
-│   │       └── presentation/   # Settings page
+│   │       └── presentation/   # Settings page, providers
 │   └── shared/
 │       └── widgets/            # EmptyState, LoadingSkeleton, OfflineBanner
 ├── test/                       # Unit and widget tests
 ├── android/                    # Android platform files
-├── ios/                        # iOS platform files
-├── web/                        # Web platform files
-├── macos/                      # macOS platform files
-├── linux/                      # Linux platform files
-├── windows/                    # Windows platform files
 ├── astro/                      # Documentation website (Astro)
 ├── docs/                       # Product & design documentation
 │   ├── PRODUCT_VISION.md       # Why we're building this
@@ -77,11 +73,13 @@ Stash It is a local-first, offline-capable "save it later" app inspired by Pocke
 
 ### Key Files
 
-- `lib/main.dart` - App entry with ProviderScope and MaterialApp.router
+- `lib/main.dart` - App entry with ProviderScope, MaterialApp.router, and share intent handling
 - `lib/core/theme/app_theme.dart` - Light/dark Material 3 themes
 - `lib/core/router/app_router.dart` - GoRouter with /, /article/:id, /settings
+- `lib/core/sharing/sharing_intent_handler.dart` - Handles URLs shared from other apps
 - `lib/features/articles/data/datasources/local/database.dart` - Drift database
 - `lib/features/articles/presentation/providers/` - Riverpod state management
+- `lib/features/settings/presentation/providers/settings_providers.dart` - Theme & font size settings
 
 ## Flutter Commands
 
@@ -93,13 +91,8 @@ flutter pub get
 # Generate code (Drift database & Riverpod providers)
 dart run build_runner build --delete-conflicting-outputs
 
-# Run app
+# Run app on Android device/emulator
 flutter run
-
-# Run on specific device
-flutter run -d chrome     # Web
-flutter run -d macos      # macOS
-flutter run -d android    # Android
 
 # Watch for changes (continuous code generation)
 dart run build_runner watch --delete-conflicting-outputs
@@ -107,10 +100,17 @@ dart run build_runner watch --delete-conflicting-outputs
 
 ### Build
 ```bash
-flutter build apk           # Android APK
-flutter build appbundle     # Android App Bundle
-flutter build ios           # iOS
-flutter build web           # Web
+# Build debug APK
+flutter build apk --debug
+
+# Build release APK (universal)
+flutter build apk --release
+
+# Build split APKs per ABI (smaller sizes)
+flutter build apk --release --split-per-abi
+
+# Build release App Bundle (for Play Store)
+flutter build appbundle --release
 ```
 
 ### Testing
@@ -137,17 +137,22 @@ Always run `dart run build_runner build --delete-conflicting-outputs` after:
 
 ### build.yml
 - Runs on push to main/develop and PRs
-- Builds APK, App Bundle, and Web
-- Runs tests and uploads coverage
+- Runs tests, analysis, and builds debug APK
+- Uploads test coverage
+
+### build-split-apks.yml
+- Builds split APKs for different CPU architectures (ARM64, ARM32, x86_64)
+- Provides smaller APK sizes for distribution
+- Runs on push to main or manual trigger
 
 ### release.yml
 - Triggered by version tags (v*)
-- Builds signed release artifacts
-- Creates GitHub Release with assets
+- Builds signed release APK and App Bundle
+- Creates GitHub Release with artifacts
 
 ### deploy-website.yml
-- Deploys Astro site to GitHub Pages
-- Triggered on GitHub Release publish
+- Triggered on GitHub Release publish or manual dispatch
+- Builds and deploys the Astro documentation website to GitHub Pages
 
 ## Documentation Resources
 

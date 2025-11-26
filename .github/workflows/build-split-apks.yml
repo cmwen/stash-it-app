@@ -1,0 +1,153 @@
+name: Build Split APKs
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'lib/**'
+      - 'pubspec.yaml'
+      - 'android/**'
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      build_type:
+        description: 'Build type'
+        required: true
+        default: 'release'
+        type: choice
+        options:
+          - debug
+          - release
+
+permissions:
+  contents: read
+
+jobs:
+  build-split-apks:
+    name: Build Split APKs
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+        cache: 'gradle'
+    
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.38.3'
+        channel: 'stable'
+        cache: true
+    
+    - name: Get dependencies
+      run: flutter pub get
+    
+    - name: Decode Android keystore
+      if: github.event_name != 'pull_request'
+      env:
+        ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+      run: |
+        if [ -n "$ANDROID_KEYSTORE_BASE64" ]; then
+          echo "$ANDROID_KEYSTORE_BASE64" | base64 --decode > android/app/release-keystore.jks
+        fi
+    
+    - name: Create key.properties
+      if: github.event_name != 'pull_request'
+      env:
+        ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+        ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+        ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+      run: |
+        if [ -n "$ANDROID_KEYSTORE_PASSWORD" ]; then
+          cat > android/key.properties << EOF
+        storePassword=$ANDROID_KEYSTORE_PASSWORD
+        keyPassword=$ANDROID_KEY_PASSWORD
+        keyAlias=$ANDROID_KEY_ALIAS
+        storeFile=release-keystore.jks
+        EOF
+        fi
+    
+    # Build split APKs per ABI for smaller download sizes
+    - name: Build APK for ARM64
+      run: flutter build apk --release --target-platform android-arm64 --split-per-abi
+    
+    - name: Build APK for ARM32
+      run: flutter build apk --release --target-platform android-arm --split-per-abi
+    
+    - name: Build APK for x86_64
+      run: flutter build apk --release --target-platform android-x64 --split-per-abi
+    
+    # Also build a fat/universal APK for compatibility
+    - name: Build Universal APK
+      run: flutter build apk --release
+    
+    - name: List built APKs
+      run: |
+        echo "=== Split APKs ==="
+        find build/app/outputs/flutter-apk -name "*.apk" -exec ls -lh {} \;
+    
+    - name: Upload ARM64 APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: apk-arm64-v8a
+        path: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+        if-no-files-found: ignore
+    
+    - name: Upload ARM32 APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: apk-armeabi-v7a
+        path: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+        if-no-files-found: ignore
+    
+    - name: Upload x86_64 APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: apk-x86_64
+        path: build/app/outputs/flutter-apk/app-x86_64-release.apk
+        if-no-files-found: ignore
+    
+    - name: Upload Universal APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: apk-universal
+        path: build/app/outputs/flutter-apk/app-release.apk
+    
+    - name: Clean up signing files
+      if: always()
+      run: |
+        rm -f android/app/release-keystore.jks
+        rm -f android/key.properties
+
+  # Summary job to collect APK sizes
+  summary:
+    name: APK Size Summary
+    needs: build-split-apks
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Download all APKs
+      uses: actions/download-artifact@v4
+      with:
+        path: apks
+    
+    - name: Display APK sizes
+      run: |
+        echo "## APK Size Summary" >> $GITHUB_STEP_SUMMARY
+        echo "| APK Type | Size |" >> $GITHUB_STEP_SUMMARY
+        echo "|----------|------|" >> $GITHUB_STEP_SUMMARY
+        for dir in apks/*/; do
+          for apk in "$dir"*.apk; do
+            if [ -f "$apk" ]; then
+              size=$(ls -lh "$apk" | awk '{print $5}')
+              name=$(basename "$apk" .apk)
+              echo "| $name | $size |" >> $GITHUB_STEP_SUMMARY
+            fi
+          done
+        done

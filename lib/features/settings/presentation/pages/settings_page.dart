@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../../../core/theme/theme.dart';
+import '../providers/providers.dart';
 
 /// Settings page for app configuration.
 class SettingsPage extends ConsumerStatefulWidget {
@@ -16,7 +17,8 @@ class SettingsPage extends ConsumerStatefulWidget {
 class _SettingsPageState extends ConsumerState<SettingsPage> {
   @override
   Widget build(BuildContext context) {
-    // Theme obtained where needed via Theme.of(context) in helpers
+    final themeMode = ref.watch(themeModeProvider);
+    final fontSize = ref.watch(fontSizeProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Settings')),
@@ -24,13 +26,13 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
         children: [
           // Appearance Section
           _buildSectionHeader(context, 'Appearance'),
-          _buildThemeTile(context),
+          _buildThemeTile(context, themeMode),
 
           const Divider(),
 
           // Reader Section
           _buildSectionHeader(context, 'Reader'),
-          _buildFontSizeTile(context),
+          _buildFontSizeTile(context, fontSize),
 
           const Divider(),
 
@@ -69,17 +71,32 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     );
   }
 
-  Widget _buildThemeTile(BuildContext context) {
+  Widget _buildThemeTile(BuildContext context, ThemeMode currentMode) {
+    final themeNotifier = ref.read(themeModeProvider.notifier);
+    
+    String themeModeLabel;
+    switch (currentMode) {
+      case ThemeMode.light:
+        themeModeLabel = 'Light';
+        break;
+      case ThemeMode.dark:
+        themeModeLabel = 'Dark';
+        break;
+      case ThemeMode.system:
+        themeModeLabel = 'System default';
+        break;
+    }
+
     return ListTile(
       leading: const Icon(Icons.palette_outlined),
       title: const Text('Theme'),
-      subtitle: const Text('System default'),
+      subtitle: Text(themeModeLabel),
       trailing: const Icon(Icons.chevron_right),
-      onTap: () => _showThemeDialog(context),
+      onTap: () => _showThemeDialog(context, currentMode, themeNotifier),
     );
   }
 
-  void _showThemeDialog(BuildContext context) {
+  void _showThemeDialog(BuildContext context, ThemeMode currentMode, ThemeModeNotifier notifier) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -87,24 +104,39 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            RadioListTile<String>(
-              value: 'system',
-              groupValue: 'system', // TODO: Read from preferences
-              onChanged: (value) => Navigator.pop(context),
+            RadioListTile<ThemeMode>(
+              value: ThemeMode.system,
+              groupValue: currentMode,
+              onChanged: (value) {
+                if (value != null) {
+                  notifier.setThemeMode(value);
+                }
+                Navigator.pop(context);
+              },
               title: const Text('System default'),
               secondary: const Icon(Icons.settings_suggest_outlined),
             ),
-            RadioListTile<String>(
-              value: 'light',
-              groupValue: 'system',
-              onChanged: (value) => Navigator.pop(context),
+            RadioListTile<ThemeMode>(
+              value: ThemeMode.light,
+              groupValue: currentMode,
+              onChanged: (value) {
+                if (value != null) {
+                  notifier.setThemeMode(value);
+                }
+                Navigator.pop(context);
+              },
               title: const Text('Light'),
               secondary: const Icon(Icons.light_mode_outlined),
             ),
-            RadioListTile<String>(
-              value: 'dark',
-              groupValue: 'system',
-              onChanged: (value) => Navigator.pop(context),
+            RadioListTile<ThemeMode>(
+              value: ThemeMode.dark,
+              groupValue: currentMode,
+              onChanged: (value) {
+                if (value != null) {
+                  notifier.setThemeMode(value);
+                }
+                Navigator.pop(context);
+              },
               title: const Text('Dark'),
               secondary: const Icon(Icons.dark_mode_outlined),
             ),
@@ -120,49 +152,38 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     );
   }
 
-  Widget _buildFontSizeTile(BuildContext context) {
+  Widget _buildFontSizeTile(BuildContext context, ReaderFontSize currentSize) {
+    final fontSizeNotifier = ref.read(fontSizeProvider.notifier);
+
     return ListTile(
       leading: const Icon(Icons.text_fields_outlined),
       title: const Text('Font Size'),
-      subtitle: const Text('Medium'),
+      subtitle: Text(currentSize.label),
       trailing: const Icon(Icons.chevron_right),
-      onTap: () => _showFontSizeDialog(context),
+      onTap: () => _showFontSizeDialog(context, currentSize, fontSizeNotifier),
     );
   }
 
-  void _showFontSizeDialog(BuildContext context) {
+  void _showFontSizeDialog(BuildContext context, ReaderFontSize currentSize, FontSizeNotifier notifier) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Reader Font Size'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
-          children: [
-            RadioListTile<String>(
-              value: 'small',
-              groupValue: 'medium', // TODO: Read from preferences
-              onChanged: (value) => Navigator.pop(context),
-              title: const Text('Small'),
-            ),
-            RadioListTile<String>(
-              value: 'medium',
-              groupValue: 'medium',
-              onChanged: (value) => Navigator.pop(context),
-              title: const Text('Medium'),
-            ),
-            RadioListTile<String>(
-              value: 'large',
-              groupValue: 'medium',
-              onChanged: (value) => Navigator.pop(context),
-              title: const Text('Large'),
-            ),
-            RadioListTile<String>(
-              value: 'xlarge',
-              groupValue: 'medium',
-              onChanged: (value) => Navigator.pop(context),
-              title: const Text('Extra Large'),
-            ),
-          ],
+          children: ReaderFontSize.values.map((size) {
+            return RadioListTile<ReaderFontSize>(
+              value: size,
+              groupValue: currentSize,
+              onChanged: (value) {
+                if (value != null) {
+                  notifier.setFontSize(value);
+                }
+                Navigator.pop(context);
+              },
+              title: Text(size.label),
+            );
+          }).toList(),
         ),
         actions: [
           TextButton(

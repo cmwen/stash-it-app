@@ -7,13 +7,26 @@
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:stash_it/features/settings/presentation/providers/providers.dart';
 import 'package:stash_it/main.dart';
 
 void main() {
   testWidgets('App renders smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const ProviderScope(child: StashItApp()));
+    // Set up mock SharedPreferences
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
+
+    // Build our app and trigger a frame with mocked SharedPreferences
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          sharedPreferencesProvider.overrideWithValue(prefs),
+        ],
+        child: const StashItApp(),
+      ),
+    );
 
     // Allow the first frame + small delay so the app can build without waiting
     // for asynchronous background work (avoids pumpAndSettle flakiness).

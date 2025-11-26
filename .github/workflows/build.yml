@@ -2,16 +2,24 @@ name: Flutter Build
 
 on:
   push:
-    branches: [ main, develop, flutter-migration ]
+    branches: [ main, develop ]
   pull_request:
     branches: [ main, develop ]
 
 jobs:
   build:
+    name: Test & Build Android
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v4
+    
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+        cache: 'gradle'
     
     - name: Setup Flutter
       uses: subosito/flutter-action@v2
@@ -31,6 +39,9 @@ jobs:
     
     - name: Run tests
       run: flutter test --coverage
+    
+    - name: Build debug APK
+      run: flutter build apk --debug
     
     - name: Upload Coverage
       uses: codecov/codecov-action@v5

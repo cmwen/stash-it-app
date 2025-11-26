@@ -49,25 +49,78 @@ class ArticleCard extends StatelessWidget {
         ),
         child: InkWell(
           onTap: onTap,
-          onLongPress: onTagTap,
           borderRadius: BorderRadius.circular(12),
           child: Opacity(
             opacity: isRead ? 0.7 : 1.0,
             child: Padding(
               padding: const EdgeInsets.all(AppSpacing.cardPadding),
-              child: Row(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildThumbnail(context),
-                  const SizedBox(width: AppSpacing.md),
-                  Expanded(child: _buildContent(context)),
-                  _buildStatusIndicators(context),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildThumbnail(context),
+                      const SizedBox(width: AppSpacing.md),
+                      Expanded(child: _buildContent(context)),
+                      _buildStatusIndicators(context),
+                    ],
+                  ),
+                  const SizedBox(height: AppSpacing.sm),
+                  _buildActionRow(context),
                 ],
               ),
             ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildActionRow(BuildContext context) {
+    final theme = Theme.of(context);
+    
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        // Tags button
+        IconButton(
+          icon: Icon(
+            article.tags.isNotEmpty ? Icons.label : Icons.label_outline,
+            size: 20,
+            color: article.tags.isNotEmpty 
+                ? theme.colorScheme.primary 
+                : theme.colorScheme.onSurfaceVariant,
+          ),
+          onPressed: onTagTap,
+          tooltip: 'Manage tags',
+          visualDensity: VisualDensity.compact,
+        ),
+        // Favorite button
+        IconButton(
+          icon: Icon(
+            article.isFavorite ? Icons.star : Icons.star_outline,
+            size: 20,
+            color: article.isFavorite 
+                ? Colors.amber.shade600 
+                : theme.colorScheme.onSurfaceVariant,
+          ),
+          onPressed: onFavorite,
+          tooltip: article.isFavorite ? 'Remove from favorites' : 'Add to favorites',
+          visualDensity: VisualDensity.compact,
+        ),
+        // Archive button
+        IconButton(
+          icon: Icon(
+            article.isArchived ? Icons.unarchive_outlined : Icons.archive_outlined,
+            size: 20,
+            color: theme.colorScheme.onSurfaceVariant,
+          ),
+          onPressed: onArchive,
+          tooltip: article.isArchived ? 'Unarchive' : 'Archive',
+          visualDensity: VisualDensity.compact,
+        ),
+      ],
     );
   }
 

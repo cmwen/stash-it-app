@@ -410,12 +410,15 @@ class _HomePageState extends ConsumerState<HomePage> {
   void _deleteArticle(BuildContext context, WidgetRef ref, String id) {
     final notifier = ref.read(articleNotifierProvider.notifier);
 
+    // Clear any existing snackbars to prevent queue buildup
+    ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: const Text('Article deleted'),
         action: SnackBarAction(
           label: 'UNDO',
           onPressed: () {
+            ScaffoldMessenger.of(context).clearSnackBars();
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text('Undo not available'),
@@ -437,6 +440,8 @@ class _HomePageState extends ConsumerState<HomePage> {
 
     notifier.toggleArchive(article.id);
 
+    // Clear any existing snackbars to prevent queue buildup
+    ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(isArchived ? 'Article unarchived' : 'Article archived'),
