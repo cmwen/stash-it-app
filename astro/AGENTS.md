@@ -33,6 +33,28 @@ const REPO_NAME = 'your-repo-name';
   - `npm run build` — create a static site in `astro/dist/`
   - `npm run preview` — preview the built output locally
 
+## Asset & link rules for GitHub Pages / project sites 🔧
+
+When deploying an Astro site as a GitHub Pages *project site* (https://<username>.github.io/<repo>/) the site uses a non-root base path (example: `/stash-it-app`). Agents updating or generating pages/components must ensure all internal links and static asset URLs respect the configured `base` in `astro.config.mjs`.
+
+Key guidance for agents:
+- Use Astro.base inside `.astro` components/layouts to build internal links and asset URLs. Example:
+
+```astro
+---
+const base = Astro.base ?? ''
+---
+<link rel="stylesheet" href={`${base}/src/styles.css`} />
+<a href={`${base}/about`}>About</a>
+```
+
+- Using `Astro.base` ensures both project and user/org sites work. `Astro.base` will be an empty string for root (user/org) sites and will contain the project path like `/stash-it-app` for project sites.
+- Avoid hard-coded leading-slash paths like `/about` or `/src/styles.css` — they point to the repository root on the domain and will break for project sites.
+
+Testing/checking before commit:
+- Run `npm ci` inside `astro/` and `npm run build` to ensure the `base` has been applied and assets resolve in the generated `astro/dist/` build.
+- Preview locally with `npm run preview` and verify paths include the base (e.g. `/stash-it-app/...`).
+
 ## Common tasks for agents
 
 - Add or edit content

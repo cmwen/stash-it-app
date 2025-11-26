@@ -1,5 +1,7 @@
 ---
 const { title } = Astro.props;
+// Ensure links work for project sites (GitHub Pages) where Astro.config base is set
+const base = Astro.base ?? ''
 ---
 <header class="site-title">
   <div class="logo">📚</div>
@@ -7,10 +9,10 @@ const { title } = Astro.props;
     <h1>{title}</h1>
     <p class="lead">Save articles. Read offline. Your data, your control.</p>
     <nav class="nav">
-      <a href="/" class="active">Home</a>
-      <a href="/about">About</a>
-      <a href="/install">Install</a>
-      <a href="/releases">Releases</a>
+      <a href={`${base}/`} class="active">Home</a>
+      <a href={`${base}/about`}>About</a>
+      <a href={`${base}/install`}>Install</a>
+      <a href={`${base}/releases`}>Releases</a>
       <a href="https://github.com/cmwen/stash-it-app" target="_blank" rel="noopener">Repository</a>
     </nav>
   </div>
