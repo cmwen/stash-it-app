@@ -137,13 +137,8 @@ Always run `dart run build_runner build --delete-conflicting-outputs` after:
 
 ### build.yml
 - Runs on push to main/develop and PRs
-- Runs tests, analysis, and builds debug APK
-- Uploads test coverage
-
-### build-split-apks.yml
-- Builds split APKs for different CPU architectures (ARM64, ARM32, x86_64)
-- Provides smaller APK sizes for distribution
-- Runs on push to main or manual trigger
+- Runs tests, analysis, and uploads coverage
+- Does NOT build APK (faster CI)
 
 ### release.yml
 - Triggered by version tags (v*)
