@@ -73,7 +73,7 @@ class ArticleCard extends StatelessWidget {
 
   Widget _buildArchiveBackground(BuildContext context) {
     final isArchived = article.isArchived;
-    
+
     return Container(
       margin: const EdgeInsets.symmetric(
         horizontal: AppSpacing.md,
@@ -95,7 +95,9 @@ class ArticleCard extends StatelessWidget {
           Text(
             isArchived ? 'Unarchive' : 'Archive',
             style: TextStyle(
-              color: isArchived ? Colors.green.shade700 : Colors.orange.shade700,
+              color: isArchived
+                  ? Colors.green.shade700
+                  : Colors.orange.shade700,
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -289,11 +291,7 @@ class ArticleCard extends StatelessWidget {
         if (article.isFavorite)
           Padding(
             padding: const EdgeInsets.only(bottom: 4),
-            child: Icon(
-              Icons.star,
-              size: 16,
-              color: Colors.amber.shade600,
-            ),
+            child: Icon(Icons.star, size: 16, color: Colors.amber.shade600),
           ),
         if (!article.isRead) _buildUnreadDot(context),
         if (article.tags.isNotEmpty)

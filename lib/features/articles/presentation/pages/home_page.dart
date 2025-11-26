@@ -115,8 +115,9 @@ class _HomePageState extends ConsumerState<HomePage> {
                 )
               : null,
           filled: true,
-          fillColor:
-              Theme.of(context).colorScheme.surfaceContainerHighest.withAlpha(128),
+          fillColor: Theme.of(
+            context,
+          ).colorScheme.surfaceContainerHighest.withAlpha(128),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(28),
             borderSide: BorderSide.none,
@@ -181,10 +182,7 @@ class _HomePageState extends ConsumerState<HomePage> {
             ref.invalidate(articlesProvider);
           },
           child: ListView.builder(
-            padding: const EdgeInsets.only(
-              top: AppSpacing.sm,
-              bottom: 88,
-            ),
+            padding: const EdgeInsets.only(top: AppSpacing.sm, bottom: 88),
             itemCount: articles.length,
             itemBuilder: (context, index) {
               final article = articles[index];
@@ -243,8 +241,7 @@ class _HomePageState extends ConsumerState<HomePage> {
         return const EmptyState(
           icon: Icons.archive_outlined,
           title: 'No archived articles',
-          description:
-              'Swipe right on any article to archive it for later.',
+          description: 'Swipe right on any article to archive it for later.',
         );
       case ArticleFilter.all:
         return EmptyState(
@@ -319,10 +316,9 @@ class _HomePageState extends ConsumerState<HomePage> {
                     subtitle: const Text('Send to another app or save'),
                     onTap: () async {
                       Navigator.pop(context);
-                      await Share.shareXFiles(
-                        [XFile(file.path)],
-                        subject: 'Stash It Export',
-                      );
+                      await Share.shareXFiles([
+                        XFile(file.path),
+                      ], subject: 'Stash It Export');
                     },
                   ),
                   ListTile(

@@ -80,15 +80,12 @@ class _ArticleSearchBarState extends ConsumerState<ArticleSearchBar> {
 class SearchResultsView extends ConsumerWidget {
   final Function(String articleId) onArticleTap;
 
-  const SearchResultsView({
-    super.key,
-    required this.onArticleTap,
-  });
+  const SearchResultsView({super.key, required this.onArticleTap});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final query = ref.watch(searchQueryProvider);
-    
+
     if (query.isEmpty) {
       return const SizedBox.shrink();
     }
@@ -128,10 +125,7 @@ class SearchResultsView extends ConsumerWidget {
         }
 
         return ListView.builder(
-          padding: const EdgeInsets.only(
-            top: AppSpacing.sm,
-            bottom: 88,
-          ),
+          padding: const EdgeInsets.only(top: AppSpacing.sm, bottom: 88),
           itemCount: results.length,
           itemBuilder: (context, index) {
             final article = results[index];

@@ -41,10 +41,9 @@ class _TagManagementSheetState extends ConsumerState<TagManagementSheet> {
       setState(() {
         _tags.add(normalizedTag);
       });
-      ref.read(articleNotifierProvider.notifier).addTag(
-        widget.articleId,
-        normalizedTag,
-      );
+      ref
+          .read(articleNotifierProvider.notifier)
+          .addTag(widget.articleId, normalizedTag);
       _controller.clear();
     }
   }
@@ -61,7 +60,9 @@ class _TagManagementSheetState extends ConsumerState<TagManagementSheet> {
     final theme = Theme.of(context);
     final allTagsAsync = ref.watch(allTagsProvider);
     final existingTags = allTagsAsync.valueOrNull ?? [];
-    final suggestedTags = existingTags.where((t) => !_tags.contains(t)).toList();
+    final suggestedTags = existingTags
+        .where((t) => !_tags.contains(t))
+        .toList();
 
     return DraggableScrollableSheet(
       initialChildSize: 0.6,
@@ -221,9 +222,7 @@ void showTagManagementSheet(
     context: context,
     isScrollControlled: true,
     useSafeArea: true,
-    builder: (context) => TagManagementSheet(
-      articleId: articleId,
-      currentTags: currentTags,
-    ),
+    builder: (context) =>
+        TagManagementSheet(articleId: articleId, currentTags: currentTags),
   );
 }

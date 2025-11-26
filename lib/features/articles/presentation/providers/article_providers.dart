@@ -35,12 +35,13 @@ final searchQueryProvider = StateProvider<String>((ref) => '');
 final articlesProvider = StreamProvider.autoDispose<List<Article>>((ref) {
   final repository = ref.watch(articleRepositoryProvider);
   final filter = ref.watch(articleFilterProvider);
-  
+
   switch (filter) {
     case ArticleFilter.all:
       return repository.watchAllArticles(isArchived: false);
     case ArticleFilter.favorites:
-      return repository.watchAllArticles(isArchived: false)
+      return repository
+          .watchAllArticles(isArchived: false)
           .map((articles) => articles.where((a) => a.isFavorite).toList());
     case ArticleFilter.archived:
       return repository.watchAllArticles(isArchived: true);
@@ -48,10 +49,12 @@ final articlesProvider = StreamProvider.autoDispose<List<Article>>((ref) {
 });
 
 /// Provider for search results.
-final searchResultsProvider = FutureProvider.autoDispose<List<Article>>((ref) async {
+final searchResultsProvider = FutureProvider.autoDispose<List<Article>>((
+  ref,
+) async {
   final query = ref.watch(searchQueryProvider);
   if (query.isEmpty) return [];
-  
+
   final repository = ref.watch(articleRepositoryProvider);
   return repository.searchArticles(query);
 });
@@ -196,21 +199,25 @@ class ArticleNotifier extends Notifier<AsyncValue<void>> {
       'version': '1.5.0',
       'exportedAt': DateTime.now().toIso8601String(),
       'articleCount': articles.length,
-      'articles': articles.map((a) => {
-        'id': a.id,
-        'url': a.url,
-        'title': a.title,
-        'author': a.author,
-        'excerpt': a.excerpt,
-        'siteName': a.siteName,
-        'savedAt': a.savedAt.toIso8601String(),
-        'publishedAt': a.publishedAt?.toIso8601String(),
-        'wordCount': a.wordCount,
-        'isRead': a.isRead,
-        'isArchived': a.isArchived,
-        'isFavorite': a.isFavorite,
-        'tags': a.tags,
-      }).toList(),
+      'articles': articles
+          .map(
+            (a) => {
+              'id': a.id,
+              'url': a.url,
+              'title': a.title,
+              'author': a.author,
+              'excerpt': a.excerpt,
+              'siteName': a.siteName,
+              'savedAt': a.savedAt.toIso8601String(),
+              'publishedAt': a.publishedAt?.toIso8601String(),
+              'wordCount': a.wordCount,
+              'isRead': a.isRead,
+              'isArchived': a.isArchived,
+              'isFavorite': a.isFavorite,
+              'tags': a.tags,
+            },
+          )
+          .toList(),
     };
     return const JsonEncoder.withIndent('  ').convert(data);
   }
