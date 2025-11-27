@@ -144,24 +144,27 @@ class _HomePageState extends ConsumerState<HomePage> {
             label: 'All',
             icon: Icons.list,
             isSelected: currentFilter == ArticleFilter.all,
-            onSelected: () => ref.read(articleFilterProvider.notifier).setFilter(
-                ArticleFilter.all),
+            onSelected: () => ref
+                .read(articleFilterProvider.notifier)
+                .setFilter(ArticleFilter.all),
           ),
           const SizedBox(width: AppSpacing.sm),
           _FilterChip(
             label: 'Favorites',
             icon: Icons.star,
             isSelected: currentFilter == ArticleFilter.favorites,
-            onSelected: () => ref.read(articleFilterProvider.notifier).setFilter(
-                ArticleFilter.favorites),
+            onSelected: () => ref
+                .read(articleFilterProvider.notifier)
+                .setFilter(ArticleFilter.favorites),
           ),
           const SizedBox(width: AppSpacing.sm),
           _FilterChip(
             label: 'Archived',
             icon: Icons.archive,
             isSelected: currentFilter == ArticleFilter.archived,
-            onSelected: () => ref.read(articleFilterProvider.notifier).setFilter(
-                ArticleFilter.archived),
+            onSelected: () => ref
+                .read(articleFilterProvider.notifier)
+                .setFilter(ArticleFilter.archived),
           ),
         ],
       ),

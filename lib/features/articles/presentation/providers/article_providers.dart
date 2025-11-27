@@ -24,9 +24,10 @@ final articleRepositoryProvider = Provider<ArticleRepository>((ref) {
 enum ArticleFilter { all, favorites, archived }
 
 /// Provider for current filter selection.
-final articleFilterProvider = NotifierProvider<ArticleFilterNotifier, ArticleFilter>(
-  ArticleFilterNotifier.new,
-);
+final articleFilterProvider =
+    NotifierProvider<ArticleFilterNotifier, ArticleFilter>(
+      ArticleFilterNotifier.new,
+    );
 
 class ArticleFilterNotifier extends Notifier<ArticleFilter> {
   @override
