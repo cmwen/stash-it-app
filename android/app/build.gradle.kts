@@ -39,12 +39,12 @@ android {
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 
     defaultConfig {
@@ -64,7 +64,6 @@ android {
         aidl = false
         renderScript = false
         shaders = false
-        resValues = false
     }
 
     signingConfigs {
@@ -85,9 +84,9 @@ android {
             isShrinkResources = false
         }
         release {
-            // Disable minification to avoid missing class issues
-            isMinifyEnabled = false
-            isShrinkResources = false
+            // Enable R8 code shrinking and resource shrinking for smaller universal APK
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -106,26 +105,17 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
-
-    lint {
-        disable.addAll(listOf(
-            "MissingTranslation",
-            "ExtraTranslation",
-            "MissingDimensionality"
-        ))
-        abortOnError = false
-    }
 }
 
 flutter {
     source = "../.."
 }
 
-// Force JVM 17 for all dependency projects to fix plugin compatibility issues
+// Force JVM 1.8 for all dependency projects to fix plugin compatibility issues
 afterEvaluate {
     tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class).all {
         compilerOptions {
-            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_1_8)
         }
     }
 }
