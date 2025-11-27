@@ -559,7 +559,10 @@ class _TagManagementSheetInReaderState
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final allTagsAsync = ref.watch(allTagsProvider);
-    final existingTags = allTagsAsync.valueOrNull ?? [];
+    final existingTags = switch (allTagsAsync) {
+      AsyncData(:final value) => value,
+      _ => <String>[],
+    };
     final suggestedTags = existingTags
         .where((t) => !_tags.contains(t))
         .toList();

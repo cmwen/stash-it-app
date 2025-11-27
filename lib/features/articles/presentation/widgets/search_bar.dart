@@ -25,12 +25,12 @@ class _ArticleSearchBarState extends ConsumerState<ArticleSearchBar> {
   }
 
   void _onSearchChanged(String query) {
-    ref.read(searchQueryProvider.notifier).state = query;
+    ref.read(searchQueryProvider.notifier).setQuery(query);
   }
 
   void _clearSearch() {
     _controller.clear();
-    ref.read(searchQueryProvider.notifier).state = '';
+    ref.read(searchQueryProvider.notifier).setQuery('');
     setState(() => _isSearching = false);
     _focusNode.unfocus();
   }

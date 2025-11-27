@@ -24,12 +24,33 @@ final articleRepositoryProvider = Provider<ArticleRepository>((ref) {
 enum ArticleFilter { all, favorites, archived }
 
 /// Provider for current filter selection.
-final articleFilterProvider = StateProvider<ArticleFilter>((ref) {
-  return ArticleFilter.all;
-});
+final articleFilterProvider =
+    NotifierProvider<ArticleFilterNotifier, ArticleFilter>(
+      ArticleFilterNotifier.new,
+    );
+
+class ArticleFilterNotifier extends Notifier<ArticleFilter> {
+  @override
+  ArticleFilter build() => ArticleFilter.all;
+
+  void setFilter(ArticleFilter filter) {
+    state = filter;
+  }
+}
 
 /// Provider for search query.
-final searchQueryProvider = StateProvider<String>((ref) => '');
+final searchQueryProvider = NotifierProvider<SearchQueryNotifier, String>(
+  SearchQueryNotifier.new,
+);
+
+class SearchQueryNotifier extends Notifier<String> {
+  @override
+  String build() => '';
+
+  void setQuery(String query) {
+    state = query;
+  }
+}
 
 /// Provider for the list of articles (filtered by current filter).
 final articlesProvider = StreamProvider.autoDispose<List<Article>>((ref) {
