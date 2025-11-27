@@ -39,12 +39,12 @@ android {
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
 
     defaultConfig {
@@ -121,11 +121,11 @@ flutter {
     source = "../.."
 }
 
-// Force JVM 11 for all dependency projects to fix plugin compatibility issues
+// Force JVM 17 for all dependency projects to fix plugin compatibility issues
 afterEvaluate {
     tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class).all {
         compilerOptions {
-            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
         }
     }
 }

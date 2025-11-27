@@ -4,10 +4,10 @@
 
 ### 1. **Java Version Compatibility** (Primary Fix)
 - **Issue**: Project was configured for Java 1.8 (deprecated) while system has Java 17
-- **Fix**: Updated all build files to use Java 11 (supported and compatible)
-  - `android/gradle.properties`: Updated `kotlin.jvm.target=11`
-  - `android/build.gradle.kts`: Updated JVM target to VERSION_11
-  - `android/app/build.gradle.kts`: Updated compileOptions and kotlinOptions to VERSION_11
+- **Fix**: Updated all build files to use Java 17 (modern baseline)
+  - `android/gradle.properties`: Updated `kotlin.jvm.target=17`
+  - `android/build.gradle.kts`: Updated JVM target to VERSION_17
+  - `android/app/build.gradle.kts`: Updated compileOptions and kotlinOptions to VERSION_17
 
 ### 2. **Gradle Configuration Optimization**
 - **Issue**: Build was hanging during Gradle compilation

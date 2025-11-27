@@ -16,19 +16,19 @@ subprojects {
     project.layout.buildDirectory.value(newSubprojectBuildDir)
     
     afterEvaluate {
-        // Force Kotlin JVM target to 11
+        // Force Kotlin JVM target to 17
         tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class).all {
             compilerOptions {
-                jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
+                jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
             }
         }
         
-        // Force Java compatibility to 11 for all Android projects
+        // Force Java compatibility to 17 for all Android projects
         if (plugins.hasPlugin("com.android.application") || plugins.hasPlugin("com.android.library")) {
             extensions.getByType(com.android.build.gradle.BaseExtension::class).apply {
                 compileOptions {
-                    sourceCompatibility = JavaVersion.VERSION_11
-                    targetCompatibility = JavaVersion.VERSION_11
+                    sourceCompatibility = JavaVersion.VERSION_17
+                    targetCompatibility = JavaVersion.VERSION_17
                 }
             }
         }
