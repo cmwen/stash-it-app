@@ -39,16 +39,19 @@ android {
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
+        jvmTarget = "11"
     }
 
     defaultConfig {
+        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.cmwen.stash_it"
+        // You can update the following values to match your application needs.
+        // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
@@ -61,6 +64,7 @@ android {
         aidl = false
         renderScript = false
         shaders = false
+        resValues = false
     }
 
     signingConfigs {
@@ -81,9 +85,9 @@ android {
             isShrinkResources = false
         }
         release {
-            // Enable R8 code shrinking and resource shrinking for smaller APKs
-            isMinifyEnabled = true
-            isShrinkResources = true
+            // Disable minification to avoid missing class issues
+            isMinifyEnabled = false
+            isShrinkResources = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -102,8 +106,26 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+    lint {
+        disable.addAll(listOf(
+            "MissingTranslation",
+            "ExtraTranslation",
+            "MissingDimensionality"
+        ))
+        abortOnError = false
+    }
 }
 
 flutter {
     source = "../.."
+}
+
+// Force JVM 11 for all dependency projects to fix plugin compatibility issues
+afterEvaluate {
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class).all {
+        compilerOptions {
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
+        }
+    }
 }

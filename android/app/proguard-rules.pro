@@ -7,6 +7,9 @@
 -keep class io.flutter.** { *; }
 -keep class io.flutter.plugins.** { *; }
 
+# Keep Play Store related classes (even if not used)
+-keep class com.google.android.play.core.** { *; }
+
 # Keep Drift database classes
 -keep class drift.** { *; }
 -keep class com.cmwen.stash_it.** { *; }
