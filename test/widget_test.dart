@@ -21,9 +21,7 @@ void main() {
     // Build our app and trigger a frame with mocked SharedPreferences
     await tester.pumpWidget(
       ProviderScope(
-        overrides: [
-          sharedPreferencesProvider.overrideWithValue(prefs),
-        ],
+        overrides: [sharedPreferencesProvider.overrideWithValue(prefs)],
         child: const StashItApp(),
       ),
     );

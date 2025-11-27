@@ -73,7 +73,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
 
   Widget _buildThemeTile(BuildContext context, ThemeMode currentMode) {
     final themeNotifier = ref.read(themeModeProvider.notifier);
-    
+
     String themeModeLabel;
     switch (currentMode) {
       case ThemeMode.light:
@@ -96,7 +96,11 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     );
   }
 
-  void _showThemeDialog(BuildContext context, ThemeMode currentMode, ThemeModeNotifier notifier) {
+  void _showThemeDialog(
+    BuildContext context,
+    ThemeMode currentMode,
+    ThemeModeNotifier notifier,
+  ) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -164,7 +168,11 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     );
   }
 
-  void _showFontSizeDialog(BuildContext context, ReaderFontSize currentSize, FontSizeNotifier notifier) {
+  void _showFontSizeDialog(
+    BuildContext context,
+    ReaderFontSize currentSize,
+    FontSizeNotifier notifier,
+  ) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(

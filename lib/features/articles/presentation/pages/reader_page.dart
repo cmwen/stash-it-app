@@ -102,8 +102,8 @@ class _ReaderPageState extends ConsumerState<ReaderPage> {
               IconButton(
                 icon: Icon(
                   article.tags.isNotEmpty ? Icons.label : Icons.label_outline,
-                  color: article.tags.isNotEmpty 
-                      ? Theme.of(context).colorScheme.primary 
+                  color: article.tags.isNotEmpty
+                      ? Theme.of(context).colorScheme.primary
                       : null,
                 ),
                 onPressed: () => _showTagSheet(context, article),
@@ -116,7 +116,9 @@ class _ReaderPageState extends ConsumerState<ReaderPage> {
                   color: article.isFavorite ? Colors.amber.shade600 : null,
                 ),
                 onPressed: () => _toggleFavorite(article.id),
-                tooltip: article.isFavorite ? 'Remove from favorites' : 'Add to favorites',
+                tooltip: article.isFavorite
+                    ? 'Remove from favorites'
+                    : 'Add to favorites',
               ),
               PopupMenuButton<String>(
                 onSelected: (value) => _handleMenuAction(value, article),
@@ -135,9 +137,7 @@ class _ReaderPageState extends ConsumerState<ReaderPage> {
                       leading: Icon(
                         article.isArchived ? Icons.unarchive : Icons.archive,
                       ),
-                      title: Text(
-                        article.isArchived ? 'Unarchive' : 'Archive',
-                      ),
+                      title: Text(article.isArchived ? 'Unarchive' : 'Archive'),
                       contentPadding: EdgeInsets.zero,
                     ),
                   ),
@@ -442,7 +442,9 @@ class _ReaderPageState extends ConsumerState<ReaderPage> {
         ref.read(articleNotifierProvider.notifier).toggleArchive(article.id);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(article.isArchived ? 'Article unarchived' : 'Article archived'),
+            content: Text(
+              article.isArchived ? 'Article unarchived' : 'Article archived',
+            ),
             duration: const Duration(seconds: 3),
           ),
         );
@@ -458,9 +460,12 @@ class _ReaderPageState extends ConsumerState<ReaderPage> {
       case 'delete':
         ref.read(articleNotifierProvider.notifier).deleteArticle(article.id);
         context.pop();
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(const SnackBar(content: Text('Article deleted'), duration: Duration(seconds: 3)));
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Article deleted'),
+            duration: Duration(seconds: 3),
+          ),
+        );
         break;
     }
   }
@@ -509,10 +514,12 @@ class _TagManagementSheetInReader extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<_TagManagementSheetInReader> createState() => _TagManagementSheetInReaderState();
+  ConsumerState<_TagManagementSheetInReader> createState() =>
+      _TagManagementSheetInReaderState();
 }
 
-class _TagManagementSheetInReaderState extends ConsumerState<_TagManagementSheetInReader> {
+class _TagManagementSheetInReaderState
+    extends ConsumerState<_TagManagementSheetInReader> {
   final _controller = TextEditingController();
   late List<String> _tags;
 
@@ -534,7 +541,9 @@ class _TagManagementSheetInReaderState extends ConsumerState<_TagManagementSheet
       setState(() {
         _tags.add(normalizedTag);
       });
-      ref.read(articleNotifierProvider.notifier).addTag(widget.articleId, normalizedTag);
+      ref
+          .read(articleNotifierProvider.notifier)
+          .addTag(widget.articleId, normalizedTag);
       _controller.clear();
     }
   }
@@ -551,7 +560,9 @@ class _TagManagementSheetInReaderState extends ConsumerState<_TagManagementSheet
     final theme = Theme.of(context);
     final allTagsAsync = ref.watch(allTagsProvider);
     final existingTags = allTagsAsync.valueOrNull ?? [];
-    final suggestedTags = existingTags.where((t) => !_tags.contains(t)).toList();
+    final suggestedTags = existingTags
+        .where((t) => !_tags.contains(t))
+        .toList();
 
     return DraggableScrollableSheet(
       initialChildSize: 0.5,
@@ -582,7 +593,9 @@ class _TagManagementSheetInReaderState extends ConsumerState<_TagManagementSheet
               const SizedBox(height: AppSpacing.md),
               Text(
                 'Manage Tags',
-                style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600),
+                style: theme.textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               const SizedBox(height: AppSpacing.md),
               TextField(
@@ -594,7 +607,9 @@ class _TagManagementSheetInReaderState extends ConsumerState<_TagManagementSheet
                     icon: const Icon(Icons.add),
                     onPressed: () => _addTag(_controller.text),
                   ),
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
                 textInputAction: TextInputAction.done,
                 onSubmitted: _addTag,
@@ -603,7 +618,9 @@ class _TagManagementSheetInReaderState extends ConsumerState<_TagManagementSheet
               if (_tags.isNotEmpty) ...[
                 Text(
                   'Current Tags',
-                  style: theme.textTheme.labelLarge?.copyWith(color: theme.colorScheme.primary),
+                  style: theme.textTheme.labelLarge?.copyWith(
+                    color: theme.colorScheme.primary,
+                  ),
                 ),
                 const SizedBox(height: AppSpacing.sm),
                 Wrap(
@@ -615,7 +632,9 @@ class _TagManagementSheetInReaderState extends ConsumerState<_TagManagementSheet
                       onDeleted: () => _removeTag(tag),
                       deleteIcon: const Icon(Icons.close, size: 18),
                       backgroundColor: theme.colorScheme.primaryContainer,
-                      labelStyle: TextStyle(color: theme.colorScheme.onPrimaryContainer),
+                      labelStyle: TextStyle(
+                        color: theme.colorScheme.onPrimaryContainer,
+                      ),
                     );
                   }).toList(),
                 ),
@@ -624,7 +643,9 @@ class _TagManagementSheetInReaderState extends ConsumerState<_TagManagementSheet
               if (suggestedTags.isNotEmpty) ...[
                 Text(
                   'Suggested Tags',
-                  style: theme.textTheme.labelLarge?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+                  style: theme.textTheme.labelLarge?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
                 ),
                 const SizedBox(height: AppSpacing.sm),
                 Expanded(

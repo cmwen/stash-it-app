@@ -20,20 +20,22 @@ void main() async {
   // Generate the main icon SVG
   final iconSvg = generateIconSvg();
   await File('assets/icon/icon.svg').writeAsString(iconSvg);
-  print('✅ Created icon.svg');
+  stdout.writeln('✅ Created icon.svg');
 
   // Generate foreground for adaptive icons
   final foregroundSvg = generateForegroundSvg();
   await File('assets/icon/icon_foreground.svg').writeAsString(foregroundSvg);
-  print('✅ Created icon_foreground.svg');
+  stdout.writeln('✅ Created icon_foreground.svg');
 
   // Generate monochrome version
   final monoSvg = generateMonochromeSvg();
   await File('assets/icon/icon_mono.svg').writeAsString(monoSvg);
-  print('✅ Created icon_mono.svg');
+  stdout.writeln('✅ Created icon_mono.svg');
 
-  print('\n📱 Icons generated! Use flutter_launcher_icons to apply them.');
-  print('Run: flutter pub run flutter_launcher_icons');
+  stdout.writeln(
+    '\n📱 Icons generated! Use flutter_launcher_icons to apply them.',
+  );
+  stdout.writeln('Run: flutter pub run flutter_launcher_icons');
 }
 
 String generateIconSvg() {

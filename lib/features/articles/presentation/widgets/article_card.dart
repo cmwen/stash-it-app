@@ -79,7 +79,7 @@ class ArticleCard extends StatelessWidget {
 
   Widget _buildActionRow(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -88,8 +88,8 @@ class ArticleCard extends StatelessWidget {
           icon: Icon(
             article.tags.isNotEmpty ? Icons.label : Icons.label_outline,
             size: 20,
-            color: article.tags.isNotEmpty 
-                ? theme.colorScheme.primary 
+            color: article.tags.isNotEmpty
+                ? theme.colorScheme.primary
                 : theme.colorScheme.onSurfaceVariant,
           ),
           onPressed: onTagTap,
@@ -101,18 +101,22 @@ class ArticleCard extends StatelessWidget {
           icon: Icon(
             article.isFavorite ? Icons.star : Icons.star_outline,
             size: 20,
-            color: article.isFavorite 
-                ? Colors.amber.shade600 
+            color: article.isFavorite
+                ? Colors.amber.shade600
                 : theme.colorScheme.onSurfaceVariant,
           ),
           onPressed: onFavorite,
-          tooltip: article.isFavorite ? 'Remove from favorites' : 'Add to favorites',
+          tooltip: article.isFavorite
+              ? 'Remove from favorites'
+              : 'Add to favorites',
           visualDensity: VisualDensity.compact,
         ),
         // Archive button
         IconButton(
           icon: Icon(
-            article.isArchived ? Icons.unarchive_outlined : Icons.archive_outlined,
+            article.isArchived
+                ? Icons.unarchive_outlined
+                : Icons.archive_outlined,
             size: 20,
             color: theme.colorScheme.onSurfaceVariant,
           ),

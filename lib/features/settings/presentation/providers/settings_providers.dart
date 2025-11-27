@@ -61,8 +61,9 @@ class ThemeModeNotifier extends StateNotifier<ThemeMode> {
 }
 
 /// Provider for theme mode.
-final themeModeProvider =
-    StateNotifierProvider<ThemeModeNotifier, ThemeMode>((ref) {
+final themeModeProvider = StateNotifierProvider<ThemeModeNotifier, ThemeMode>((
+  ref,
+) {
   final prefs = ref.watch(sharedPreferencesProvider);
   return ThemeModeNotifier(prefs);
 });
@@ -90,6 +91,6 @@ class FontSizeNotifier extends StateNotifier<ReaderFontSize> {
 /// Provider for reader font size.
 final fontSizeProvider =
     StateNotifierProvider<FontSizeNotifier, ReaderFontSize>((ref) {
-  final prefs = ref.watch(sharedPreferencesProvider);
-  return FontSizeNotifier(prefs);
-});
+      final prefs = ref.watch(sharedPreferencesProvider);
+      return FontSizeNotifier(prefs);
+    });
