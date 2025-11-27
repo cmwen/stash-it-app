@@ -6,16 +6,26 @@ import BaseLayout from '../layouts/BaseLayout.astro'
   <section>
     <h2>Install & Build Guide</h2>
 
-    <p class="lead">Get Stash It running locally and build release artifacts for any platform.</p>
+    <p class="lead">Get Stash It on your device or build it from source.</p>
+
+    <div class="card highlight">
+      <h3>📦 Install via Obtainium (Recommended)</h3>
+      <p><strong>Stash It is not published to Google Play Store.</strong> We recommend using <a href="https://github.com/ImranR98/Obtainium" target="_blank" rel="noopener" style="color:var(--accent)">Obtainium</a> to manage self-developed apps directly from GitHub releases.</p>
+      <ol style="margin-top:12px">
+        <li>Install <a href="https://github.com/ImranR98/Obtainium/releases/latest" target="_blank" rel="noopener" style="color:var(--accent)">Obtainium</a> on your Android device</li>
+        <li>Add Stash It: <code>https://github.com/cmwen/stash-it-app</code></li>
+        <li>Obtainium will automatically check for updates and notify you</li>
+      </ol>
+      <p style="margin-top:12px;font-size:0.9em;opacity:0.8">Or download APKs manually from <a href="https://github.com/cmwen/stash-it-app/releases/latest" target="_blank" rel="noopener" style="color:var(--accent)">GitHub Releases</a>.</p>
+    </div>
 
     <div class="card">
-      <h3>Prerequisites</h3>
+      <h3>Build from Source - Prerequisites</h3>
       <ul>
         <li>Flutter SDK 3.10.1 or higher</li>
         <li>Dart 3.10.1 or higher</li>
         <li>Java 17 or higher (for Android builds)</li>
-        <li>For Android: Android Studio or Android SDK</li>
-        <li>For iOS: Xcode (macOS only)</li>
+        <li>Android Studio or Android SDK</li>
         <li>Node 18+ (for the website, not required for the app)</li>
       </ul>
     </div>
@@ -38,22 +48,14 @@ dart run build_runner build --delete-conflicting-outputs</pre>
 
     <div class="card">
       <h3>Run Locally</h3>
-      <ol>
-        <li>Run on any platform: <code>flutter run</code></li>
-        <li>Or specify a device:</li>
-      </ol>
-      <pre style="background:rgba(255,255,255,0.02);padding:10px;border-radius:8px;overflow:auto">flutter run -d chrome    # Web
-flutter run -d macos     # macOS
-flutter run -d android   # Android
-flutter run -d ios       # iOS</pre>
+      <p>Run on a connected Android device or emulator:</p>
+      <pre style="background:rgba(255,255,255,0.02);padding:10px;border-radius:8px;overflow:auto">flutter run</pre>
     </div>
 
     <div class="card">
       <h3>Build Release Artifacts</h3>
       <pre style="background:rgba(255,255,255,0.02);padding:10px;border-radius:8px;overflow:auto">flutter build apk         # Android APK (62MB, ~24s)
-flutter build appbundle   # Play Store (Android App Bundle)
-flutter build ios         # iOS
-flutter build web         # Web</pre>
+flutter build appbundle   # Play Store (Android App Bundle)</pre>
       <p style="margin-top:8px;font-size:0.9em"><em>Note: Build times optimized in v1.6.0+. Requires Java 17+</em></p>
     </div>
 
@@ -92,3 +94,13 @@ npm run dev</pre>
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .card.highlight {
+    border: 2px solid var(--accent);
+    background: rgba(103, 80, 164, 0.1);
+  }
+  .card.highlight h3 {
+    color: var(--accent);
+  }
+</style>

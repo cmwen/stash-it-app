@@ -15,7 +15,7 @@
 **So that** I can quickly save content without opening the app
 
 **Acceptance Criteria:**
-- [ ] App appears in Android/iOS share sheet
+- [ ] App appears in Android share sheet
 - [ ] URL is captured and saved immediately
 - [ ] Brief toast/notification confirms save
 - [ ] Works offline (queues for content fetch later)
@@ -29,7 +29,7 @@
 ### US-1.2: Save URL via In-App Input
 **As a** user  
 **I want to** paste or type a URL directly in the app  
-**So that** I can save content when browsing on desktop or copy-pasting
+**So that** I can save content when copy-pasting URLs
 
 **Acceptance Criteria:**
 - [ ] Text input field on home screen or via FAB

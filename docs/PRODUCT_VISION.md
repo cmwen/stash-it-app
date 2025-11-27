@@ -54,7 +54,7 @@
 | Persona | Description | Key Needs |
 |---------|-------------|-----------|
 | **Content Curator** | People who collect and share articles | Sharing capabilities, collections |
-| **Multi-Device User** | Users with phone, tablet, and desktop | P2P sync, consistent experience |
+| **Multi-Device User** | Users with multiple Android devices | P2P sync, consistent experience |
 
 ---
 
@@ -64,7 +64,7 @@
 2. **Offline-Ready**: Full functionality without internet connectivity
 3. **Privacy-Respecting**: No tracking, no analytics, no data collection
 4. **Future-Proof**: Open data format, easy export, no vendor lock-in
-5. **Cross-Platform**: Works on Android, iOS, Web, and Desktop
+5. **Android Native**: Built specifically for Android devices
 6. **P2P Sync Ready**: Direct device-to-device sync without cloud middlemen
 
 ---
@@ -105,7 +105,7 @@
 | No Account Required | ❌ | ❌ | ❌ | ✅ |
 | P2P Sync | ❌ | ❌ | ❌ | 🔮 (Planned) |
 | Free Tier | Limited | Limited | ✅ | ✅ |
-| Cross-Platform | ✅ | ✅ | ✅ | ✅ |
+| Android App | ✅ | ✅ | ❌ | ❌ |
 | Open Source | ❌ | ❌ | ✅ | ✅ |
 
 ---

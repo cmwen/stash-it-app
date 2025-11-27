@@ -86,7 +86,7 @@ I'm building [your app] with min-flutter-template. I need to implement
 Requirements:
 - [Technical requirement 1]
 - [Technical requirement 2]
-- Must work on Android, iOS, and Web
+- Must work on Android
 
 Please provide implementation with best practices.
 ```

@@ -18,7 +18,7 @@ This document outlines the technical requirements, architecture decisions, and i
 ### Core Framework
 | Component | Technology | Rationale |
 |-----------|------------|-----------|
-| **Framework** | Flutter 3.10+ | Cross-platform, single codebase |
+| **Framework** | Flutter 3.10+ | Mobile UI framework for Android |
 | **Language** | Dart 3.10+ | Type-safe, null-safe, async support |
 | **State Management** | Riverpod or Bloc | Testable, scalable state |
 | **Navigation** | go_router | Declarative routing, deep linking |

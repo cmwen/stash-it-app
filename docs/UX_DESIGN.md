@@ -755,7 +755,7 @@ Complete    → Spinner shrinks + "Updated"
 - Side sheet possible
 - Extended navigation rail
 
-### Desktop/Large (> 840dp)
+### Tablet/Large (> 840dp)
 - Three-column layout: Nav | List | Reader
 - Persistent navigation
 - Keyboard shortcuts

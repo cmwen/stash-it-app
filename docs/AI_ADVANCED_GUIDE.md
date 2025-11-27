@@ -743,7 +743,7 @@ Support:
 - Phones (small, normal, large)
 - Tablets
 - Foldables
-- Desktop (Chrome OS)
+- Tablets
 
 Requirements:
 - Responsive breakpoints

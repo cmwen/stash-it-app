@@ -72,18 +72,11 @@ flutter run
 ```bash
 flutter build apk         # Android APK
 flutter build appbundle   # Android App Bundle
-flutter build ios         # iOS
-flutter build web         # Web
 ```
 
-## 📱 Platforms
+## 📱 Platform
 
-- ✅ Android
-- ✅ iOS
-- ✅ Web
-- ✅ macOS
-- ✅ Windows
-- ✅ Linux
+- ✅ Android only
 
 ## 🏗️ Architecture
 

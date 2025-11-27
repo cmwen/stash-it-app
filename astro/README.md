@@ -44,10 +44,8 @@ flutter pub get
 flutter run
 
 # Build for release
-flutter build apk         # Android
-flutter build appbundle   # Play Store
-flutter build ios         # iOS
-flutter build web         # Web
+flutter build apk         # Android APK
+flutter build appbundle   # Play Store (Android App Bundle)
 ```
 
 ## Releases

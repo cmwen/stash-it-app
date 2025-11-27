@@ -12,7 +12,7 @@ const base = import.meta.env.BASE_URL ?? ''
       <ul>
         <li>📴 <strong>Works Offline</strong> - Read your articles anywhere, anytime</li>
         <li>🔒 <strong>Privacy First</strong> - No accounts, no tracking, no cloud</li>
-        <li>📱 <strong>Cross-Platform</strong> - Android, iOS, Web, macOS, Linux, Windows</li>
+        <li>📱 <strong>Android Native</strong> - Built specifically for Android devices</li>
         <li>💾 <strong>Local-First</strong> - Your data stays on your device</li>
         <li>🔓 <strong>Open Source</strong> - Free forever, contribute anytime</li>
       </ul>
@@ -54,9 +54,12 @@ const base = import.meta.env.BASE_URL ?? ''
     </div>
 
     <div class="card">
-      <h3>Download / Release</h3>
-      <p class="lead">Get a packaged release from GitHub Releases (APK, App Bundle, Web).</p>
-      <p><a href="https://github.com/cmwen/stash-it-app/releases/latest" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none">Download latest release →</a></p>
+      <h3>Get Stash It</h3>
+      <p class="lead">Not on Google Play Store. Use Obtainium for easy updates or download APKs directly.</p>
+      <p>
+        <a href={`${base}/install`} style="color:var(--accent);text-decoration:none">Install Guide (Obtainium) →</a><br/>
+        <a href="https://github.com/cmwen/stash-it-app/releases/latest" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none">GitHub Releases →</a>
+      </p>
     </div>
 
     <div class="card">
@@ -73,7 +76,7 @@ flutter run</pre>
     <div class="card">
       <h3>Tech Stack</h3>
       <ul>
-        <li><strong>Flutter 3.10+</strong> - Cross-platform UI framework</li>
+        <li><strong>Flutter 3.10+</strong> - Mobile UI framework for Android</li>
         <li><strong>Riverpod</strong> - State management with code generation</li>
         <li><strong>Drift (SQLite)</strong> - Local-first database</li>
         <li><strong>go_router</strong> - Declarative navigation</li>

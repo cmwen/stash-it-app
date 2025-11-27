@@ -68,7 +68,6 @@
 |------|--------------|--------------|
 | Create Save URL use case | 3 | Repository |
 | Implement share intent receiver (Android) | 5 | - |
-| Implement share intent receiver (iOS) | 5 | - |
 | Build "Add URL" input UI | 3 | - |
 | Create ContentExtractor service | 8 | - |
 | Implement HTML parsing and cleaning | 5 | Extractor |
@@ -160,7 +159,7 @@
 ## Definition of Done (MVP)
 
 ### Feature Complete
-- [ ] Save URLs via share intent (Android + iOS)
+- [ ] Save URLs via share intent (Android)
 - [ ] Save URLs via manual input
 - [ ] Content extraction working for major sites
 - [ ] Articles stored locally with images
@@ -176,7 +175,7 @@
 - [ ] 60%+ test coverage
 - [ ] Works offline completely
 - [ ] <2s cold start time
-- [ ] Tested on Android and iOS
+- [ ] Tested on Android
 
 ### Documentation
 - [ ] README updated
@@ -214,7 +213,7 @@
 | Crash-free sessions | >99% |
 | Cold start time | <2s |
 | Works fully offline | Yes |
-| Platforms | Android + iOS |
+| Platforms | Android only |
 
 ---
 

@@ -14,7 +14,7 @@
 - Age: 32
 - Occupation: Software Engineer
 - Location: San Francisco, CA
-- Devices: Pixel phone, MacBook, Linux desktop
+- Devices: Pixel phone, tablet
 
 **Bio:**
 Maya is a senior developer who values open source and data privacy. She uses Firefox with strict tracking protection, prefers self-hosted solutions, and actively avoids services that monetize user data. She reads extensively about technology, security, and software development.
@@ -96,7 +96,7 @@ Daniel has a 45-minute subway commute each way. Cell service is unreliable under
 - Age: 45
 - Occupation: Professor of Economics
 - Location: Boston, MA
-- Devices: Samsung phone, Windows laptop, Kindle
+- Devices: Samsung phone, tablet, Kindle
 
 **Bio:**
 Sarah collects research papers, news articles, and blog posts for her work. She saves dozens of items per week and needs to organize them by project and topic. She often references saved articles in her writing and teaching.
@@ -298,7 +298,7 @@ James collects articles for research, story ideas, and sharing with colleagues. 
 ### From Alex (Multi-Device)
 - P2P sync architecture
 - Conflict resolution
-- Cross-platform consistency
+- Consistent experience across Android devices
 - Sync status visibility
 
 ### From James (Curator)
