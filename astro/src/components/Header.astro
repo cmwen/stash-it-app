@@ -1,7 +1,7 @@
 ---
 const { title } = Astro.props;
 // Ensure links work for project sites (GitHub Pages) where Astro.config base is set
-const base = Astro.base ?? ''
+const base = import.meta.env.BASE_URL ?? ''
 ---
 <header class="site-title">
   <div class="logo">📚</div>
