@@ -20,10 +20,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
-    # Validate Gradle wrapper for security
-    - name: Validate Gradle Wrapper
-      uses: gradle/actions/wrapper-validation@v4
-    
     - name: Setup Java
       uses: actions/setup-java@v4
       with:
@@ -34,6 +30,10 @@ jobs:
     # Use CI-optimized Gradle properties
     - name: Setup Gradle for CI
       run: cp android/gradle-ci.properties android/gradle.properties
+    
+    # Validate Gradle wrapper for security
+    - name: Validate Gradle Wrapper
+      uses: gradle/actions/wrapper-validation@v4
     
     - name: Setup Flutter
       uses: subosito/flutter-action@v2
