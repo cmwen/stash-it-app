@@ -6,13 +6,23 @@ on:
   pull_request:
     branches: [ main, develop ]
 
+# Cancel in-progress runs for the same workflow and ref
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     name: Test & Build Android
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     
     steps:
     - uses: actions/checkout@v4
+    
+    # Validate Gradle wrapper for security
+    - name: Validate Gradle Wrapper
+      uses: gradle/actions/wrapper-validation@v4
     
     - name: Setup Java
       uses: actions/setup-java@v4
@@ -21,6 +31,10 @@ jobs:
         java-version: '17'
         cache: 'gradle'
     
+    # Use CI-optimized Gradle properties
+    - name: Setup Gradle for CI
+      run: cp android/gradle-ci.properties android/gradle.properties
+    
     - name: Setup Flutter
       uses: subosito/flutter-action@v2
       with:
@@ -28,17 +42,34 @@ jobs:
         channel: 'stable'
         cache: true
     
+    # Cache pub dependencies for faster builds
+    - name: Cache Flutter packages
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.pub-cache
+          ${{ github.workspace }}/.dart_tool
+        key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-pub-
+    
     - name: Get dependencies
       run: flutter pub get
     
+    # Run code generation (required for Drift & Riverpod)
+    - name: Generate code
+      run: dart run build_runner build --delete-conflicting-outputs
+    
+    # Run checks in parallel using matrix strategy would require separate jobs
+    # Instead, we run them sequentially but fail fast
     - name: Verify formatting
       run: dart format --set-exit-if-changed .
     
     - name: Analyze code
-      run: flutter analyze
+      run: flutter analyze --fatal-infos
     
-    - name: Run tests
-      run: flutter test --coverage
+    - name: Run tests with coverage
+      run: flutter test --coverage --concurrency=$(nproc)
     
     - name: Upload Coverage
       uses: codecov/codecov-action@v5
@@ -46,3 +77,4 @@ jobs:
       with:
         files: coverage/lcov.info
         fail_ci_if_error: false
+        token: ${{ secrets.CODECOV_TOKEN }}

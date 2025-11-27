@@ -1,60 +1,167 @@
 # Build Optimization Summary
 
-## Fixed Issues
+This document describes the build optimizations implemented for the Stash It Flutter app.
 
-### 1. **Java Version Compatibility** (Primary Fix)
-- **Issue**: Project was configured for Java 1.8 (deprecated) while system has Java 17
-- **Fix**: Updated all build files to use Java 17 (modern baseline)
-  - `android/gradle.properties`: Updated `kotlin.jvm.target=17`
-  - `android/build.gradle.kts`: Updated JVM target to VERSION_17
-  - `android/app/build.gradle.kts`: Updated compileOptions and kotlinOptions to VERSION_17
+## Overview
 
-### 2. **Gradle Configuration Optimization**
-- **Issue**: Build was hanging during Gradle compilation
-- **Fixes**:
-  - Disabled parallel builds (`org.gradle.parallel=false`)
-  - Reduced max workers to 2 (`org.gradle.workers.max=2`)
-  - Reduced JVM memory allocation (from 8GB to 6GB for headroom)
-  - Disabled configureondemand which can cause issues with some projects
+The build system has been optimized for both local development and CI/CD environments with:
+- Parallel build execution
+- Aggressive caching strategies
+- Configuration caching
+- Optimized memory allocation
+- Security validation
 
-### 3. **Build Feature Optimization**
-- Added `resValues = false` to disabled build features
-- Added `lint` configuration with error suppression for non-critical issues
-- Disabled minification/obfuscation for now (R8 has issues with missing Play Core dependencies)
+## Key Optimizations
 
-### 4. **ProGuard Rules**
-- Added keep rule for Play Store classes (even when not in use)
-- Maintains other important keep rules for Flutter, Drift, and Riverpod
+### 1. **Java Version Compatibility**
+- **Configuration**: Java 17 (LTS baseline)
+- **Applied to**:
+  - `android/gradle.properties`: `kotlin.jvm.target=17`
+  - `android/build.gradle.kts`: JVM target VERSION_17
+  - `android/app/build.gradle.kts`: compileOptions and kotlinOptions VERSION_17
 
-## Build Times (After Optimization)
+### 2. **Gradle Build Performance**
 
-| Build Type | Time | Size |
-|-----------|------|------|
-| Debug APK | 138s | 152MB |
-| Release APK | 24.4s | 62MB |
+#### Local Development (`android/gradle.properties`)
+- **Parallel builds enabled**: `org.gradle.parallel=true`
+- **Workers**: Up to 4 (`org.gradle.workers.max=4`)
+- **Configuration caching**: `org.gradle.configuration-cache=true`
+- **Incremental compilation**: Kotlin incremental compilation enabled
+- **Memory allocation**: 4GB heap, 1GB metaspace (balanced for development)
+- **Build daemon**: Enabled for faster subsequent builds
 
-The release APK is 40% smaller than debug thanks to Flutter's automatic tree-shaking of icon fonts (CupertinoIcons: 99.7% reduction, MaterialIcons: 99.6% reduction).
+#### CI Environment (`android/gradle-ci.properties`)
+- **Parallel builds enabled**: `org.gradle.parallel=true`
+- **Workers**: 2 (optimal for CI runners)
+- **Configuration caching**: Disabled (can be unstable in CI)
+- **Incremental compilation**: Disabled (clean builds preferred)
+- **Memory allocation**: 3GB heap, 768MB metaspace (CI-optimized)
+- **Build daemon**: Disabled (not needed for single-use CI)
 
-## Key Files Modified
+### 3. **GitHub Actions Workflows**
 
-1. `android/gradle.properties` - Build performance settings
-2. `android/build.gradle.kts` - Root build script with JVM target fixes
-3. `android/app/build.gradle.kts` - App-level build configuration
-4. `android/app/proguard-rules.pro` - Obfuscation rules (now unused with minification disabled)
+#### Build Workflow (`build.yml`)
+- **Concurrency control**: Cancel in-progress runs for same branch
+- **Timeout**: 30 minutes
+- **Caching**: 
+  - Gradle dependencies via `actions/setup-java`
+  - Flutter SDK via `subosito/flutter-action`
+  - Pub packages via `actions/cache`
+- **Parallel test execution**: Uses all available CPU cores
+- **Security**: Gradle wrapper validation
+- **Code generation**: Automatically runs `build_runner`
+
+#### Release Workflow (`release.yml`)
+- **Timeout**: 45 minutes
+- **Caching**: Same as build workflow
+- **Artifact retention**: 90 days
+- **Auto-generated release notes**
+- **Parallel test execution**
+- **Security**: Gradle wrapper validation
+
+#### Website Deployment (`deploy-website.yml`)
+- **Timeout**: 15 minutes
+- **Caching**:
+  - npm packages via `actions/setup-node`
+  - node_modules and .astro build cache
+- **Offline mode**: `npm ci --prefer-offline`
+
+### 4. **Android Build Features**
+- **Disabled unused features**: buildConfig, aidl, renderScript, shaders, resValues
+- **Resource optimization**: 
+  - `android.nonFinalResIds=true`
+  - `android.nonTransitiveRClass=true`
+- **Lint configuration**: Suppress non-critical warnings
+- **R8 optimization**: Enabled but not in full mode (for stability)
+
+## Build Times
+
+| Environment | Build Type | Estimated Time | Notes |
+|------------|-----------|----------------|-------|
+| Local (first) | Debug APK | ~2-3 min | Includes dependency download |
+| Local (cached) | Debug APK | ~30-60s | With warm Gradle daemon |
+| Local | Release APK | ~1-2 min | Optimized build |
+| CI (first) | Full workflow | ~5-8 min | Includes setup + tests |
+| CI (cached) | Full workflow | ~3-5 min | With dependency caching |
+
+**APK Sizes:**
+- Debug: ~150MB (includes debug symbols)
+- Release: ~60MB (tree-shaken and optimized)
+
+The release APK is 60% smaller thanks to Flutter's automatic tree-shaking of unused code and icon fonts.
+
+## Key Files
+
+### Build Configuration
+1. `android/gradle.properties` - Local development settings (parallel, caching enabled)
+2. `android/gradle-ci.properties` - CI-optimized settings (daemon disabled, reduced memory)
+3. `android/build.gradle.kts` - Root build script with JVM target
+4. `android/app/build.gradle.kts` - App-level configuration with build features
+
+### CI/CD Workflows
+1. `.github/workflows/build.yml` - PR/push validation with parallel tests
+2. `.github/workflows/release.yml` - Tag-triggered release builds
+3. `.github/workflows/deploy-website.yml` - Astro documentation deployment
 
 ## Best Practices Applied
 
-✓ Universal APK (not split per ABI) - easier distribution  
-✓ Resource shrinking enabled for release builds  
-✓ Lint configured to skip non-critical warnings  
-✓ Parallel Gradle disabled to prevent hanging on macOS  
-✓ Reduced worker count to prevent resource contention  
-✓ JVM memory properly allocated  
+✅ **Caching Strategy**
+- Multi-level caching (Gradle, Flutter SDK, pub packages, npm)
+- Separate local vs CI configuration
+- Cache key based on lock files for accuracy
 
-## Notes
+✅ **Parallel Execution**
+- Gradle parallel builds enabled
+- Multiple workers for concurrent tasks
+- Parallel test execution with all CPU cores
 
-- Minification (R8) is currently disabled due to missing Google Play Core library classes being referenced by Flutter's engine
-- To enable minification in the future, either:
-  1. Add the Google Play Core library dependency, or
-  2. Use more aggressive keep rules to avoid the issue
-- The debug build is slower (138s) because it doesn't use minification, but the release build is fast (24.4s) without minification overhead
+✅ **Security**
+- Gradle wrapper validation in CI
+- Secure handling of signing credentials
+- Automatic cleanup of sensitive files
+
+✅ **Optimization**
+- Configuration caching for faster configuration phase
+- Incremental compilation in development
+- Disabled unused Android build features
+- Proper memory allocation per environment
+
+✅ **Developer Experience**
+- Fast incremental builds locally
+- Clear timeout limits prevent hung jobs
+- Concurrency control prevents redundant builds
+- Auto-generated release notes
+
+## Usage
+
+### Local Development
+```bash
+# Uses android/gradle.properties automatically
+flutter build apk --debug
+flutter build apk --release
+```
+
+### CI/CD
+The workflows automatically copy `android/gradle-ci.properties` over `android/gradle.properties` for optimal CI performance.
+
+### Manual Testing
+To test with CI settings locally:
+```bash
+cp android/gradle-ci.properties android/gradle.properties
+flutter build apk --release
+git restore android/gradle.properties
+```
+
+## Performance Tips
+
+1. **First build**: Run `flutter pub get && dart run build_runner build --delete-conflicting-outputs` before building
+2. **Clean builds**: Use `flutter clean` if encountering issues, but avoid in normal workflow
+3. **Gradle daemon**: Keep running locally for faster builds (`./gradlew --status`)
+4. **Android Studio**: Disable auto-import to prevent unexpected Gradle syncs
+
+## Future Improvements
+
+- [ ] Consider enabling R8 full mode after thorough testing
+- [ ] Explore build splitting per ABI for Play Store (smaller downloads)
+- [ ] Add build performance metrics tracking
+- [ ] Implement build cache remote sharing for teams

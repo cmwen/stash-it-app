@@ -12,9 +12,14 @@ jobs:
   release:
     name: Build & Release Android
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     
     steps:
     - uses: actions/checkout@v4
+    
+    # Validate Gradle wrapper for security
+    - name: Validate Gradle Wrapper
+      uses: gradle/actions/wrapper-validation@v4
     
     - name: Setup Java
       uses: actions/setup-java@v4
@@ -23,6 +28,10 @@ jobs:
         java-version: '17'
         cache: 'gradle'
     
+    # Use CI-optimized Gradle properties
+    - name: Setup Gradle for CI
+      run: cp android/gradle-ci.properties android/gradle.properties
+    
     - name: Setup Flutter
       uses: subosito/flutter-action@v2
       with:
@@ -30,11 +39,26 @@ jobs:
         channel: 'stable'
         cache: true
     
+    # Cache pub dependencies for faster builds
+    - name: Cache Flutter packages
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.pub-cache
+          ${{ github.workspace }}/.dart_tool
+        key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-pub-
+    
     - name: Get dependencies
       run: flutter pub get
     
+    # Run code generation (required for Drift & Riverpod)
+    - name: Generate code
+      run: dart run build_runner build --delete-conflicting-outputs
+    
     - name: Run tests
-      run: flutter test
+      run: flutter test --concurrency=$(nproc)
     
     - name: Decode Android keystore
       if: ${{ env.ANDROID_KEYSTORE_BASE64 != '' }}
@@ -58,6 +82,7 @@ jobs:
         storeFile=release-keystore.jks
         EOF
     
+    # Build APK and AAB in parallel would require matrix, but they're fast enough sequentially
     - name: Build signed APK
       run: flutter build apk --release
     
@@ -71,6 +96,7 @@ jobs:
         path: |
           build/app/outputs/flutter-apk/app-release.apk
           build/app/outputs/bundle/release/app-release.aab
+        retention-days: 90
     
     - name: Publish GitHub Release
       if: startsWith(github.ref, 'refs/tags/')
@@ -81,6 +107,7 @@ jobs:
         files: |
           build/app/outputs/flutter-apk/app-release.apk
           build/app/outputs/bundle/release/app-release.aab
+        generate_release_notes: true
     
     - name: Clean up signing files
       if: always()
