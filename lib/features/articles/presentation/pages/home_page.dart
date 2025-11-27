@@ -37,7 +37,7 @@ class _HomePageState extends ConsumerState<HomePage> {
             ? IconButton(
                 icon: const Icon(Icons.arrow_back),
                 onPressed: () {
-                  ref.read(searchQueryProvider.notifier).state = '';
+                  ref.read(searchQueryProvider.notifier).setQuery('');
                   setState(() => _isSearching = false);
                 },
               )
@@ -110,7 +110,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               ? IconButton(
                   icon: const Icon(Icons.close),
                   onPressed: () {
-                    ref.read(searchQueryProvider.notifier).state = '';
+                    ref.read(searchQueryProvider.notifier).setQuery('');
                   },
                 )
               : null,
@@ -128,7 +128,7 @@ class _HomePageState extends ConsumerState<HomePage> {
           ),
         ),
         onChanged: (query) {
-          ref.read(searchQueryProvider.notifier).state = query;
+          ref.read(searchQueryProvider.notifier).setQuery(query);
         },
       ),
     );
@@ -144,24 +144,24 @@ class _HomePageState extends ConsumerState<HomePage> {
             label: 'All',
             icon: Icons.list,
             isSelected: currentFilter == ArticleFilter.all,
-            onSelected: () => ref.read(articleFilterProvider.notifier).state =
-                ArticleFilter.all,
+            onSelected: () => ref.read(articleFilterProvider.notifier).setFilter(
+                ArticleFilter.all),
           ),
           const SizedBox(width: AppSpacing.sm),
           _FilterChip(
             label: 'Favorites',
             icon: Icons.star,
             isSelected: currentFilter == ArticleFilter.favorites,
-            onSelected: () => ref.read(articleFilterProvider.notifier).state =
-                ArticleFilter.favorites,
+            onSelected: () => ref.read(articleFilterProvider.notifier).setFilter(
+                ArticleFilter.favorites),
           ),
           const SizedBox(width: AppSpacing.sm),
           _FilterChip(
             label: 'Archived',
             icon: Icons.archive,
             isSelected: currentFilter == ArticleFilter.archived,
-            onSelected: () => ref.read(articleFilterProvider.notifier).state =
-                ArticleFilter.archived,
+            onSelected: () => ref.read(articleFilterProvider.notifier).setFilter(
+                ArticleFilter.archived),
           ),
         ],
       ),
@@ -316,9 +316,12 @@ class _HomePageState extends ConsumerState<HomePage> {
                     subtitle: const Text('Send to another app or save'),
                     onTap: () async {
                       Navigator.pop(context);
-                      await Share.shareXFiles([
-                        XFile(file.path),
-                      ], subject: 'Stash It Export');
+                      await SharePlus.instance.share(
+                        ShareParams(
+                          files: [XFile(file.path)],
+                          subject: 'Stash It Export',
+                        ),
+                      );
                     },
                   ),
                   ListTile(

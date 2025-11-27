@@ -26,10 +26,14 @@ final sharedPreferencesProvider = Provider<SharedPreferences>((ref) {
 });
 
 /// Theme mode state notifier.
-class ThemeModeNotifier extends StateNotifier<ThemeMode> {
-  final SharedPreferences _prefs;
+class ThemeModeNotifier extends Notifier<ThemeMode> {
+  late final SharedPreferences _prefs;
 
-  ThemeModeNotifier(this._prefs) : super(_loadThemeMode(_prefs));
+  @override
+  ThemeMode build() {
+    _prefs = ref.watch(sharedPreferencesProvider);
+    return _loadThemeMode(_prefs);
+  }
 
   static ThemeMode _loadThemeMode(SharedPreferences prefs) {
     final value = prefs.getString(SettingsKeys.themeMode);
@@ -61,18 +65,19 @@ class ThemeModeNotifier extends StateNotifier<ThemeMode> {
 }
 
 /// Provider for theme mode.
-final themeModeProvider = StateNotifierProvider<ThemeModeNotifier, ThemeMode>((
-  ref,
-) {
-  final prefs = ref.watch(sharedPreferencesProvider);
-  return ThemeModeNotifier(prefs);
-});
+final themeModeProvider = NotifierProvider<ThemeModeNotifier, ThemeMode>(
+  ThemeModeNotifier.new,
+);
 
 /// Font size state notifier.
-class FontSizeNotifier extends StateNotifier<ReaderFontSize> {
-  final SharedPreferences _prefs;
+class FontSizeNotifier extends Notifier<ReaderFontSize> {
+  late final SharedPreferences _prefs;
 
-  FontSizeNotifier(this._prefs) : super(_loadFontSize(_prefs));
+  @override
+  ReaderFontSize build() {
+    _prefs = ref.watch(sharedPreferencesProvider);
+    return _loadFontSize(_prefs);
+  }
 
   static ReaderFontSize _loadFontSize(SharedPreferences prefs) {
     final value = prefs.getString(SettingsKeys.fontSize);
@@ -89,8 +94,6 @@ class FontSizeNotifier extends StateNotifier<ReaderFontSize> {
 }
 
 /// Provider for reader font size.
-final fontSizeProvider =
-    StateNotifierProvider<FontSizeNotifier, ReaderFontSize>((ref) {
-      final prefs = ref.watch(sharedPreferencesProvider);
-      return FontSizeNotifier(prefs);
-    });
+final fontSizeProvider = NotifierProvider<FontSizeNotifier, ReaderFontSize>(
+  FontSizeNotifier.new,
+);
