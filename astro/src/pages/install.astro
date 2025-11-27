@@ -13,6 +13,7 @@ import BaseLayout from '../layouts/BaseLayout.astro'
       <ul>
         <li>Flutter SDK 3.10.1 or higher</li>
         <li>Dart 3.10.1 or higher</li>
+        <li>Java 11 or higher (for Android builds)</li>
         <li>For Android: Android Studio or Android SDK</li>
         <li>For iOS: Xcode (macOS only)</li>
         <li>Node 18+ (for the website, not required for the app)</li>
@@ -49,10 +50,11 @@ flutter run -d ios       # iOS</pre>
 
     <div class="card">
       <h3>Build Release Artifacts</h3>
-      <pre style="background:rgba(255,255,255,0.02);padding:10px;border-radius:8px;overflow:auto">flutter build apk         # Android APK
+      <pre style="background:rgba(255,255,255,0.02);padding:10px;border-radius:8px;overflow:auto">flutter build apk         # Android APK (62MB, ~24s)
 flutter build appbundle   # Play Store (Android App Bundle)
 flutter build ios         # iOS
 flutter build web         # Web</pre>
+      <p style="margin-top:8px;font-size:0.9em"><em>Note: Build times optimized in v1.6.0+. Requires Java 11+</em></p>
     </div>
 
     <div class="card">
