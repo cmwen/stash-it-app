@@ -67,7 +67,13 @@ class AppDatabase extends _$AppDatabase {
       .get();
   }
 
-  Stream<List<ArticlesTableData>> watchAllArticles({
+  Stream<List<ArticlesTableData>> watchAllArticles() {
+    // Filter out soft-deleted articles
+    return (select(articlesTable)
+      ..where((a) => a.isDeleted.equals(false))
+      ..orderBy([(a) => OrderingTerm.desc(a.createdAt)]))
+      .watch();
+  }({
     String orderBy = 'savedAt',
     bool descending = true,
     bool? isArchived,
