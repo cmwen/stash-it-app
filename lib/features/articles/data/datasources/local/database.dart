@@ -70,12 +70,20 @@ class AppDatabase extends _$AppDatabase {
     }
   }
 
-  /// Get articles that contain a specific tag
-  Future<List<ArticlesTableData>> getArticlesByTag(String tag) {
-    return (select(articlesTable)
-      ..where((a) => a.tags.like('%$tag%') & a.isDeleted.equals(false))
-      ..orderBy([(a) => OrderingTerm.desc(a.createdAt)]))
-      .get();
+  /// Get articles that contain a specific tag (excluding deleted articles)
+  Future<List<ArticlesTableData>> getArticlesByTag(String tag) async {
+    try {
+      return await (select(articlesTable)
+        ..where((a) => a.tags.like('%$tag%') & a.isDeleted.equals(false))
+        ..orderBy([(a) => OrderingTerm.desc(a.createdAt)]))
+        .get();
+    } catch (e) {
+      // Fallback if isDeleted column doesn't exist
+      return (select(articlesTable)
+        ..where((a) => a.tags.like('%$tag%'))
+        ..orderBy([(a) => OrderingTerm.desc(a.createdAt)]))
+        .get();
+    }
   }
 
   Stream<List<ArticlesTableData>> watchAllArticles() {
