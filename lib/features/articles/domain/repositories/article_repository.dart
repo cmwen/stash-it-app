@@ -15,6 +15,15 @@ abstract class ArticleRepository {
     List<String>? tags,
   });
   Future<void> updateArticle(Article article);
+  Future<List<Article>> getArticlesByTag(String tag);
+
+  /// Soft delete article (mark as deleted, can be restored)
+  Future<void> softDeleteArticle(int id);
+
+  /// Restore a soft-deleted article
+  Future<void> restoreArticle(int id);
+
+  /// Permanently delete article
   Future<void> deleteArticle(String id);
 
   // Bulk operations

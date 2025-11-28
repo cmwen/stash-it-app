@@ -47,6 +47,26 @@ class AppDatabase extends _$AppDatabase {
     return query.get();
   }
 
+  /// Soft delete an article (mark as deleted without removing)
+  Future<int> softDeleteArticle(int id) {
+    return (update(articlesTable)..where((a) => a.id.equals(id)))
+        .write(const ArticlesTableCompanion(isDeleted: Value(true)));
+  }
+
+  /// Restore a soft-deleted article
+  Future<int> restoreArticle(int id) {
+    return (update(articlesTable)..where((a) => a.id.equals(id)))
+        .write(const ArticlesTableCompanion(isDeleted: Value(false)));
+  }
+
+  /// Get articles that contain a specific tag
+  Future<List<ArticlesTableData>> getArticlesByTag(String tag) {
+    return (select(articlesTable)
+      ..where((a) => a.tags.like('%$tag%') & a.isDeleted.equals(false))
+      ..orderBy([(a) => OrderingTerm.desc(a.createdAt)]))
+      .get();
+  }
+
   Stream<List<ArticlesTableData>> watchAllArticles({
     String orderBy = 'savedAt',
     bool descending = true,

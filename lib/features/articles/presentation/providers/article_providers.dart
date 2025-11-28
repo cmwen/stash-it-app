@@ -53,6 +53,24 @@ class SearchQueryNotifier extends Notifier<String> {
 }
 
 /// Provider for the list of articles (filtered by current filter).
+/// Soft delete an article (can be undone)
+final softDeleteArticleProvider = FutureProvider.family<void, int>((ref, id) async {
+  final repository = ref.read(articleRepositoryProvider);
+  await repository.softDeleteArticle(id);
+});
+
+/// Restore a deleted article (undo delete)
+final restoreArticleProvider = FutureProvider.family<void, int>((ref, id) async {
+  final repository = ref.read(articleRepositoryProvider);
+  await repository.restoreArticle(id);
+});
+
+/// Filter articles by tag
+final articlesByTagProvider = FutureProvider.family<List<Article>, String>((ref, tag) async {
+  final repository = ref.read(articleRepositoryProvider);
+  return repository.getArticlesByTag(tag);
+});
+
 final articlesProvider = StreamProvider.autoDispose<List<Article>>((ref) {
   final repository = ref.watch(articleRepositoryProvider);
   final filter = ref.watch(articleFilterProvider);
