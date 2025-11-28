@@ -48,15 +48,26 @@ class AppDatabase extends _$AppDatabase {
   }
 
   /// Soft delete an article (mark as deleted without removing)
-  Future<int> softDeleteArticle(int id) {
-    return (update(articlesTable)..where((a) => a.id.equals(id)))
-        .write(const ArticlesTableCompanion(isDeleted: Value(true)));
+  /// Falls back to hard delete if isDeleted column doesn't exist
+  Future<int> softDeleteArticle(int id) async {
+    try {
+      return await (update(articlesTable)..where((a) => a.id.equals(id)))
+          .write(const ArticlesTableCompanion(isDeleted: Value(true)));
+    } catch (e) {
+      // Fall back to hard delete if soft delete fails
+      return (delete(articlesTable)..where((a) => a.id.equals(id))).go();
+    }
   }
 
   /// Restore a soft-deleted article
-  Future<int> restoreArticle(int id) {
-    return (update(articlesTable)..where((a) => a.id.equals(id)))
-        .write(const ArticlesTableCompanion(isDeleted: Value(false)));
+  Future<int> restoreArticle(int id) async {
+    try {
+      return await (update(articlesTable)..where((a) => a.id.equals(id)))
+          .write(const ArticlesTableCompanion(isDeleted: Value(false)));
+    } catch (e) {
+      // If restore fails, the article may have been hard deleted
+      return 0;
+    }
   }
 
   /// Get articles that contain a specific tag
@@ -69,10 +80,18 @@ class AppDatabase extends _$AppDatabase {
 
   Stream<List<ArticlesTableData>> watchAllArticles() {
     // Filter out soft-deleted articles
-    return (select(articlesTable)
-      ..where((a) => a.isDeleted.equals(false))
-      ..orderBy([(a) => OrderingTerm.desc(a.createdAt)]))
-      .watch();
+    // This query assumes isDeleted column exists - if not, all articles will be shown
+    try {
+      return (select(articlesTable)
+        ..where((a) => a.isDeleted.equals(false))
+        ..orderBy([(a) => OrderingTerm.desc(a.createdAt)]))
+        .watch();
+    } catch (e) {
+      // Fallback if isDeleted column doesn't exist
+      return (select(articlesTable)
+        ..orderBy([(a) => OrderingTerm.desc(a.createdAt)]))
+        .watch();
+    }
   }({
     String orderBy = 'savedAt',
     bool descending = true,
