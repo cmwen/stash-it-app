@@ -50,7 +50,9 @@ class AppDatabase extends _$AppDatabase {
   /// Soft delete an article (mark as deleted without removing)
   /// Falls back to hard delete if isDeleted column doesn't exist
   Future<int> softDeleteArticle(int id) async {
-    return (delete(articlesTable)..where((a) => a.id.equals(id))).go();
+    return (delete(
+      articlesTable,
+    )..where((a) => a.id.equals(id.toString()))).go();
   }
 
   /// Restore a soft-deleted article
@@ -62,7 +64,7 @@ class AppDatabase extends _$AppDatabase {
   Future<List<ArticlesTableData>> getArticlesByTag(String tag) async {
     return (select(articlesTable)
           ..where((a) => a.tags.like('%$tag%'))
-          ..orderBy([(a) => OrderingTerm.desc(a.createdAt)]))
+          ..orderBy([(a) => OrderingTerm.desc(a.savedAt)]))
         .get();
   }
 
@@ -97,15 +99,13 @@ class AppDatabase extends _$AppDatabase {
   Future<ArticlesTableData?> getArticleById(String id) {
     return (select(
       articlesTable,
-    )..where((t) => t.id.equals(id)))
-        .getSingleOrNull();
+    )..where((t) => t.id.equals(id))).getSingleOrNull();
   }
 
   Future<ArticlesTableData?> getArticleByUrl(String url) {
     return (select(
       articlesTable,
-    )..where((t) => t.url.equals(url)))
-        .getSingleOrNull();
+    )..where((t) => t.url.equals(url))).getSingleOrNull();
   }
 
   Future<int> insertArticle(ArticlesTableCompanion article) {
@@ -185,13 +185,12 @@ class AppDatabase extends _$AppDatabase {
 
   Future<List<ArticlesTableData>> searchArticles(String query) async {
     final searchTerm = '%$query%';
-    return (select(articlesTable)
-          ..where(
-            (t) =>
-                t.title.like(searchTerm) |
-                t.content.like(searchTerm) |
-                t.siteName.like(searchTerm),
-          ))
+    return (select(articlesTable)..where(
+          (t) =>
+              t.title.like(searchTerm) |
+              t.content.like(searchTerm) |
+              t.siteName.like(searchTerm),
+        ))
         .get();
   }
 }

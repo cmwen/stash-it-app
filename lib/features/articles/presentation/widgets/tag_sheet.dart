@@ -63,8 +63,9 @@ class _TagManagementSheetState extends ConsumerState<TagManagementSheet> {
       AsyncData(:final value) => value,
       _ => <String>[],
     };
-    final suggestedTags =
-        existingTags.where((t) => !_tags.contains(t)).toList();
+    final suggestedTags = existingTags
+        .where((t) => !_tags.contains(t))
+        .toList();
 
     return DraggableScrollableSheet(
       initialChildSize: 0.6,

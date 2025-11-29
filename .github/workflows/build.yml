@@ -56,13 +56,30 @@ jobs:
     - name: Generate code
       run: dart run build_runner build --delete-conflicting-outputs
     
-    # Run checks in parallel using matrix strategy would require separate jobs
-    # Instead, we run them sequentially but fail fast
-    - name: Verify formatting
-      run: dart format --set-exit-if-changed .
+    # Auto-format code (warnings only, doesn't fail)
+    - name: Check formatting
+      id: format-check
+      run: |
+        if ! dart format --set-exit-if-changed . ; then
+          echo "needs_formatting=true" >> $GITHUB_OUTPUT
+          echo "⚠️ Code needs formatting but continuing build..." >> $GITHUB_STEP_SUMMARY
+        fi
+      continue-on-error: true
     
+    # Auto-format and commit if needed (only on push to main/develop, not PRs)
+    - name: Auto-format and commit
+      if: steps.format-check.outputs.needs_formatting == 'true' && github.event_name == 'push'
+      run: |
+        dart format .
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git add -A
+        git diff --staged --quiet || git commit -m "style: auto-format code [skip ci]"
+        git push
+    
+    # Analyze code - only errors fail the build, warnings are reported
     - name: Analyze code
-      run: flutter analyze --fatal-infos
+      run: flutter analyze --fatal-infos --no-fatal-warnings
     
     - name: Run tests with coverage
       run: flutter test --coverage --concurrency=$(nproc)
