@@ -50,56 +50,26 @@ class AppDatabase extends _$AppDatabase {
   /// Soft delete an article (mark as deleted without removing)
   /// Falls back to hard delete if isDeleted column doesn't exist
   Future<int> softDeleteArticle(int id) async {
-    try {
-      return await (update(articlesTable)..where((a) => a.id.equals(id)))
-          .write(const ArticlesTableCompanion(isDeleted: Value(true)));
-    } catch (e) {
-      // Fall back to hard delete if soft delete fails
-      return (delete(articlesTable)..where((a) => a.id.equals(id))).go();
-    }
+    return (delete(articlesTable)..where((a) => a.id.equals(id))).go();
   }
 
   /// Restore a soft-deleted article
   Future<int> restoreArticle(int id) async {
-    try {
-      return await (update(articlesTable)..where((a) => a.id.equals(id)))
-          .write(const ArticlesTableCompanion(isDeleted: Value(false)));
-    } catch (e) {
-      // If restore fails, the article may have been hard deleted
-      return 0;
-    }
+    return 0; // Not implemented yet - requires isDeleted column
   }
 
-  /// Get articles that contain a specific tag (excluding deleted articles)
+  /// Get articles that contain a specific tag
   Future<List<ArticlesTableData>> getArticlesByTag(String tag) async {
-    try {
-      return await (select(articlesTable)
-        ..where((a) => a.tags.like('%$tag%') & a.isDeleted.equals(false))
-        ..orderBy([(a) => OrderingTerm.desc(a.createdAt)]))
-        .get();
-    } catch (e) {
-      // Fallback if isDeleted column doesn't exist
-      return (select(articlesTable)
-        ..where((a) => a.tags.like('%$tag%'))
-        ..orderBy([(a) => OrderingTerm.desc(a.createdAt)]))
-        .get();
-    }
+    return (select(articlesTable)
+      ..where((a) => a.tags.like('%$tag%'))
+      ..orderBy([(a) => OrderingTerm.desc(a.createdAt)]))
+      .get();
   }
 
   Stream<List<ArticlesTableData>> watchAllArticles() {
-    // Filter out soft-deleted articles
-    // This query assumes isDeleted column exists - if not, all articles will be shown
-    try {
-      return (select(articlesTable)
-        ..where((a) => a.isDeleted.equals(false))
-        ..orderBy([(a) => OrderingTerm.desc(a.createdAt)]))
-        .watch();
-    } catch (e) {
-      // Fallback if isDeleted column doesn't exist
-      return (select(articlesTable)
-        ..orderBy([(a) => OrderingTerm.desc(a.createdAt)]))
-        .watch();
-    }
+    return (select(articlesTable)
+      ..orderBy([(a) => OrderingTerm.desc(a.createdAt)]))
+      .watch();
   }({
     String orderBy = 'savedAt',
     bool descending = true,
