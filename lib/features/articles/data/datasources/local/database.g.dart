@@ -210,25 +210,25 @@ class $ArticlesTableTable extends ArticlesTable
   );
   @override
   List<GeneratedColumn> get $columns => [
-    id,
-    url,
-    title,
-    author,
-    excerpt,
-    content,
-    imageUrl,
-    siteName,
-    savedAt,
-    publishedAt,
-    wordCount,
-    isRead,
-    isArchived,
-    isFavorite,
-    tags,
-    status,
-    scrollPosition,
-    lastSyncedAt,
-  ];
+        id,
+        url,
+        title,
+        author,
+        excerpt,
+        content,
+        imageUrl,
+        siteName,
+        savedAt,
+        publishedAt,
+        wordCount,
+        isRead,
+        isArchived,
+        isFavorite,
+        tags,
+        status,
+        scrollPosition,
+        lastSyncedAt,
+      ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -538,9 +538,8 @@ class ArticlesTableData extends DataClass
       id: Value(id),
       url: Value(url),
       title: Value(title),
-      author: author == null && nullToAbsent
-          ? const Value.absent()
-          : Value(author),
+      author:
+          author == null && nullToAbsent ? const Value.absent() : Value(author),
       excerpt: excerpt == null && nullToAbsent
           ? const Value.absent()
           : Value(excerpt),
@@ -640,28 +639,29 @@ class ArticlesTableData extends DataClass
     String? status,
     Value<double?> scrollPosition = const Value.absent(),
     Value<DateTime?> lastSyncedAt = const Value.absent(),
-  }) => ArticlesTableData(
-    id: id ?? this.id,
-    url: url ?? this.url,
-    title: title ?? this.title,
-    author: author.present ? author.value : this.author,
-    excerpt: excerpt.present ? excerpt.value : this.excerpt,
-    content: content ?? this.content,
-    imageUrl: imageUrl.present ? imageUrl.value : this.imageUrl,
-    siteName: siteName.present ? siteName.value : this.siteName,
-    savedAt: savedAt ?? this.savedAt,
-    publishedAt: publishedAt.present ? publishedAt.value : this.publishedAt,
-    wordCount: wordCount ?? this.wordCount,
-    isRead: isRead ?? this.isRead,
-    isArchived: isArchived ?? this.isArchived,
-    isFavorite: isFavorite ?? this.isFavorite,
-    tags: tags ?? this.tags,
-    status: status ?? this.status,
-    scrollPosition: scrollPosition.present
-        ? scrollPosition.value
-        : this.scrollPosition,
-    lastSyncedAt: lastSyncedAt.present ? lastSyncedAt.value : this.lastSyncedAt,
-  );
+  }) =>
+      ArticlesTableData(
+        id: id ?? this.id,
+        url: url ?? this.url,
+        title: title ?? this.title,
+        author: author.present ? author.value : this.author,
+        excerpt: excerpt.present ? excerpt.value : this.excerpt,
+        content: content ?? this.content,
+        imageUrl: imageUrl.present ? imageUrl.value : this.imageUrl,
+        siteName: siteName.present ? siteName.value : this.siteName,
+        savedAt: savedAt ?? this.savedAt,
+        publishedAt: publishedAt.present ? publishedAt.value : this.publishedAt,
+        wordCount: wordCount ?? this.wordCount,
+        isRead: isRead ?? this.isRead,
+        isArchived: isArchived ?? this.isArchived,
+        isFavorite: isFavorite ?? this.isFavorite,
+        tags: tags ?? this.tags,
+        status: status ?? this.status,
+        scrollPosition:
+            scrollPosition.present ? scrollPosition.value : this.scrollPosition,
+        lastSyncedAt:
+            lastSyncedAt.present ? lastSyncedAt.value : this.lastSyncedAt,
+      );
   ArticlesTableData copyWithCompanion(ArticlesTableCompanion data) {
     return ArticlesTableData(
       id: data.id.present ? data.id.value : this.id,
@@ -673,17 +673,14 @@ class ArticlesTableData extends DataClass
       imageUrl: data.imageUrl.present ? data.imageUrl.value : this.imageUrl,
       siteName: data.siteName.present ? data.siteName.value : this.siteName,
       savedAt: data.savedAt.present ? data.savedAt.value : this.savedAt,
-      publishedAt: data.publishedAt.present
-          ? data.publishedAt.value
-          : this.publishedAt,
+      publishedAt:
+          data.publishedAt.present ? data.publishedAt.value : this.publishedAt,
       wordCount: data.wordCount.present ? data.wordCount.value : this.wordCount,
       isRead: data.isRead.present ? data.isRead.value : this.isRead,
-      isArchived: data.isArchived.present
-          ? data.isArchived.value
-          : this.isArchived,
-      isFavorite: data.isFavorite.present
-          ? data.isFavorite.value
-          : this.isFavorite,
+      isArchived:
+          data.isArchived.present ? data.isArchived.value : this.isArchived,
+      isFavorite:
+          data.isFavorite.present ? data.isFavorite.value : this.isFavorite,
       tags: data.tags.present ? data.tags.value : this.tags,
       status: data.status.present ? data.status.value : this.status,
       scrollPosition: data.scrollPosition.present
@@ -722,25 +719,25 @@ class ArticlesTableData extends DataClass
 
   @override
   int get hashCode => Object.hash(
-    id,
-    url,
-    title,
-    author,
-    excerpt,
-    content,
-    imageUrl,
-    siteName,
-    savedAt,
-    publishedAt,
-    wordCount,
-    isRead,
-    isArchived,
-    isFavorite,
-    tags,
-    status,
-    scrollPosition,
-    lastSyncedAt,
-  );
+        id,
+        url,
+        title,
+        author,
+        excerpt,
+        content,
+        imageUrl,
+        siteName,
+        savedAt,
+        publishedAt,
+        wordCount,
+        isRead,
+        isArchived,
+        isFavorite,
+        tags,
+        status,
+        scrollPosition,
+        lastSyncedAt,
+      );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -826,11 +823,11 @@ class ArticlesTableCompanion extends UpdateCompanion<ArticlesTableData> {
     this.scrollPosition = const Value.absent(),
     this.lastSyncedAt = const Value.absent(),
     this.rowid = const Value.absent(),
-  }) : id = Value(id),
-       url = Value(url),
-       title = Value(title),
-       content = Value(content),
-       savedAt = Value(savedAt);
+  })  : id = Value(id),
+        url = Value(url),
+        title = Value(title),
+        content = Value(content),
+        savedAt = Value(savedAt);
   static Insertable<ArticlesTableData> custom({
     Expression<String>? id,
     Expression<String>? url,
@@ -1020,50 +1017,50 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   List<DatabaseSchemaEntity> get allSchemaEntities => [articlesTable];
 }
 
-typedef $$ArticlesTableTableCreateCompanionBuilder =
-    ArticlesTableCompanion Function({
-      required String id,
-      required String url,
-      required String title,
-      Value<String?> author,
-      Value<String?> excerpt,
-      required String content,
-      Value<String?> imageUrl,
-      Value<String?> siteName,
-      required DateTime savedAt,
-      Value<DateTime?> publishedAt,
-      Value<int> wordCount,
-      Value<bool> isRead,
-      Value<bool> isArchived,
-      Value<bool> isFavorite,
-      Value<String> tags,
-      Value<String> status,
-      Value<double?> scrollPosition,
-      Value<DateTime?> lastSyncedAt,
-      Value<int> rowid,
-    });
-typedef $$ArticlesTableTableUpdateCompanionBuilder =
-    ArticlesTableCompanion Function({
-      Value<String> id,
-      Value<String> url,
-      Value<String> title,
-      Value<String?> author,
-      Value<String?> excerpt,
-      Value<String> content,
-      Value<String?> imageUrl,
-      Value<String?> siteName,
-      Value<DateTime> savedAt,
-      Value<DateTime?> publishedAt,
-      Value<int> wordCount,
-      Value<bool> isRead,
-      Value<bool> isArchived,
-      Value<bool> isFavorite,
-      Value<String> tags,
-      Value<String> status,
-      Value<double?> scrollPosition,
-      Value<DateTime?> lastSyncedAt,
-      Value<int> rowid,
-    });
+typedef $$ArticlesTableTableCreateCompanionBuilder = ArticlesTableCompanion
+    Function({
+  required String id,
+  required String url,
+  required String title,
+  Value<String?> author,
+  Value<String?> excerpt,
+  required String content,
+  Value<String?> imageUrl,
+  Value<String?> siteName,
+  required DateTime savedAt,
+  Value<DateTime?> publishedAt,
+  Value<int> wordCount,
+  Value<bool> isRead,
+  Value<bool> isArchived,
+  Value<bool> isFavorite,
+  Value<String> tags,
+  Value<String> status,
+  Value<double?> scrollPosition,
+  Value<DateTime?> lastSyncedAt,
+  Value<int> rowid,
+});
+typedef $$ArticlesTableTableUpdateCompanionBuilder = ArticlesTableCompanion
+    Function({
+  Value<String> id,
+  Value<String> url,
+  Value<String> title,
+  Value<String?> author,
+  Value<String?> excerpt,
+  Value<String> content,
+  Value<String?> imageUrl,
+  Value<String?> siteName,
+  Value<DateTime> savedAt,
+  Value<DateTime?> publishedAt,
+  Value<int> wordCount,
+  Value<bool> isRead,
+  Value<bool> isArchived,
+  Value<bool> isFavorite,
+  Value<String> tags,
+  Value<String> status,
+  Value<double?> scrollPosition,
+  Value<DateTime?> lastSyncedAt,
+  Value<int> rowid,
+});
 
 class $$ArticlesTableTableFilterComposer
     extends Composer<_$AppDatabase, $ArticlesTableTable> {
@@ -1075,94 +1072,94 @@ class $$ArticlesTableTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<String> get id => $composableBuilder(
-    column: $table.id,
-    builder: (column) => ColumnFilters(column),
-  );
+        column: $table.id,
+        builder: (column) => ColumnFilters(column),
+      );
 
   ColumnFilters<String> get url => $composableBuilder(
-    column: $table.url,
-    builder: (column) => ColumnFilters(column),
-  );
+        column: $table.url,
+        builder: (column) => ColumnFilters(column),
+      );
 
   ColumnFilters<String> get title => $composableBuilder(
-    column: $table.title,
-    builder: (column) => ColumnFilters(column),
-  );
+        column: $table.title,
+        builder: (column) => ColumnFilters(column),
+      );
 
   ColumnFilters<String> get author => $composableBuilder(
-    column: $table.author,
-    builder: (column) => ColumnFilters(column),
-  );
+        column: $table.author,
+        builder: (column) => ColumnFilters(column),
+      );
 
   ColumnFilters<String> get excerpt => $composableBuilder(
-    column: $table.excerpt,
-    builder: (column) => ColumnFilters(column),
-  );
+        column: $table.excerpt,
+        builder: (column) => ColumnFilters(column),
+      );
 
   ColumnFilters<String> get content => $composableBuilder(
-    column: $table.content,
-    builder: (column) => ColumnFilters(column),
-  );
+        column: $table.content,
+        builder: (column) => ColumnFilters(column),
+      );
 
   ColumnFilters<String> get imageUrl => $composableBuilder(
-    column: $table.imageUrl,
-    builder: (column) => ColumnFilters(column),
-  );
+        column: $table.imageUrl,
+        builder: (column) => ColumnFilters(column),
+      );
 
   ColumnFilters<String> get siteName => $composableBuilder(
-    column: $table.siteName,
-    builder: (column) => ColumnFilters(column),
-  );
+        column: $table.siteName,
+        builder: (column) => ColumnFilters(column),
+      );
 
   ColumnFilters<DateTime> get savedAt => $composableBuilder(
-    column: $table.savedAt,
-    builder: (column) => ColumnFilters(column),
-  );
+        column: $table.savedAt,
+        builder: (column) => ColumnFilters(column),
+      );
 
   ColumnFilters<DateTime> get publishedAt => $composableBuilder(
-    column: $table.publishedAt,
-    builder: (column) => ColumnFilters(column),
-  );
+        column: $table.publishedAt,
+        builder: (column) => ColumnFilters(column),
+      );
 
   ColumnFilters<int> get wordCount => $composableBuilder(
-    column: $table.wordCount,
-    builder: (column) => ColumnFilters(column),
-  );
+        column: $table.wordCount,
+        builder: (column) => ColumnFilters(column),
+      );
 
   ColumnFilters<bool> get isRead => $composableBuilder(
-    column: $table.isRead,
-    builder: (column) => ColumnFilters(column),
-  );
+        column: $table.isRead,
+        builder: (column) => ColumnFilters(column),
+      );
 
   ColumnFilters<bool> get isArchived => $composableBuilder(
-    column: $table.isArchived,
-    builder: (column) => ColumnFilters(column),
-  );
+        column: $table.isArchived,
+        builder: (column) => ColumnFilters(column),
+      );
 
   ColumnFilters<bool> get isFavorite => $composableBuilder(
-    column: $table.isFavorite,
-    builder: (column) => ColumnFilters(column),
-  );
+        column: $table.isFavorite,
+        builder: (column) => ColumnFilters(column),
+      );
 
   ColumnFilters<String> get tags => $composableBuilder(
-    column: $table.tags,
-    builder: (column) => ColumnFilters(column),
-  );
+        column: $table.tags,
+        builder: (column) => ColumnFilters(column),
+      );
 
   ColumnFilters<String> get status => $composableBuilder(
-    column: $table.status,
-    builder: (column) => ColumnFilters(column),
-  );
+        column: $table.status,
+        builder: (column) => ColumnFilters(column),
+      );
 
   ColumnFilters<double> get scrollPosition => $composableBuilder(
-    column: $table.scrollPosition,
-    builder: (column) => ColumnFilters(column),
-  );
+        column: $table.scrollPosition,
+        builder: (column) => ColumnFilters(column),
+      );
 
   ColumnFilters<DateTime> get lastSyncedAt => $composableBuilder(
-    column: $table.lastSyncedAt,
-    builder: (column) => ColumnFilters(column),
-  );
+        column: $table.lastSyncedAt,
+        builder: (column) => ColumnFilters(column),
+      );
 }
 
 class $$ArticlesTableTableOrderingComposer
@@ -1175,94 +1172,94 @@ class $$ArticlesTableTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<String> get id => $composableBuilder(
-    column: $table.id,
-    builder: (column) => ColumnOrderings(column),
-  );
+        column: $table.id,
+        builder: (column) => ColumnOrderings(column),
+      );
 
   ColumnOrderings<String> get url => $composableBuilder(
-    column: $table.url,
-    builder: (column) => ColumnOrderings(column),
-  );
+        column: $table.url,
+        builder: (column) => ColumnOrderings(column),
+      );
 
   ColumnOrderings<String> get title => $composableBuilder(
-    column: $table.title,
-    builder: (column) => ColumnOrderings(column),
-  );
+        column: $table.title,
+        builder: (column) => ColumnOrderings(column),
+      );
 
   ColumnOrderings<String> get author => $composableBuilder(
-    column: $table.author,
-    builder: (column) => ColumnOrderings(column),
-  );
+        column: $table.author,
+        builder: (column) => ColumnOrderings(column),
+      );
 
   ColumnOrderings<String> get excerpt => $composableBuilder(
-    column: $table.excerpt,
-    builder: (column) => ColumnOrderings(column),
-  );
+        column: $table.excerpt,
+        builder: (column) => ColumnOrderings(column),
+      );
 
   ColumnOrderings<String> get content => $composableBuilder(
-    column: $table.content,
-    builder: (column) => ColumnOrderings(column),
-  );
+        column: $table.content,
+        builder: (column) => ColumnOrderings(column),
+      );
 
   ColumnOrderings<String> get imageUrl => $composableBuilder(
-    column: $table.imageUrl,
-    builder: (column) => ColumnOrderings(column),
-  );
+        column: $table.imageUrl,
+        builder: (column) => ColumnOrderings(column),
+      );
 
   ColumnOrderings<String> get siteName => $composableBuilder(
-    column: $table.siteName,
-    builder: (column) => ColumnOrderings(column),
-  );
+        column: $table.siteName,
+        builder: (column) => ColumnOrderings(column),
+      );
 
   ColumnOrderings<DateTime> get savedAt => $composableBuilder(
-    column: $table.savedAt,
-    builder: (column) => ColumnOrderings(column),
-  );
+        column: $table.savedAt,
+        builder: (column) => ColumnOrderings(column),
+      );
 
   ColumnOrderings<DateTime> get publishedAt => $composableBuilder(
-    column: $table.publishedAt,
-    builder: (column) => ColumnOrderings(column),
-  );
+        column: $table.publishedAt,
+        builder: (column) => ColumnOrderings(column),
+      );
 
   ColumnOrderings<int> get wordCount => $composableBuilder(
-    column: $table.wordCount,
-    builder: (column) => ColumnOrderings(column),
-  );
+        column: $table.wordCount,
+        builder: (column) => ColumnOrderings(column),
+      );
 
   ColumnOrderings<bool> get isRead => $composableBuilder(
-    column: $table.isRead,
-    builder: (column) => ColumnOrderings(column),
-  );
+        column: $table.isRead,
+        builder: (column) => ColumnOrderings(column),
+      );
 
   ColumnOrderings<bool> get isArchived => $composableBuilder(
-    column: $table.isArchived,
-    builder: (column) => ColumnOrderings(column),
-  );
+        column: $table.isArchived,
+        builder: (column) => ColumnOrderings(column),
+      );
 
   ColumnOrderings<bool> get isFavorite => $composableBuilder(
-    column: $table.isFavorite,
-    builder: (column) => ColumnOrderings(column),
-  );
+        column: $table.isFavorite,
+        builder: (column) => ColumnOrderings(column),
+      );
 
   ColumnOrderings<String> get tags => $composableBuilder(
-    column: $table.tags,
-    builder: (column) => ColumnOrderings(column),
-  );
+        column: $table.tags,
+        builder: (column) => ColumnOrderings(column),
+      );
 
   ColumnOrderings<String> get status => $composableBuilder(
-    column: $table.status,
-    builder: (column) => ColumnOrderings(column),
-  );
+        column: $table.status,
+        builder: (column) => ColumnOrderings(column),
+      );
 
   ColumnOrderings<double> get scrollPosition => $composableBuilder(
-    column: $table.scrollPosition,
-    builder: (column) => ColumnOrderings(column),
-  );
+        column: $table.scrollPosition,
+        builder: (column) => ColumnOrderings(column),
+      );
 
   ColumnOrderings<DateTime> get lastSyncedAt => $composableBuilder(
-    column: $table.lastSyncedAt,
-    builder: (column) => ColumnOrderings(column),
-  );
+        column: $table.lastSyncedAt,
+        builder: (column) => ColumnOrderings(column),
+      );
 }
 
 class $$ArticlesTableTableAnnotationComposer
@@ -1302,9 +1299,9 @@ class $$ArticlesTableTableAnnotationComposer
       $composableBuilder(column: $table.savedAt, builder: (column) => column);
 
   GeneratedColumn<DateTime> get publishedAt => $composableBuilder(
-    column: $table.publishedAt,
-    builder: (column) => column,
-  );
+        column: $table.publishedAt,
+        builder: (column) => column,
+      );
 
   GeneratedColumn<int> get wordCount =>
       $composableBuilder(column: $table.wordCount, builder: (column) => column);
@@ -1313,14 +1310,14 @@ class $$ArticlesTableTableAnnotationComposer
       $composableBuilder(column: $table.isRead, builder: (column) => column);
 
   GeneratedColumn<bool> get isArchived => $composableBuilder(
-    column: $table.isArchived,
-    builder: (column) => column,
-  );
+        column: $table.isArchived,
+        builder: (column) => column,
+      );
 
   GeneratedColumn<bool> get isFavorite => $composableBuilder(
-    column: $table.isFavorite,
-    builder: (column) => column,
-  );
+        column: $table.isFavorite,
+        builder: (column) => column,
+      );
 
   GeneratedColumn<String> get tags =>
       $composableBuilder(column: $table.tags, builder: (column) => column);
@@ -1329,158 +1326,149 @@ class $$ArticlesTableTableAnnotationComposer
       $composableBuilder(column: $table.status, builder: (column) => column);
 
   GeneratedColumn<double> get scrollPosition => $composableBuilder(
-    column: $table.scrollPosition,
-    builder: (column) => column,
-  );
+        column: $table.scrollPosition,
+        builder: (column) => column,
+      );
 
   GeneratedColumn<DateTime> get lastSyncedAt => $composableBuilder(
-    column: $table.lastSyncedAt,
-    builder: (column) => column,
-  );
-}
-
-class $$ArticlesTableTableTableManager
-    extends
-        RootTableManager<
-          _$AppDatabase,
-          $ArticlesTableTable,
-          ArticlesTableData,
-          $$ArticlesTableTableFilterComposer,
-          $$ArticlesTableTableOrderingComposer,
-          $$ArticlesTableTableAnnotationComposer,
-          $$ArticlesTableTableCreateCompanionBuilder,
-          $$ArticlesTableTableUpdateCompanionBuilder,
-          (
-            ArticlesTableData,
-            BaseReferences<
-              _$AppDatabase,
-              $ArticlesTableTable,
-              ArticlesTableData
-            >,
-          ),
-          ArticlesTableData,
-          PrefetchHooks Function()
-        > {
-  $$ArticlesTableTableTableManager(_$AppDatabase db, $ArticlesTableTable table)
-    : super(
-        TableManagerState(
-          db: db,
-          table: table,
-          createFilteringComposer: () =>
-              $$ArticlesTableTableFilterComposer($db: db, $table: table),
-          createOrderingComposer: () =>
-              $$ArticlesTableTableOrderingComposer($db: db, $table: table),
-          createComputedFieldComposer: () =>
-              $$ArticlesTableTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback:
-              ({
-                Value<String> id = const Value.absent(),
-                Value<String> url = const Value.absent(),
-                Value<String> title = const Value.absent(),
-                Value<String?> author = const Value.absent(),
-                Value<String?> excerpt = const Value.absent(),
-                Value<String> content = const Value.absent(),
-                Value<String?> imageUrl = const Value.absent(),
-                Value<String?> siteName = const Value.absent(),
-                Value<DateTime> savedAt = const Value.absent(),
-                Value<DateTime?> publishedAt = const Value.absent(),
-                Value<int> wordCount = const Value.absent(),
-                Value<bool> isRead = const Value.absent(),
-                Value<bool> isArchived = const Value.absent(),
-                Value<bool> isFavorite = const Value.absent(),
-                Value<String> tags = const Value.absent(),
-                Value<String> status = const Value.absent(),
-                Value<double?> scrollPosition = const Value.absent(),
-                Value<DateTime?> lastSyncedAt = const Value.absent(),
-                Value<int> rowid = const Value.absent(),
-              }) => ArticlesTableCompanion(
-                id: id,
-                url: url,
-                title: title,
-                author: author,
-                excerpt: excerpt,
-                content: content,
-                imageUrl: imageUrl,
-                siteName: siteName,
-                savedAt: savedAt,
-                publishedAt: publishedAt,
-                wordCount: wordCount,
-                isRead: isRead,
-                isArchived: isArchived,
-                isFavorite: isFavorite,
-                tags: tags,
-                status: status,
-                scrollPosition: scrollPosition,
-                lastSyncedAt: lastSyncedAt,
-                rowid: rowid,
-              ),
-          createCompanionCallback:
-              ({
-                required String id,
-                required String url,
-                required String title,
-                Value<String?> author = const Value.absent(),
-                Value<String?> excerpt = const Value.absent(),
-                required String content,
-                Value<String?> imageUrl = const Value.absent(),
-                Value<String?> siteName = const Value.absent(),
-                required DateTime savedAt,
-                Value<DateTime?> publishedAt = const Value.absent(),
-                Value<int> wordCount = const Value.absent(),
-                Value<bool> isRead = const Value.absent(),
-                Value<bool> isArchived = const Value.absent(),
-                Value<bool> isFavorite = const Value.absent(),
-                Value<String> tags = const Value.absent(),
-                Value<String> status = const Value.absent(),
-                Value<double?> scrollPosition = const Value.absent(),
-                Value<DateTime?> lastSyncedAt = const Value.absent(),
-                Value<int> rowid = const Value.absent(),
-              }) => ArticlesTableCompanion.insert(
-                id: id,
-                url: url,
-                title: title,
-                author: author,
-                excerpt: excerpt,
-                content: content,
-                imageUrl: imageUrl,
-                siteName: siteName,
-                savedAt: savedAt,
-                publishedAt: publishedAt,
-                wordCount: wordCount,
-                isRead: isRead,
-                isArchived: isArchived,
-                isFavorite: isFavorite,
-                tags: tags,
-                status: status,
-                scrollPosition: scrollPosition,
-                lastSyncedAt: lastSyncedAt,
-                rowid: rowid,
-              ),
-          withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
-              .toList(),
-          prefetchHooksCallback: null,
-        ),
+        column: $table.lastSyncedAt,
+        builder: (column) => column,
       );
 }
 
-typedef $$ArticlesTableTableProcessedTableManager =
-    ProcessedTableManager<
-      _$AppDatabase,
-      $ArticlesTableTable,
+class $$ArticlesTableTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $ArticlesTableTable,
+    ArticlesTableData,
+    $$ArticlesTableTableFilterComposer,
+    $$ArticlesTableTableOrderingComposer,
+    $$ArticlesTableTableAnnotationComposer,
+    $$ArticlesTableTableCreateCompanionBuilder,
+    $$ArticlesTableTableUpdateCompanionBuilder,
+    (
       ArticlesTableData,
-      $$ArticlesTableTableFilterComposer,
-      $$ArticlesTableTableOrderingComposer,
-      $$ArticlesTableTableAnnotationComposer,
-      $$ArticlesTableTableCreateCompanionBuilder,
-      $$ArticlesTableTableUpdateCompanionBuilder,
-      (
-        ArticlesTableData,
-        BaseReferences<_$AppDatabase, $ArticlesTableTable, ArticlesTableData>,
-      ),
+      BaseReferences<_$AppDatabase, $ArticlesTableTable, ArticlesTableData>,
+    ),
+    ArticlesTableData,
+    PrefetchHooks Function()> {
+  $$ArticlesTableTableTableManager(_$AppDatabase db, $ArticlesTableTable table)
+      : super(
+          TableManagerState(
+            db: db,
+            table: table,
+            createFilteringComposer: () =>
+                $$ArticlesTableTableFilterComposer($db: db, $table: table),
+            createOrderingComposer: () =>
+                $$ArticlesTableTableOrderingComposer($db: db, $table: table),
+            createComputedFieldComposer: () =>
+                $$ArticlesTableTableAnnotationComposer($db: db, $table: table),
+            updateCompanionCallback: ({
+              Value<String> id = const Value.absent(),
+              Value<String> url = const Value.absent(),
+              Value<String> title = const Value.absent(),
+              Value<String?> author = const Value.absent(),
+              Value<String?> excerpt = const Value.absent(),
+              Value<String> content = const Value.absent(),
+              Value<String?> imageUrl = const Value.absent(),
+              Value<String?> siteName = const Value.absent(),
+              Value<DateTime> savedAt = const Value.absent(),
+              Value<DateTime?> publishedAt = const Value.absent(),
+              Value<int> wordCount = const Value.absent(),
+              Value<bool> isRead = const Value.absent(),
+              Value<bool> isArchived = const Value.absent(),
+              Value<bool> isFavorite = const Value.absent(),
+              Value<String> tags = const Value.absent(),
+              Value<String> status = const Value.absent(),
+              Value<double?> scrollPosition = const Value.absent(),
+              Value<DateTime?> lastSyncedAt = const Value.absent(),
+              Value<int> rowid = const Value.absent(),
+            }) =>
+                ArticlesTableCompanion(
+              id: id,
+              url: url,
+              title: title,
+              author: author,
+              excerpt: excerpt,
+              content: content,
+              imageUrl: imageUrl,
+              siteName: siteName,
+              savedAt: savedAt,
+              publishedAt: publishedAt,
+              wordCount: wordCount,
+              isRead: isRead,
+              isArchived: isArchived,
+              isFavorite: isFavorite,
+              tags: tags,
+              status: status,
+              scrollPosition: scrollPosition,
+              lastSyncedAt: lastSyncedAt,
+              rowid: rowid,
+            ),
+            createCompanionCallback: ({
+              required String id,
+              required String url,
+              required String title,
+              Value<String?> author = const Value.absent(),
+              Value<String?> excerpt = const Value.absent(),
+              required String content,
+              Value<String?> imageUrl = const Value.absent(),
+              Value<String?> siteName = const Value.absent(),
+              required DateTime savedAt,
+              Value<DateTime?> publishedAt = const Value.absent(),
+              Value<int> wordCount = const Value.absent(),
+              Value<bool> isRead = const Value.absent(),
+              Value<bool> isArchived = const Value.absent(),
+              Value<bool> isFavorite = const Value.absent(),
+              Value<String> tags = const Value.absent(),
+              Value<String> status = const Value.absent(),
+              Value<double?> scrollPosition = const Value.absent(),
+              Value<DateTime?> lastSyncedAt = const Value.absent(),
+              Value<int> rowid = const Value.absent(),
+            }) =>
+                ArticlesTableCompanion.insert(
+              id: id,
+              url: url,
+              title: title,
+              author: author,
+              excerpt: excerpt,
+              content: content,
+              imageUrl: imageUrl,
+              siteName: siteName,
+              savedAt: savedAt,
+              publishedAt: publishedAt,
+              wordCount: wordCount,
+              isRead: isRead,
+              isArchived: isArchived,
+              isFavorite: isFavorite,
+              tags: tags,
+              status: status,
+              scrollPosition: scrollPosition,
+              lastSyncedAt: lastSyncedAt,
+              rowid: rowid,
+            ),
+            withReferenceMapper: (p0) => p0
+                .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+                .toList(),
+            prefetchHooksCallback: null,
+          ),
+        );
+}
+
+typedef $$ArticlesTableTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $ArticlesTableTable,
+    ArticlesTableData,
+    $$ArticlesTableTableFilterComposer,
+    $$ArticlesTableTableOrderingComposer,
+    $$ArticlesTableTableAnnotationComposer,
+    $$ArticlesTableTableCreateCompanionBuilder,
+    $$ArticlesTableTableUpdateCompanionBuilder,
+    (
       ArticlesTableData,
-      PrefetchHooks Function()
-    >;
+      BaseReferences<_$AppDatabase, $ArticlesTableTable, ArticlesTableData>,
+    ),
+    ArticlesTableData,
+    PrefetchHooks Function()>;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
