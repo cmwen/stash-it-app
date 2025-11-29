@@ -5,6 +5,9 @@ on:
     tags:
       - 'v*'
 
+env:
+  TAG_VERSION: ${{ github.ref_name }}
+
 permissions:
   contents: write
 
@@ -48,6 +51,13 @@ jobs:
     
     - name: Get dependencies
       run: flutter pub get
+
+    - name: Extract version from tag
+      id: version
+      run: |
+        VERSION=${TAG_VERSION#v}
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        echo "Building version: $VERSION"
     
     # Run code generation (required for Drift & Riverpod)
     - name: Generate code
@@ -80,10 +90,10 @@ jobs:
     
     # Build APK and AAB in parallel would require matrix, but they're fast enough sequentially
     - name: Build signed APK
-      run: flutter build apk --release
+      run: flutter build apk --release --build-name=${{ steps.version.outputs.version }} --build-number=${{ github.run_number }}
     
     - name: Build signed App Bundle
-      run: flutter build appbundle --release
+      run: flutter build appbundle --release --build-name=${{ steps.version.outputs.version }} --build-number=${{ github.run_number }}
     
     - name: Upload release artifacts
       uses: actions/upload-artifact@v5

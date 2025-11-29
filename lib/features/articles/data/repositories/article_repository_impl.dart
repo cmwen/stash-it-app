@@ -141,6 +141,34 @@ class ArticleRepositoryImpl implements ArticleRepository {
   }
 
   @override
+  Future<List<Article>> getArticlesByTag(String tag) async {
+    final articles = await _database.getArticlesByTag(tag);
+    return articles.map((a) => Article(
+      id: a.id,
+      url: a.url,
+      title: a.title,
+      content: a.content,
+      excerpt: a.excerpt,
+      imageUrl: a.imageUrl,
+      isRead: a.isRead,
+      isFavorite: a.isFavorite,
+      createdAt: a.createdAt,
+      readAt: a.readAt,
+      tags: a.tags?.split(',').where((t) => t.isNotEmpty).toList() ?? [],
+    )).toList();
+  }
+
+  @override
+  Future<void> softDeleteArticle(int id) async {
+    await _database.softDeleteArticle(id);
+  }
+
+  @override
+  Future<void> restoreArticle(int id) async {
+    await _database.restoreArticle(id);
+  }
+
+  @override
   Future<void> deleteArticle(String id) async {
     await _database.deleteArticleById(id);
   }

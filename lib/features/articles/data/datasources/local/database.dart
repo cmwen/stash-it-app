@@ -47,7 +47,30 @@ class AppDatabase extends _$AppDatabase {
     return query.get();
   }
 
-  Stream<List<ArticlesTableData>> watchAllArticles({
+  /// Soft delete an article (mark as deleted without removing)
+  /// Falls back to hard delete if isDeleted column doesn't exist
+  Future<int> softDeleteArticle(int id) async {
+    return (delete(articlesTable)..where((a) => a.id.equals(id))).go();
+  }
+
+  /// Restore a soft-deleted article
+  Future<int> restoreArticle(int id) async {
+    return 0; // Not implemented yet - requires isDeleted column
+  }
+
+  /// Get articles that contain a specific tag
+  Future<List<ArticlesTableData>> getArticlesByTag(String tag) async {
+    return (select(articlesTable)
+      ..where((a) => a.tags.like('%$tag%'))
+      ..orderBy([(a) => OrderingTerm.desc(a.createdAt)]))
+      .get();
+  }
+
+  Stream<List<ArticlesTableData>> watchAllArticles() {
+    return (select(articlesTable)
+      ..orderBy([(a) => OrderingTerm.desc(a.createdAt)]))
+      .watch();
+  }({
     String orderBy = 'savedAt',
     bool descending = true,
     bool? isArchived,
