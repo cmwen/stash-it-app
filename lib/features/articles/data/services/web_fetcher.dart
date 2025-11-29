@@ -5,20 +5,19 @@ class WebFetcher {
   final Dio _dio;
 
   WebFetcher({Dio? dio})
-    : _dio =
-          dio ??
-          Dio(
-            BaseOptions(
-              connectTimeout: const Duration(seconds: 10),
-              receiveTimeout: const Duration(seconds: 30),
-              headers: {
-                'User-Agent':
-                    'Mozilla/5.0 (compatible; StashIt/1.0; +https://stashit.app)',
-                'Accept':
-                    'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-              },
-            ),
-          );
+      : _dio = dio ??
+            Dio(
+              BaseOptions(
+                connectTimeout: const Duration(seconds: 10),
+                receiveTimeout: const Duration(seconds: 30),
+                headers: {
+                  'User-Agent':
+                      'Mozilla/5.0 (compatible; StashIt/1.0; +https://stashit.app)',
+                  'Accept':
+                      'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                },
+              ),
+            );
 
   /// Fetches HTML content from a URL.
   Future<String> fetchHtml(String url) async {

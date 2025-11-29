@@ -59,9 +59,8 @@ class _AddUrlSheetState extends State<AddUrlSheet> {
     final valid = _isValidUrl(value);
     setState(() {
       _isValid = valid;
-      _errorText = value.isEmpty
-          ? null
-          : (valid ? null : 'Please enter a valid URL');
+      _errorText =
+          value.isEmpty ? null : (valid ? null : 'Please enter a valid URL');
     });
   }
 
@@ -165,9 +164,8 @@ class _AddUrlSheetState extends State<AddUrlSheet> {
             children: [
               Expanded(
                 child: OutlinedButton(
-                  onPressed: _isSaving
-                      ? null
-                      : () => Navigator.of(context).pop(),
+                  onPressed:
+                      _isSaving ? null : () => Navigator.of(context).pop(),
                   child: const Text('Cancel'),
                 ),
               ),

@@ -106,9 +106,8 @@ class ArticleCard extends StatelessWidget {
                 : theme.colorScheme.onSurfaceVariant,
           ),
           onPressed: onFavorite,
-          tooltip: article.isFavorite
-              ? 'Remove from favorites'
-              : 'Add to favorites',
+          tooltip:
+              article.isFavorite ? 'Remove from favorites' : 'Add to favorites',
           visualDensity: VisualDensity.compact,
         ),
         // Archive button
@@ -152,9 +151,8 @@ class ArticleCard extends StatelessWidget {
           Text(
             isArchived ? 'Unarchive' : 'Archive',
             style: TextStyle(
-              color: isArchived
-                  ? Colors.green.shade700
-                  : Colors.orange.shade700,
+              color:
+                  isArchived ? Colors.green.shade700 : Colors.orange.shade700,
               fontWeight: FontWeight.w600,
             ),
           ),
