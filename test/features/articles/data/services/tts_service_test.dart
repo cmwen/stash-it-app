@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:stash_it/features/articles/data/services/tts_service.dart';
 
@@ -6,6 +7,15 @@ void main() {
     late TtsService ttsService;
 
     setUp(() {
+      TestWidgetsFlutterBinding.ensureInitialized();
+      
+      // Mock the flutter_tts platform channel
+      const channel = MethodChannel('flutter_tts');
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
+        return null;
+      });
+      
       ttsService = TtsService();
     });
 
