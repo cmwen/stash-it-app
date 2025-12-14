@@ -515,10 +515,8 @@ class _ReaderPageState extends ConsumerState<ReaderPage> {
       isScrollControlled: true,
       isDismissible: true,
       enableDrag: true,
-      builder: (context) => TtsPlayer(
-        articleId: article.id,
-        articleContent: article.content,
-      ),
+      builder: (context) =>
+          TtsPlayer(articleId: article.id, articleContent: article.content),
     );
   }
 }

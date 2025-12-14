@@ -34,8 +34,9 @@ class TtsPlayer extends ConsumerWidget {
     return Container(
       decoration: BoxDecoration(
         color: colorScheme.surfaceContainerHighest,
-        borderRadius:
-            const BorderRadius.vertical(top: Radius.circular(AppSpacing.md)),
+        borderRadius: const BorderRadius.vertical(
+          top: Radius.circular(AppSpacing.md),
+        ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.1),
@@ -85,9 +86,9 @@ class TtsPlayer extends ConsumerWidget {
           Text(
             ttsState.currentWord!,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w500,
-                  color: colorScheme.primary,
-                ),
+              fontWeight: FontWeight.w500,
+              color: colorScheme.primary,
+            ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -120,11 +121,7 @@ class TtsPlayer extends ConsumerWidget {
             shape: BoxShape.circle,
           ),
           child: IconButton(
-            icon: Icon(
-              ttsState.isPlaying
-                  ? Icons.pause
-                  : Icons.play_arrow,
-            ),
+            icon: Icon(ttsState.isPlaying ? Icons.pause : Icons.play_arrow),
             iconSize: 40,
             color: colorScheme.onPrimary,
             onPressed: () {
@@ -197,8 +194,9 @@ class TtsPlayer extends ConsumerWidget {
         ),
         IconButton(
           icon: const Icon(Icons.add_circle_outline),
-          onPressed:
-              ttsState.speechRate >= 2.0 ? null : () => notifier.increaseSpeed(),
+          onPressed: ttsState.speechRate >= 2.0
+              ? null
+              : () => notifier.increaseSpeed(),
           tooltip: 'Increase speed',
         ),
       ],

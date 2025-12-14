@@ -1,11 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 /// Playback state for TTS.
-enum TtsPlaybackState {
-  stopped,
-  playing,
-  paused,
-}
+enum TtsPlaybackState { stopped, playing, paused }
 
 /// TTS state for an article.
 class TtsState extends Equatable {
@@ -71,11 +67,11 @@ class TtsState extends Equatable {
 
   @override
   List<Object?> get props => [
-        playbackState,
-        currentPosition,
-        totalLength,
-        speechRate,
-        currentWord,
-        error,
-      ];
+    playbackState,
+    currentPosition,
+    totalLength,
+    speechRate,
+    currentWord,
+    error,
+  ];
 }

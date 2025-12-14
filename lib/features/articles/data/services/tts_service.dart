@@ -86,8 +86,6 @@ class TtsService {
     _tts.setErrorHandler((message) => handler(message));
   }
 
-
-
   /// Dispose resources.
   void dispose() {
     _tts.stop();

@@ -37,10 +37,7 @@ class ArticleTts extends _$ArticleTts {
     });
 
     _ttsService?.setProgressHandler((text, start, end, word) {
-      state = state.copyWith(
-        currentPosition: end,
-        currentWord: word,
-      );
+      state = state.copyWith(currentPosition: end, currentWord: word);
     });
 
     _ttsService?.setErrorHandler((message) {
@@ -63,10 +60,10 @@ class ArticleTts extends _$ArticleTts {
 
   String _extractTextFromHtml(String htmlContent) {
     if (htmlContent.isEmpty) return '';
-    
+
     final document = html_parser.parse(htmlContent);
     final text = document.body?.text ?? '';
-    
+
     return text
         .split('\n')
         .map((line) => line.trim())
@@ -101,12 +98,18 @@ class ArticleTts extends _$ArticleTts {
   }
 
   Future<void> skipBackward() async {
-    final newPosition = (state.currentPosition - 150).clamp(0, _fullText.length);
+    final newPosition = (state.currentPosition - 150).clamp(
+      0,
+      _fullText.length,
+    );
     await _seekToPosition(newPosition);
   }
 
   Future<void> skipForward() async {
-    final newPosition = (state.currentPosition + 150).clamp(0, _fullText.length);
+    final newPosition = (state.currentPosition + 150).clamp(
+      0,
+      _fullText.length,
+    );
     await _seekToPosition(newPosition);
   }
 
