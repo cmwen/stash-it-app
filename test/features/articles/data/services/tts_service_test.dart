@@ -8,14 +8,14 @@ void main() {
 
     setUp(() {
       TestWidgetsFlutterBinding.ensureInitialized();
-      
+
       // Mock the flutter_tts platform channel
       const channel = MethodChannel('flutter_tts');
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
-        return null;
-      });
-      
+            return null;
+          });
+
       ttsService = TtsService();
     });
 
