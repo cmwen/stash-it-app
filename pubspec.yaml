@@ -1,7 +1,7 @@
 name: stash_it
 description: "A local-first, offline-capable 'save it later' app. Like Pocket, but privacy-focused and yours forever."
 publish_to: 'none'
-version: 1.7.0+8
+version: 1.8.0+9
 
 environment:
   sdk: ^3.10.1
