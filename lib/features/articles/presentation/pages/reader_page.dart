@@ -9,6 +9,7 @@ import '../../../../core/theme/theme.dart';
 import '../../../settings/presentation/providers/providers.dart';
 import '../../domain/entities/article.dart';
 import '../providers/providers.dart';
+import '../widgets/tts_player.dart';
 
 /// Reader page for viewing article content.
 class ReaderPage extends ConsumerStatefulWidget {
@@ -98,6 +99,12 @@ class _ReaderPageState extends ConsumerState<ReaderPage> {
           SliverAppBar(
             floating: true,
             actions: [
+              // TTS button
+              IconButton(
+                icon: const Icon(Icons.record_voice_over),
+                onPressed: () => _showTtsPlayer(context, article),
+                tooltip: 'Listen with Text-to-Speech',
+              ),
               // Tags button
               IconButton(
                 icon: Icon(
@@ -500,6 +507,19 @@ class _ReaderPageState extends ConsumerState<ReaderPage> {
         await launchUrl(uri, mode: LaunchMode.externalApplication);
       }
     } catch (_) {}
+  }
+
+  void _showTtsPlayer(BuildContext context, Article article) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      isDismissible: true,
+      enableDrag: true,
+      builder: (context) => TtsPlayer(
+        articleId: article.id,
+        articleContent: article.content,
+      ),
+    );
   }
 }
 

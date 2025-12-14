@@ -9,6 +9,7 @@
 
 # Keep Play Store related classes (even if not used)
 -keep class com.google.android.play.core.** { *; }
+-dontwarn com.google.android.play.core.**
 
 # Keep Drift database classes
 -keep class drift.** { *; }

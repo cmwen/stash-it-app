@@ -1,7 +1,7 @@
 name: stash_it
 description: "A local-first, offline-capable 'save it later' app. Like Pocket, but privacy-focused and yours forever."
 publish_to: 'none'
-version: 1.6.0+7
+version: 1.7.0+8
 
 environment:
   sdk: ^3.10.1
@@ -54,6 +54,9 @@ dependencies:
   
   # Receive shared content from other apps
   receive_sharing_intent: ^1.8.1
+  
+  # Text-to-Speech
+  flutter_tts: ^4.2.0
 
 dev_dependencies:
   flutter_test:
