@@ -10,10 +10,10 @@ part of 'tts_provider.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(ArticleTts)
-const articleTtsProvider = ArticleTtsFamily._();
+final articleTtsProvider = ArticleTtsFamily._();
 
 final class ArticleTtsProvider extends $NotifierProvider<ArticleTts, TtsState> {
-  const ArticleTtsProvider._({
+  ArticleTtsProvider._({
     required ArticleTtsFamily super.from,
     required String super.argument,
   }) : super(
@@ -62,7 +62,7 @@ String _$articleTtsHash() => r'35f7469fec6ab1110e705682e3582674ae625620';
 final class ArticleTtsFamily extends $Family
     with
         $ClassFamilyOverride<ArticleTts, TtsState, TtsState, TtsState, String> {
-  const ArticleTtsFamily._()
+  ArticleTtsFamily._()
     : super(
         retry: null,
         name: r'articleTtsProvider',
@@ -86,7 +86,6 @@ abstract class _$ArticleTts extends $Notifier<TtsState> {
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build(_$args);
     final ref = this.ref as $Ref<TtsState, TtsState>;
     final element =
         ref.element
@@ -96,6 +95,6 @@ abstract class _$ArticleTts extends $Notifier<TtsState> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    element.handleCreate(ref, () => build(_$args));
   }
 }
