@@ -8,8 +8,8 @@ Stash It is a local-first, offline-capable "save it later" app inspired by Pocke
 
 ## Key Technologies
 
-- **Framework**: Flutter 3.10.1+
-- **Language**: Dart 3.10.1+
+- **Framework**: Flutter 3.44.9+
+- **Language**: Dart 3.12.2+
 - **State Management**: Riverpod with code generation
 - **Database**: Drift (SQLite) - local-first persistence
 - **Navigation**: go_router
@@ -168,3 +168,7 @@ Always run `dart run build_runner build --delete-conflicting-outputs` after:
 - `docs/AI_INTERMEDIATE_GUIDE.md` - For developers new to Flutter
 - `docs/AI_ADVANCED_GUIDE.md` - For experienced developers
 - `docs/AI_PROMPT_TEMPLATES.md` - Ready-to-use prompts
+
+## Dependency build maintenance
+
+CI pins Flutter 3.44.9 (Dart 3.12). Keep the Flutter version aligned across build, release, prerelease, CodeQL, and Copilot setup workflows. Recent shared_preferences/image_picker require Dart 3.11; sqflite requires Dart 3.12. Diagnose the first failing step before changing package versions. Validate Dependabot updates with pub get, formatting, analyze, tests, and a debug APK build; do not merge on missing checks. Regenerate generated sources when required by this repository.
